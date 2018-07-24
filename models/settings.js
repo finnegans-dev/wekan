@@ -28,6 +28,30 @@ Settings.attachSchema(new SimpleSchema({
     type: String,
     optional: true,
   },
+  customCompanyName: {
+    type: String,
+    optional: true,
+  },
+  customLoginLogo: {
+    type: String,
+    optional: true,
+  },
+  customHeaderLogo: {
+    type: String,
+    optional: true,
+  },
+  customShortcutIcon: {
+    type: String,
+    optional: true,
+  },
+  customAppleTouchIcon: {
+    type: String,
+    optional: true,
+  },
+  customManifest: {
+    type: String,
+    optional: true,
+  },
   createdAt: {
     type: Date,
     denyUpdate: true,

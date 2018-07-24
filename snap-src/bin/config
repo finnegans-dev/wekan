@@ -47,3 +47,27 @@ KEY_CADDY_ENABLED="caddy-enabled"
 DESCRIPTION_CADDY_BIND_PORT="Port on which caddy will expect proxy, value set here will be set in $SNAP_COMMON/Caddyfile"
 DEFAULT_CADDY_BIND_PORT="3001"
 KEY_CADDY_BIND_PORT="caddy-bind-port"
+
+DESCRIPTION_CUSTOM_COMPANY_NAME="custom company name: eg Company Ltd\n\t\tIf not defined default Wekan is used instead"
+DEFAULT_CUSTOM_COMPANY_NAME=""
+KEY_CUSTOM_COMPANY_NAME="custom-company-name"
+
+DESCRIPTION_CUSTOM_LOGIN_LOGO="custom login logo image URL: eg http://example.com/custom-login-logo.png or svg etc\n\t\tIf not defined default Wekan login logo is used instead"
+DEFAULT_CUSTOM_LOGIN_LOGO=""
+KEY_CUSTOM_LOGIN_LOGO="custom-login-logo"
+
+DESCRIPTION_CUSTOM_HEADER_LOGO="custom header logo image URL: eg http://example.com/custom-header-logo.png or svg etc\n\t\tIf not defined default Wekan header logo is used instead"
+DEFAULT_CUSTOM_HEADER_LOGO=""
+KEY_CUSTOM_HEADER_LOGO="custom-header-logo"
+
+DESCRIPTION_CUSTOM_SHORTCUT_ICON="custom shortcut icon image URL: eg http://example.com/custom-shortcut-icon.png or svg etc\n\t\tIf not defined default Wekan shortcut icon used instead"
+DEFAULT_CUSTOM_SHORTCUT_ICON=""
+KEY_CUSTOM_SHORTCUT_ICON="custom-shortcut-icon"
+
+DESCRIPTION_CUSTOM_APPLE_TOUCH_ICON="custom apple touch icon image URL: eg http://example.com/custom-apple-touch-icon.png or svg etc\n\t\tIf not defined default Wekan apple touch icon used instead"
+DEFAULT_CUSTOM_APPLE_TOUCH_ICON=""
+KEY_CUSTOM_APPLE_TOUCH_ICON="custom-apple-touch-icon"
+
+DESCRIPTION_CUSTOM_MANIFEST="custom manifest URL: eg http://example.com/custom-apple-touch-icon.png or svg etc\n\t\tIf not defined default Wekan apple touch icon used instead"
+DEFAULT_CUSTOM_MANIFEST=""
+KEY_CUSTOM_MANIFEST="custom-manifest"

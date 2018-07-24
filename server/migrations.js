@@ -309,3 +309,75 @@ Migrations.add('add-subtasks-allowed', () => {
     },
   }, noValidateMulti);
 });
+
+Migrations.add('add-custom-company-name', () => {
+  Settings.update({
+    customCompanyName: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customCompanyName:'',
+    },
+  }, noValidateMulti);
+});
+
+Migrations.add('add-custom-login-logo', () => {
+  Settings.update({
+    customLoginLogo: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customLoginLogo:'',
+    },
+  }, noValidateMulti);
+});
+
+Migrations.add('add-custom-header-logo', () => {
+  Settings.update({
+    customHeaderLogo: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customHeaderLogo:'',
+    },
+  }, noValidateMulti);
+});
+
+Migrations.add('add-custom-shortcut-icon', () => {
+  Settings.update({
+    customShortcutIcon: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customShortcutIcon:'',
+    },
+  }, noValidateMulti);
+});
+
+Migrations.add('add-custom-apple-touch-icon', () => {
+  Settings.update({
+    customAppleTouchIcon: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customAppleTouchIcon:'',
+    },
+  }, noValidateMulti);
+});
+
+Migrations.add('add-custom-manifest', () => {
+  Settings.update({
+    customManifest: {
+      $exists: false,
+    },
+  }, {
+    $set: {
+      customManifest:'',
+    },
+  }, noValidateMulti);
+});
