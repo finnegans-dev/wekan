@@ -541,21 +541,40 @@ Boards.mutations({
     };
   },
 
-  setMemberPermission(memberId, isAdmin, isNoComments, isCommentOnly) {
-    const memberIndex = this.memberIndex(memberId);
+  setMemberPermission(memberId, isAdmin, isNoComments, isCommentOnly, boardId='') {
 
-    // do not allow change permission of self
-    if (memberId === Meteor.userId()) {
-      isAdmin = this.members[memberIndex].isAdmin;
+    if (boardId === '') {
+      const memberIndex = this.memberIndex(memberId);
+
+      // do not allow change permission of self
+      if (memberId === Meteor.userId()) {
+        isAdmin = this.members[memberIndex].isAdmin;
+      }
+      return {
+        $set: {
+          [`members.${memberIndex}.isAdmin`]: isAdmin,
+          [`members.${memberIndex}.isNoComments`]: isNoComments,
+          [`members.${memberIndex}.isCommentOnly`]: isCommentOnly,
+        },
+      };
+    } else {
+      check(boardId, String);
+      const board = Boards.findOne(boardId);
+      if (board) {
+        const userId = Meteor.userId();
+        const memberIndex = board.memberIndex(memberId);
+        if (memberIndex >= 0) {
+          return {
+            $set: {
+              [`board.members.${memberIndex}.isAdmin`]: isAdmin,
+              [`board.members.${memberIndex}.isNoComments`]: isNoComments,
+              [`board.members.${memberIndex}.isCommentOnly`]: isCommentOnly,
+            },
+          };
+          return true;
+        } else throw new Meteor.Error('error-board-notAMember');
+      } else throw new Meteor.Error('error-board-doesNotExist');
     }
-
-    return {
-      $set: {
-        [`members.${memberIndex}.isAdmin`]: isAdmin,
-        [`members.${memberIndex}.isNoComments`]: isNoComments,
-        [`members.${memberIndex}.isCommentOnly`]: isCommentOnly,
-      },
-    };
   },
 
   setAllowsSubtasks(allowsSubtasks) {
@@ -927,4 +946,35 @@ if (Meteor.isServer) {
       });
     }
   });
-}
+
+  // setMemberPermission
+  JsonRoutes.add('PUT', '/api/boards/:boardId/members/:memberId', function (req, res) {
+    Authentication.checkUserId(req.userId);
+    const paramBoardId = req.params.boardId;
+    const userId = req.params.userId;
+
+    if (req.body.hasOwnProperty('role')) {
+      const role = req.body.role;
+      try {
+        // setMemberPermission(memberId, isAdmin, isNoComments, isCommentOnly) {
+        if (role === 'admin') {
+          setMemberPermission(memberId, true, false, false, paramBoardId);
+        } else if (role === 'normal') {
+          setMemberPermission(memberId, false, false, false, paramBoardId);
+        } else if (role === 'nocomments') {
+          setMemberPermission(memberId, false, true, false, paramBoardId);
+        } else if (role === 'commentonly') {
+          setMemberPermission(memberId, false, false, true, paramBoardId);
+        } else {
+          JsonRoutes.sendResult(res, {
+            code: 200,
+            data,
+          });
+        }
+      }
+      catch (error) {
+        JsonRoutes.sendResult(res, {
+          data: error,
+        });
+      }
+    }
