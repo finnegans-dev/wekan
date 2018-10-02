@@ -127,6 +127,10 @@ Users.attachSchema(new SimpleSchema({
     type: Boolean,
     optional: true,
   },
+  domains : {
+    type : [String],
+    optional: true
+  }
 }));
 
 Users.allow({
@@ -142,6 +146,18 @@ const searchInFields = ['username', 'profile.fullname'];
 Users.initEasySearch(searchInFields, {
   use: 'mongo-db',
   returnFields: [...searchInFields, 'profile.avatarUrl'],
+  query : function (a) {
+    console.log(a);
+    return {
+      domains : {
+        '$in' : ['MOOVING']
+      }
+    };
+  } /*{
+    domains : {
+      '$in' : ['MOOVING']
+    }
+  }*/
 });
 
 if (Meteor.isClient) {
@@ -250,7 +266,7 @@ Users.helpers({
 
   getLanguage() {
     const profile = this.profile || {};
-    return profile.language || 'en';
+    return profile.language || 'es';
   },
 });
 
@@ -483,6 +499,7 @@ if (Meteor.isServer) {
   });
   Accounts.onCreateUser((options, user) => {
     const userCount = Users.find().count();
+    user.domains = options.domains;
     if (!isSandstorm && userCount === 0) {
       user.isAdmin = true;
       return user;
@@ -660,14 +677,7 @@ if (Meteor.isServer) {
 if (Meteor.isServer) {
   // Middleware which checks that API is enabled.
   JsonRoutes.Middleware.use(function (req, res, next) {
-    const api = req.url.search('api');
-    if (api === 1 && process.env.WITH_API === 'true' || api === -1){
       return next();
-    }
-    else {
-      res.writeHead(301, {Location: '/'});
-      return res.end();
-    }
   });
 
   JsonRoutes.add('GET', '/api/user', function(req, res) {
@@ -749,6 +759,9 @@ if (Meteor.isServer) {
             Users.update({ _id: id }, { $set: { loginDisabled: true, 'services.resume.loginTokens': '' } });
           } else if (action === 'enableLogin') {
             Users.update({ _id: id }, { $set: { loginDisabled: '' } });
+          } else if (action === 'language') {
+            const language = req.body.language;
+            Users.update({ _id: id }, { $set: { 'profile.language': 'es' } });
           }
           data = Meteor.users.findOne({ _id: id });
         }
@@ -769,22 +782,45 @@ if (Meteor.isServer) {
   JsonRoutes.add('POST', '/api/users/', function (req, res) {
     try {
       Authentication.checkUserId(req.userId);
-      const id = Accounts.createUser({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        from: 'admin',
-      });
-      JsonRoutes.sendResult(res, {
-        code: 200,
-        data: {
-          _id: id,
-        },
-      });
+      if(!req.body.domains || req.body.domains.length === 0) {
+        JsonRoutes.sendResult(res, {
+          code: 500,
+          data: {
+            status: 500,
+            message : "Debe indicar al menos un dominio"
+          },
+        });
+      } else {
+        const user = Users.findOne({'emails.address': req.body.email, 'username' : req.body.email});
+        let id;
+        if(user) {
+          id = user._id;
+          req.body.domains.forEach(dom => {
+            if(user.domains.indexOf(dom) == -1) {
+              user.domains.push(dom);
+            }
+          });
+          Users.update({ _id: id }, { $set: { 'domains': user.domains } });
+        } else {
+            id = Accounts.createUser({
+              username: req.body.email,
+              email: req.body.email,
+              password: req.body.password,
+              domains : req.body.domains,
+              from: 'admin',
+            });
+        }
+        JsonRoutes.sendResult(res, {
+          code: 200,
+          data: {
+            _id: id,
+          },
+        });
+      }
     }
     catch (error) {
       JsonRoutes.sendResult(res, {
-        code: 200,
+        code: 500,
         data: error,
       });
     }
@@ -800,6 +836,23 @@ if (Meteor.isServer) {
         data: {
           _id: id,
         },
+      });
+    }
+    catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
+
+  JsonRoutes.add('GET', '/api/users/logout/:id', function (req, res, next) {
+    try {
+      const id = req.params.id;
+      Users.update({ _id: id }, { $set: { 'services.resume.loginTokens': '' } });
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: { status : 'OK' },
       });
     }
     catch (error) {

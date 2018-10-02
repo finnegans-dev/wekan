@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ignore-pattern 'packages/*' .",
-    "test": "npm run --silent lint"
+    "test": "npm run --silent lint",
+    "debug": "meteor run --inspect --port 8080"
   },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"
@@ -23,7 +24,9 @@
     "eslint": "^4.19.1"
   },
   "dependencies": {
+    "@babel/runtime": "7.0.0-beta.55",
     "babel-runtime": "^6.26.0",
+    "bcrypt": "^3.0.1",
     "bson-ext": "^2.0.0",
     "es6-promise": "^4.2.4",
     "meteor-node-stubs": "^0.4.1",

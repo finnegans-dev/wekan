@@ -11,7 +11,16 @@ Template.userFormsLayout.onRendered(() => {
   if (i18nTag) {
     T9n.setLanguage(i18nTagToT9n(i18nTag));
   }
-  EscapeActions.executeAll();
+  let url = window.location.href;
+  url = new URL(url);
+  let user = url.searchParams.get("user");
+  let password = url.searchParams.get("password");
+  let userInput = document.getElementById("at-field-username_and_email");
+  let passwordInput = document.getElementById("at-field-password");
+  userInput.value = user;
+  passwordInput.value = password;
+  document.getElementById('at-btn').click();
+  //EscapeActions.executeAll();
 });
 
 Template.userFormsLayout.helpers({
