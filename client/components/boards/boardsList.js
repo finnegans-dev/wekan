@@ -6,11 +6,14 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
-    const user = Meteor.users.findOne({ _id: Meteor.userId()})
-    console.log(user.currentDomain);
     return Boards.find({
       archived: false,
-      'members.userId': Meteor.userId()
+      $or : [{
+        'members.userId': Meteor.userId()
+      }, {
+        permission : 'public'
+      }]
+
     }, {
       sort: ['title'],
     });

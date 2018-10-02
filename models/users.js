@@ -204,14 +204,13 @@ if (Meteor.isClient) {
 
 Users.helpers({
   boards() {
-    console.log('tableros');
+    console.log(Meteor.user().currentDomain);
     return Boards.find({ 'members.userId': this._id, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
   starredBoards() {
     const {starredBoards = []} = this.profile;
-    const user = Meteor.users.findOne({ _id: Meteor.userId()})
-    console.log(user);
+    console.log(starredBoards);
     return Boards.find({archived: false, _id: {$in: starredBoards}, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
@@ -512,6 +511,9 @@ if (Meteor.isServer) {
   Accounts.onCreateUser((options, user) => {
     const userCount = Users.find().count();
     user.domains = options.domains;
+    user.profile = user.profile || {};
+    user.profile.language = 'es';
+    user.profile.boardView = 'board-view-swimlanes';
     user.currentDomain = options.currentDomain;
     if (!isSandstorm && userCount === 0) {
       user.isAdmin = true;

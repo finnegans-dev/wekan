@@ -46,7 +46,7 @@ Template.userFormsLayout.helpers({
 
   isCurrentLanguage() {
     const t9nTag = i18nTagToT9n(this.tag);
-    const curLang = T9n.getLanguage() || 'en';
+    const curLang = T9n.getLanguage() || 'es';
     return t9nTag === curLang;
   },
 
@@ -57,7 +57,7 @@ Template.userFormsLayout.helpers({
   },
 
   casSignInLabel() {
-    return TAPi18n.__('casSignIn', {}, T9n.getLanguage() || 'en');
+    return TAPi18n.__('casSignIn', {}, T9n.getLanguage() || 'es');
   },
 });
 

@@ -12,12 +12,10 @@ Meteor.publish('boards', function() {
   // format -- since the field is in the `profile` a user can modify it.
   const {starredBoards = []} = Users.findOne(this.userId).profile;
   check(starredBoards, [String]);
-  console.log(Meteor.user().currentDomain);
   return Boards.find({
     archived: false, domains : { '$in' : [Users.findOne(this.userId).currentDomain] },
     $or: [
       {
-        _id: { $in: starredBoards },
         permission: 'public',
       },
       { members: { $elemMatch: { userId: this.userId, isActive: true }}},
@@ -61,7 +59,6 @@ Meteor.publish('archivedBoards', function() {
 Meteor.publishRelations('board', function(boardId) {
   check(boardId, String);
   const thisUserId = this.userId;
-  console.log(Meteor.user().currentDomain);
   this.cursor(Boards.find({
     _id: boardId,
     archived: false, domains : { '$in' : [Meteor.user().currentDomain] },
