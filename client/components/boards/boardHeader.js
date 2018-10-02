@@ -172,9 +172,10 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
+    console.log('boards');
     return Boards.find({
       archived: false,
-      'members.userId': Meteor.userId(),
+      'members.userId': Meteor.userId(), domains : { '$in' : [Meteor.user().currentDomain] }
     }, {
       sort: ['title'],
     });

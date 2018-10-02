@@ -308,6 +308,7 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
+    console.log('boards');
     const boards = Boards.find({
       archived: false,
       'members.userId': Meteor.userId(),
@@ -450,6 +451,7 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
+    console.log('boards');
     const boards = Boards.find({
       archived: false,
       'members.userId': Meteor.userId(),

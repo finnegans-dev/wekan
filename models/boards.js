@@ -203,6 +203,10 @@ Boards.attachSchema(new SimpleSchema({
     defaultValue: false,
     optional: true,
   },
+  domains : {
+    type : [String],
+    optional : true
+  }
 }));
 
 
@@ -642,6 +646,18 @@ if (Meteor.isServer) {
 
   // Genesis: the first activity of the newly created board
   Boards.after.insert((userId, doc) => {
+    console.log('AFTER INSERT')
+    const user = Meteor.user();
+    if(doc.domains) {
+      if (doc.domains.indexOf(user.currentDomain) == -1) {
+        doc.domains.push(user.currentDomain)
+      }
+    } else {
+      doc.domains = [user.currentDomain];
+    }
+
+    Boards.update(doc._id, {$set : { domains : doc.domains}});
+
     Activities.insert({
       userId,
       type: 'board',
@@ -739,7 +755,6 @@ if (Meteor.isServer) {
     if (!_.contains(fieldNames, 'members')) {
       return;
     }
-
     // Say hello to the new member
     if (modifier.$push && modifier.$push.members) {
       const memberId = modifier.$push.members.userId;
@@ -776,10 +791,10 @@ if (Meteor.isServer) {
       // A normal user should be able to see their own boards,
       // admins can access boards of any user
       Authentication.checkAdminOrCondition(req.userId, req.userId === paramUserId);
-
+      console.log('boards');
       const data = Boards.find({
         archived: false,
-        'members.userId': paramUserId,
+        'members.userId': paramUserId, domains : { '$in' : [Meteor.user().currentDomain] }
       }, {
         sort: ['title'],
       }).map(function(board) {
@@ -804,7 +819,7 @@ if (Meteor.isServer) {
       Authentication.checkUserId(req.userId);
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: Boards.find({ permission: 'public' }).map(function (doc) {
+        data: Boards.find({ permission: 'public', domains : { '$in' : [Meteor.user().currentDomain] } }).map(function (doc) {
           return {
             _id: doc._id,
             title: doc.title,

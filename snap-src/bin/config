@@ -29,7 +29,7 @@ DEFAULT_MAIL_FROM="wekan-admin@example.com"
 KEY_MAIL_FROM="mail-from"
 
 DESCRIPTION_ROOT_URL="wekan's root url, eg http://127.0.0.1, https://example.com, https://wekan.example.com, http://example.com/wekan"
-DEFAULT_ROOT_URL="http://127.0.0.1"
+DEFAULT_ROOT_URL="http://192.168.202.232"
 KEY_ROOT_URL="root-url"
 
 DESCRIPTION_PORT="port wekan is exposed at"

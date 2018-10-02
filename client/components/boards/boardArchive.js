@@ -10,7 +10,8 @@ BlazeComponent.extendComponent({
   },
 
   archivedBoards() {
-    return Boards.find({ archived: true }, {
+    console.log('archivedBoards');
+    return Boards.find({ archived: true, domains : { '$in' : [Meteor.user().currentDomain] } }, {
       sort: ['title'],
     });
   },

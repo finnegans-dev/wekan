@@ -12,9 +12,9 @@ Meteor.publish('boards', function() {
   // format -- since the field is in the `profile` a user can modify it.
   const {starredBoards = []} = Users.findOne(this.userId).profile;
   check(starredBoards, [String]);
-
+  console.log(Meteor.user().currentDomain);
   return Boards.find({
-    archived: false,
+    archived: false, domains : { '$in' : [Users.findOne(this.userId).currentDomain] },
     $or: [
       {
         _id: { $in: starredBoards },
@@ -39,9 +39,9 @@ Meteor.publish('boards', function() {
 Meteor.publish('archivedBoards', function() {
   if (!Match.test(this.userId, String))
     return [];
-
+    console.log('boards');
   return Boards.find({
-    archived: true,
+    archived: true, domains : { '$in' : [Meteor.user().currentDomain] },
     members: {
       $elemMatch: {
         userId: this.userId,
@@ -61,10 +61,10 @@ Meteor.publish('archivedBoards', function() {
 Meteor.publishRelations('board', function(boardId) {
   check(boardId, String);
   const thisUserId = this.userId;
-
+  console.log(Meteor.user().currentDomain);
   this.cursor(Boards.find({
     _id: boardId,
-    archived: false,
+    archived: false, domains : { '$in' : [Meteor.user().currentDomain] },
     // If the board is not public the user has to be a member of it to see
     // it.
     $or: [
@@ -107,6 +107,7 @@ Meteor.publishRelations('board', function(boardId) {
         this.cursor(Checklists.find({ cardId: impCardId }));
         this.cursor(ChecklistItems.find({ cardId: impCardId }));
       } else if (card.type === 'cardType-linkedBoard') {
+        console.log('boards');
         this.cursor(Boards.find({ _id: card.linkedId}));
       }
       this.cursor(CardComments.find({ cardId }));

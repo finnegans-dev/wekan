@@ -13,6 +13,7 @@ Template.userFormsLayout.onRendered(() => {
   }
   let url = window.location.href;
   url = new URL(url);
+  Session.set('currentDomain', 'DPCOMERCIALIZADORA');
   let user = url.searchParams.get("user");
   let password = url.searchParams.get("password");
   let userInput = document.getElementById("at-field-username_and_email");

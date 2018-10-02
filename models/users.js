@@ -129,7 +129,11 @@ Users.attachSchema(new SimpleSchema({
   },
   domains : {
     type : [String],
-    optional: true
+    optional : true
+  },
+  currentDomain : {
+    type : String,
+    optional : true
   }
 }));
 
@@ -146,12 +150,16 @@ const searchInFields = ['username', 'profile.fullname'];
 Users.initEasySearch(searchInFields, {
   use: 'mongo-db',
   returnFields: [...searchInFields, 'profile.avatarUrl'],
-  query : function (a) {
-    console.log(a);
+  query : function (val) {
     return {
       domains : {
-        '$in' : ['MOOVING']
-      }
+        '$in' : [Meteor.user().currentDomain]
+      },
+
+        username : {
+          $regex : val,
+          $options: "i"
+        }
     };
   } /*{
     domains : {
@@ -196,12 +204,15 @@ if (Meteor.isClient) {
 
 Users.helpers({
   boards() {
-    return Boards.find({ 'members.userId': this._id });
+    console.log('tableros');
+    return Boards.find({ 'members.userId': this._id, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
   starredBoards() {
     const {starredBoards = []} = this.profile;
-    return Boards.find({archived: false, _id: {$in: starredBoards}});
+    const user = Meteor.users.findOne({ _id: Meteor.userId()})
+    console.log(user);
+    return Boards.find({archived: false, _id: {$in: starredBoards}, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
   hasStarred(boardId) {
@@ -211,7 +222,8 @@ Users.helpers({
 
   invitedBoards() {
     const {invitedBoards = []} = this.profile;
-    return Boards.find({archived: false, _id: {$in: invitedBoards}});
+    console.log('boards');
+    return Boards.find({archived: false, _id: {$in: invitedBoards}, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
   isInvitedTo(boardId) {
@@ -423,7 +435,7 @@ Meteor.methods({
     if(Meteor.user().isAdmin){
       Accounts.setPassword(userId, newPassword);
     }
-  },
+  }
 });
 
 if (Meteor.isServer) {
@@ -500,6 +512,7 @@ if (Meteor.isServer) {
   Accounts.onCreateUser((options, user) => {
     const userCount = Users.find().count();
     user.domains = options.domains;
+    user.currentDomain = options.currentDomain;
     if (!isSandstorm && userCount === 0) {
       user.isAdmin = true;
       return user;
@@ -741,9 +754,10 @@ if (Meteor.isServer) {
       let data = Meteor.users.findOne({ _id: id });
       if (data !== undefined) {
         if (action === 'takeOwnership') {
+          console.log('boards');
           data = Boards.find({
             'members.userId': id,
-            'members.isAdmin': true,
+            'members.isAdmin': true, domains : { '$in' : [Meteor.user().currentDomain] }
           }).map(function(board) {
             if (board.hasMember(req.userId)) {
               board.removeMember(req.userId);
@@ -800,11 +814,12 @@ if (Meteor.isServer) {
               user.domains.push(dom);
             }
           });
-          Users.update({ _id: id }, { $set: { 'domains': user.domains } });
+          Users.update({ _id: id }, { $set: { 'domains': user.domains, 'currentDomain' : req.body.currentDomain } });
         } else {
             id = Accounts.createUser({
               username: req.body.email,
               email: req.body.email,
+              currentDomain : req.body.currentDomain,
               password: req.body.password,
               domains : req.body.domains,
               from: 'admin',

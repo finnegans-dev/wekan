@@ -403,9 +403,10 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
+    console.log('boards');
     const boards = Boards.find({
       archived: false,
-      'members.userId': Meteor.userId(),
+      'members.userId': Meteor.userId(), domains : { '$in' : [Meteor.user().currentDomain] }
     }, {
       sort: ['title'],
     });
@@ -576,9 +577,10 @@ BlazeComponent.extendComponent({
   },
 
   boards() {
+    console.log('boards');
     const boards = Boards.find({
       archived: false,
-      'members.userId': Meteor.userId(),
+      'members.userId': Meteor.userId(), domains : { '$in' : [Meteor.user().currentDomain] }
     }, {
       sort: ['title'],
     });
