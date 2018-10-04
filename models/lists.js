@@ -80,6 +80,20 @@ Lists.helpers({
       listId: this._id,
       archived: false,
     };
+    const board = Boards.findOne({_id : Session.get('currentBoard')});
+    const user = board.members.find(mb => mb.userId === Meteor.userId());
+    if(!user.isAdmin) {
+      selector.$or = [
+        {
+          members : {
+            $in : [Meteor.userId()]
+          }
+        },
+        {
+          userId : Meteor.userId()
+        }
+      ]
+    }
     if (swimlaneId)
       selector.swimlaneId = swimlaneId;
     return Cards.find(Filter.mongoSelector(selector),
