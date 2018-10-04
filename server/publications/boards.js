@@ -100,7 +100,7 @@ Meteor.publishRelations('board', function(boardId) {
     };
     const currentBoard = Boards.findOne({_id : boardId});
     const user = currentBoard.members.find(mb => mb.userId === Meteor.userId());
-    if(!user.isAdmin) {
+    if(user && !user.isAdmin) {
       query.$or = [
         {
           members : {
