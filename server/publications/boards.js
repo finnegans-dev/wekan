@@ -95,7 +95,25 @@ Meteor.publishRelations('board', function(boardId) {
     //
     // And in the meantime our code below works pretty well -- it's not even a
     // hack!
-    this.cursor(Cards.find({ boardId }), function(cardId, card) {
+    const query = {
+      boardId : boardId
+    };
+    const currentBoard = Boards.findOne({_id : boardId});
+    const user = currentBoard.members.find(mb => mb.userId === Meteor.userId());
+    if(!user.isAdmin) {
+      query.$or = [
+        {
+          members : {
+            $in : [Meteor.userId()]
+          }
+        },
+        {
+          userId : Meteor.userId()
+        }
+      ]
+    }
+    const cards = Cards.find(query)
+    this.cursor(cards, function(cardId, card) {
       if (card.type === 'cardType-linkedCard') {
         const impCardId = card.linkedId;
         this.cursor(Cards.find({ _id: impCardId }));
