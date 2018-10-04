@@ -1,4 +1,7 @@
 template(name="boardHeaderBar")
+  .board-header-btns.left
+    a(href="{{pathFor 'home'}}")
+      span.fa.fa-arrow-left(style="width: 20px;text-align: center;line-height: 28px;")
   h1.header-board-menu
     with currentBoard
       a(class="{{#if currentUser.isBoardAdmin}}js-edit-board-title{{else}}is-disabled{{/if}}")
