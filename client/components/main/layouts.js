@@ -13,15 +13,13 @@ Template.userFormsLayout.onRendered(() => {
   }
   let url = window.location.href;
   url = new URL(url);
-  Session.set('currentDomain', 'DPCOMERCIALIZADORA');
-  let user = url.searchParams.get("user");
-  let password = url.searchParams.get("password");
-  let userInput = document.getElementById("at-field-username_and_email");
-  let passwordInput = document.getElementById("at-field-password");
-  userInput.value = user;
-  passwordInput.value = password;
-  document.getElementById('at-btn').click();
-  //EscapeActions.executeAll();
+  let id = url.searchParams.get("id");
+  let token = url.searchParams.get("token");
+  let expires = url.searchParams.get("expires");
+  localStorage.setItem('Meteor.loginToken', token);
+  localStorage.setItem('Meteor.userId', id);
+  localStorage.setItem('Meteor.loginTokenExpires', expires);
+  setTimeout(() => {document.location.href="/";}, 500);
 });
 
 Template.userFormsLayout.helpers({
