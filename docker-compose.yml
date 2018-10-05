@@ -2,22 +2,9 @@ version: '2'
 
 services:
 
-  wekandb:
-    image: mongo:3.2.21
-    container_name: wekan-db
-    restart: always
-    command: mongod --smallfiles --oplogSize 128
-    networks:
-      - wekan-tier
-    expose:
-      - 27017
-    volumes:
-      - wekan-db:/data/db
-      - wekan-db-dump:/dump
-
   wekan:
     image: quay.io/wekan/wekan
-    container_name: wekan-app
+    container_name: wekan-finneg-app
     restart: always
     networks:
       - wekan-tier
@@ -36,13 +23,13 @@ services:
       # Docker outsideport:insideport
       - 80:8080
     environment:
-      - MONGO_URL=mongodb://wekandb:27017/wekan
+      - MONGO_URL=mongodb://wekanfinneg:asdasd123@ds223763.mlab.com:23763/testwekan
       - ROOT_URL=http://localhost
       # Wekan Export Board works when WITH_API='true'.
       # If you disable Wekan API with 'false', Export Board does not work.
       - WITH_API=true
       # Optional: Integration with Matomo https://matomo.org that is installed to your server
-      # The address of the server where Matomo is hosted. 
+      # The address of the server where Matomo is hosted.
       # example: - MATOMO_ADDRESS=https://example.com/matomo
       - MATOMO_ADDRESS=''
       # The value of the site ID given in Matomo server for Wekan
@@ -82,8 +69,6 @@ services:
       # OAuth2 Token Endpoint. Example: /oauth/token
       # example: OAUTH2_TOKEN_ENDPOINT=/oauth/token
       - OAUTH2_TOKEN_ENDPOINT=''
-    depends_on:
-      - wekandb
 
 volumes:
   wekan-db:
