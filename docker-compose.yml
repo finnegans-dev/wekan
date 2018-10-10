@@ -3,7 +3,7 @@ version: '2'
 services:
 
   wekan:
-    image: 798873886583.dkr.ecr.us-east-1.amazonaws.com/eco/wekan:eco-wekan-1539024299
+    image: quay.io/wekan/wekan
     container_name: eco-wekan-app
     restart: always
     networks:
