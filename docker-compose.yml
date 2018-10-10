@@ -3,8 +3,8 @@ version: '2'
 services:
 
   wekan:
-    image: quay.io/wekan/wekan
-    container_name: wekan-finneg-app
+    image: 798873886583.dkr.ecr.us-east-1.amazonaws.com/eco/wekan:eco-wekan-1539024299
+    container_name: eco-wekan-app
     restart: always
     networks:
       - wekan-tier
@@ -23,8 +23,8 @@ services:
       # Docker outsideport:insideport
       - 80:8080
     environment:
-      - MONGO_URL=mongodb://wekanfinneg:asdasd123@ds223763.mlab.com:23763/testwekan
-      - ROOT_URL=http://localhost
+      - MONGO_URL=mongodb://wekanfinneg:asdasd123@ds223763.mlab.com:23763/testwekando
+      - ROOT_URL=http://test.eco.finneg.com
       # Wekan Export Board works when WITH_API='true'.
       # If you disable Wekan API with 'false', Export Board does not work.
       - WITH_API=true
