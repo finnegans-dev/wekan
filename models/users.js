@@ -695,6 +695,15 @@ if (Meteor.isServer) {
       return next();
   });
 
+  JsonRoutes.add('GET', '/api/ping', function(req, res) {
+    JsonRoutes.sendResult(res, {
+      code : 200,
+      data : {
+        status : 'ok'
+      }
+    })
+  });
+
   JsonRoutes.add('GET', '/api/user', function(req, res) {
     try {
       Authentication.checkLoggedIn(req.userId);
