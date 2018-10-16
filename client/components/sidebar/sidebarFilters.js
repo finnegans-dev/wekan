@@ -11,6 +11,17 @@ BlazeComponent.extendComponent({
         Filter.members.toggle(this.currentData()._id);
         Filter.resetExceptions();
       },
+      'click .js-toggle-assignedTo-filter'(evt) {
+        evt.preventDefault();
+        Filter.assignedTo.toggle(this.currentData()._id);
+        Filter.resetExceptions();
+      },
+      'click .js-toggle-assigned-filter'(evt) {
+        evt.preventDefault();
+        //Filter.members.toggle(this.currentData()._id);
+        Filter.userId.toggle(Meteor.userId());
+        Filter.resetExceptions();
+      },
       'click .js-toggle-custom-fields-filter'(evt) {
         evt.preventDefault();
         Filter.customFields.toggle(this.currentData()._id);

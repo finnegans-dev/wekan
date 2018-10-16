@@ -41,6 +41,32 @@ template(name="filterSidebar")
             if Filter.members.isSelected _id
               i.fa.fa-check
 
+  hr
+  ul.sidebar-list
+    li(class="{{#if Filter.userId.isSelected undefined}}active{{/if}}")
+          a.name.js-toggle-assigned-filter
+            span.sidebar-list-item-description
+              | {{_ 'filter-assigned-me'}}
+            if Filter.userId.isSelected currentUser._id
+              i.fa.fa-check
+  hr
+  ul.sidebar-list
+    li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
+          a.name.js-toggle-assignedTo-filter
+            span.sidebar-list-item-description
+              | {{_ 'filter-not-assigned'}}
+            if Filter.assignedTo.isSelected undefined
+              i.fa.fa-check
+    each currentBoard.activeMembers
+      with getUser userId
+        li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
+          a.name.js-toggle-assignedTo-filter
+            +userAvatar(userId=this._id)
+            span.sidebar-list-item-description
+              = profile.fullname
+              | (<span class="username">{{ username }}</span>)
+            if Filter.assignedTo.isSelected _id
+              i.fa.fa-check
 
 template(name="multiselectionSidebar")
   ul.sidebar-list
