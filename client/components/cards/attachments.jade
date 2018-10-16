@@ -22,7 +22,7 @@ template(name="attachmentsGalery")
   .attachments-galery
     each attachments
       .attachment-item
-        a.attachment-thumbnail.swipebox(href="{{url}}" title="{{name}}")
+        a.attachment-thumbnail.swipebox(href="{{url}}" title="{{name}}" target="_blank")
           if isUploaded
             if isImage
               img.attachment-thumbnail-img(src="{{url}}")
