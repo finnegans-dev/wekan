@@ -145,7 +145,8 @@ template(name="cardDetails")
         if getAssignedTo
           .viewer
             p {{ getAssignedTo }}
-              i.fa.fa-times.js-remove-assigned(style="padding-left: 10px;cursor:pointer;")
+              if canModifyCard
+                i.fa.fa-times.js-remove-assigned(style="padding-left: 10px;cursor:pointer;")
         else
           a.member.add-member.card-details-item-add-button.js-add-assigned(title="{{_ 'card-assigned-title'}}")
               i.fa.fa-plus
