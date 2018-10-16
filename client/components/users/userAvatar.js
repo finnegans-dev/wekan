@@ -154,6 +154,29 @@ Template.cardMembersPopup.events({
   },
 });
 
+Template.cardAssignedPopup.helpers({
+  isAssigned() {
+    const card = Template.parentData();
+
+    return card.assignedTo === this.userId;
+  },
+
+  user() {
+    return Users.findOne(this.userId);
+  },
+});
+
+Template.cardAssignedPopup.events({
+  'click .js-select-member'(evt) {
+    const card = Cards.findOne(Session.get('currentCard'));
+    const memberId = this.userId;
+    //card.toggleMember(memberId);
+    card.setAssignedTo(memberId);
+    Popup.close();
+    evt.preventDefault();
+  },
+});
+
 Template.cardMemberPopup.helpers({
   user() {
     return Users.findOne(this.userId);

@@ -79,6 +79,11 @@ Cards.attachSchema(new SimpleSchema({
       return new Date();
     },
   },
+  permission: {
+    type : String,
+    defaultValue : 'public',
+    optional : true
+  },
   description: {
     type: String,
     optional: true,
@@ -93,6 +98,10 @@ Cards.attachSchema(new SimpleSchema({
     type: String,
     optional: true,
     defaultValue: '',
+  },
+  assignedTo: {
+    type : String,
+    optional : true
   },
   labelIds: {
     type: [String],
@@ -270,6 +279,14 @@ Cards.helpers({
 
   hasChecklist() {
     return this.checklistItemCount() !== 0;
+  },
+
+  isPublic() {
+    return this.permission == 'public' || !this.permission
+  },
+
+  isPrivate() {
+    return !this.isPublic();
   },
 
   subtasks() {
@@ -492,6 +509,21 @@ Cards.helpers({
     }
   },
 
+  getAssignedTo() {
+    let user = Users.findOne({_id : this.assignedTo});
+    return user ? user.username : null;
+  },
+
+  removeAssignedTo() {
+    return Cards.update(this._id, {$set : {
+      'assignedTo' : null
+    }})
+  },
+
+  isNotAssigned() {
+    return !this.getAssignedTo();
+  },
+
   assignMember(memberId) {
     if (this.isLinkedCard()) {
       return Cards.update(
@@ -532,6 +564,18 @@ Cards.helpers({
     } else {
       return this.assignMember(memberId);
     }
+  },
+
+  setAssignedTo(assignedTo) {
+    return Cards.update(
+      {_id: this._id},
+      {$set: {assignedTo}}
+    );
+  },
+
+  isAssigned(memberId) {
+    let res = Cards.findOne({_id : this._id});
+    console.log(res);
   },
 
   getReceived() {
@@ -792,12 +836,13 @@ Cards.helpers({
   },
 
   getRequestedBy() {
-    if (this.isLinkedCard()) {
+    return Users.findOne({_id : this.userId}).username;
+    /*if (this.isLinkedCard()) {
       const card = Cards.findOne({ _id: this.linkedId });
       return card.requestedBy;
     } else  {
-      return this.requestedBy;
-    }
+      return this.userId;
+    }*/
   },
 
   setAssignedBy(assignedBy) {

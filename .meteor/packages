@@ -57,7 +57,6 @@ http@1.4.0
 # UI components
 blaze
 reactive-var@1.0.11
-fortawesome:fontawesome
 mousetrap:mousetrap
 mquandalle:jquery-textcomplete
 mquandalle:jquery-ui-drag-drop-sort
@@ -89,3 +88,4 @@ mquandalle:moment
 msavin:usercache
 simple:rest
 meteorhacks:fast-render@2.12.0
+fortawesome:fontawesome

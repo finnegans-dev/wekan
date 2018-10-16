@@ -6,6 +6,11 @@ template(name="cardDetails")
       else
         a.fa.fa-times-thin.close-card-details.js-close-card-details
         if currentUser.isBoardMember
+          if isPublic
+            a.fa.fa-globe.card-details-menu.card-permission
+          else
+            a.fa.fa-lock.card-details-menu.card-permission
+
           a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
         h2.card-details-title.js-card-title(
           class="{{#if canModifyCard}}js-open-inlined-form is-editable{{/if}}")
@@ -65,13 +70,16 @@ template(name="cardDetails")
 
     .card-details-items
       .card-details-item.card-details-item-members
-        h3.card-details-item-title {{_ 'members'}}
-        each getMembers
-          +userAvatar(userId=this cardId=../_id)
-          | {{! XXX Hack to hide syntaxic coloration /// }}
-        if canModifyCard
-          a.member.add-member.card-details-item-add-button.js-add-members(title="{{_ 'card-members-title'}}")
-            i.fa.fa-plus
+        if isPublic
+          h3.card-details-item-title Público
+        else
+          h3.card-details-item-title {{_ 'members'}}
+          each getMembers
+            +userAvatar(userId=this cardId=../_id)
+            | {{! XXX Hack to hide syntaxic coloration /// }}
+          if canModifyCard
+            a.member.add-member.card-details-item-add-button.js-add-members(title="{{_ 'card-members-title'}}")
+              i.fa.fa-plus
 
       .card-details-item.card-details-item-labels
         h3.card-details-item-title {{_ 'labels'}}
@@ -128,40 +136,28 @@ template(name="cardDetails")
     .card-details-items
       .card-details-item.card-details-item-name
         h3.card-details-item-title {{_ 'requested-by'}}
-        if canModifyCard
-          +inlinedForm(classNames="js-card-details-requester")
-            +editCardRequesterForm
-          else
-            a.js-open-inlined-form
-              if getRequestedBy
-                +viewer
-                  = getRequestedBy
-              else
-                | {{_ 'add'}}
-        else if getRequestedBy
+        if getRequestedBy
           +viewer
             = getRequestedBy
 
       .card-details-item.card-details-item-name
-        h3.card-details-item-title {{_ 'assigned-by'}}
-        if canModifyCard
-          +inlinedForm(classNames="js-card-details-assigner")
-            +editCardAssignerForm
-          else
-            a.js-open-inlined-form
-              if getAssignedBy
-                +viewer
-                  = getAssignedBy
-              else
-                | {{_ 'add'}}
-        else if getRequestedBy
-          +viewer
-            = getAssignedBy
+        h3.card-details-item-title {{_ 'assigned-to'}}
+        if getAssignedTo
+          .viewer
+            p {{ getAssignedTo }}
+              i.fa.fa-times.js-remove-assigned(style="padding-left: 10px;cursor:pointer;")
+        else
+          a.member.add-member.card-details-item-add-button.js-add-assigned(title="{{_ 'card-assigned-title'}}")
+              i.fa.fa-plus
+        //each getMembers
+            +userAvatar(userId=this cardId=../_id)
+            | {{! XXX Hack to hide syntaxic coloration /// }}
+
 
     hr
     +checklists(cardId = _id)
 
-    if currentBoard.allowsSubtasks
+    //if currentBoard.allowsSubtasks
       hr
       +subtasks(cardId = _id)
 
@@ -290,6 +286,18 @@ template(name="cardMembersPopup")
             = user.profile.fullname
             | (<span class="username">{{ user.username }}</span>)
           if isCardMember
+            i.fa.fa-check
+
+template(name="cardAssignedPopup")
+  ul.pop-over-list.js-card-member-list
+    each board.activeMembers
+      li.item(class="{{#if isAssigned}}active{{/if}}")
+        a.name.js-select-member(href="#")
+          +userAvatar(userId=user._id)
+          span.full-name
+            = user.profile.fullname
+            | (<span class="username">{{ user.username }}</span>)
+          if isAssigned
             i.fa.fa-check
 
 template(name="cardMorePopup")

@@ -210,6 +210,15 @@ BlazeComponent.extendComponent({
       'click .js-close-card-details' () {
         Utils.goBoardId(this.data().boardId);
       },
+      'click .card-permission' () {
+        const card = this.currentData();
+        card.permission =  card.isPublic() ? 'private' : 'public';
+        Cards.update(card._id, {
+          $set: {
+            permission : card.permission
+          }
+        });
+      },
       'click .js-open-card-details-menu': Popup.open('cardDetailsActions'),
       'submit .js-card-description' (evt) {
         evt.preventDefault();
@@ -239,6 +248,11 @@ BlazeComponent.extendComponent({
       },
       'click .js-member': Popup.open('cardMember'),
       'click .js-add-members': Popup.open('cardMembers'),
+      'click .js-add-assigned' : Popup.open('cardAssigned'),
+      'click .js-remove-assigned' () {
+        let card = this.currentData();
+        card.removeAssignedTo();
+      },
       'click .js-add-labels': Popup.open('cardLabels'),
       'click .js-received-date': Popup.open('editCardReceivedDate'),
       'click .js-start-date': Popup.open('editCardStartDate'),
