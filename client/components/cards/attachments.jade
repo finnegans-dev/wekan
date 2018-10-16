@@ -48,6 +48,6 @@ template(name="attachmentsGalery")
                 i.fa.fa-close
                 | {{_ 'delete'}}
 
-    if currentUser.isBoardMember
+    if canModifyCardAssigned
       li.attachment-item.add-attachment
         a.js-add-attachment {{_ 'add-attachment' }}

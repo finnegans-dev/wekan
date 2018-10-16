@@ -64,8 +64,14 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
   },
+
+  isCreator() {
+    let cardID = this.currentData().checklist;
+    const card = Cards.findOne({_id : cardID.cardId});
+    return card.userId === Meteor.userId();
+  }
 }).register('checklistDetail');
 
 BlazeComponent.extendComponent({
@@ -113,7 +119,13 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+  },
+
+  isCreator() {
+    let cardID = this.currentData();
+    const card = Cards.findOne({_id : cardID.cardId});
+    return card.userId === Meteor.userId();
   },
 
   deleteChecklist() {
@@ -211,8 +223,14 @@ Template.checklistDeleteDialog.onDestroyed(() => {
 
 Template.checklistItemDetail.helpers({
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();// && this.isCreator();
   },
+
+  isCreator() {
+    let cardID = this.currentData();
+    const card = Cards.findOne({_id : cardID.cardId});
+    return card.userId === Meteor.userId();
+  }
 });
 
 BlazeComponent.extendComponent({

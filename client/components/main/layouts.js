@@ -16,10 +16,10 @@ Template.userFormsLayout.onRendered(() => {
   let id = url.searchParams.get("id");
   let token = url.searchParams.get("token");
   let expires = url.searchParams.get("expires");
-  //if(token) localStorage.setItem('Meteor.loginToken', token);
-  //if(id) localStorage.setItem('Meteor.userId', id);
-  //if(expires) localStorage.setItem('Meteor.loginTokenExpires', expires);
-  //if(token || id || expires) setTimeout(() => {document.location.href="/wekan/";}, 500);
+  if(token) localStorage.setItem('Meteor.loginToken', token);
+  if(id) localStorage.setItem('Meteor.userId', id);
+  if(expires) localStorage.setItem('Meteor.loginTokenExpires', expires);
+  if(token || id || expires) setTimeout(() => {document.location.href="/";}, 500);
 });
 
 Template.userFormsLayout.helpers({

@@ -43,7 +43,21 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+  },
+
+  canModifyCardAssigned() {
+    return this.canModifyCard() || this.isAssigned(Meteor.user()._id);
+  },
+
+  isAssigned(userID) {
+    const card = this.currentData();
+    return card.isAssigned(userID);
+  },
+
+  isCreator() {
+    const card = this.currentData();
+    return card.userId === Meteor.user()._id;
   },
 
   scrollParentContainer() {
@@ -315,8 +329,13 @@ Template.cardDetailsActionsPopup.helpers({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
   },
+
+  isCreator() {
+    const card = this.currentData();
+    return card.userId === Meteor.userId();
+  }
 });
 
 Template.cardDetailsActionsPopup.events({

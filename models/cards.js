@@ -103,6 +103,10 @@ Cards.attachSchema(new SimpleSchema({
     type : String,
     optional : true
   },
+  status : {
+    type : String,
+    optional: true
+  },
   labelIds: {
     type: [String],
     optional: true,
@@ -573,9 +577,8 @@ Cards.helpers({
     );
   },
 
-  isAssigned(memberId) {
-    let res = Cards.findOne({_id : this._id});
-    console.log(res);
+  isAssigned(userID) {
+    return userID === this.assignedTo;
   },
 
   getReceived() {

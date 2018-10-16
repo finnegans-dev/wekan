@@ -5,7 +5,7 @@ template(name="cardDetails")
         +editCardTitleForm
       else
         a.fa.fa-times-thin.close-card-details.js-close-card-details
-        if currentUser.isBoardMember
+        if canModifyCard
           if isPublic
             a.fa.fa-globe.card-details-menu.card-permission
           else
@@ -77,7 +77,7 @@ template(name="cardDetails")
           each getMembers
             +userAvatar(userId=this cardId=../_id)
             | {{! XXX Hack to hide syntaxic coloration /// }}
-          if canModifyCard
+          if canModifyCardAssigned
             a.member.add-member.card-details-item-add-button.js-add-members(title="{{_ 'card-members-title'}}")
               i.fa.fa-plus
 
@@ -147,7 +147,7 @@ template(name="cardDetails")
             p {{ getAssignedTo }}
               if canModifyCard
                 i.fa.fa-times.js-remove-assigned(style="padding-left: 10px;cursor:pointer;")
-        else
+        else if canModifyCard
           a.member.add-member.card-details-item-add-button.js-add-assigned(title="{{_ 'card-assigned-title'}}")
               i.fa.fa-plus
         //each getMembers

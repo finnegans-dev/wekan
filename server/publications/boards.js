@@ -103,6 +103,13 @@ Meteor.publishRelations('board', function(boardId) {
     if(user && !user.isAdmin) {
       query.$or = [
         {
+          permission : 'public'
+        },
+        {
+          assignedTo : Meteor.userId()
+        },
+        {
+          //permission : 'private',
           members : {
             $in : [Meteor.userId()]
           }

@@ -130,3 +130,24 @@ Template.previewClipboardImagePopup.events({
     }
   },
 });
+
+Template.attachmentsGalery.helpers({
+
+});
+
+BlazeComponent.extendComponent({
+
+  canModifyCard() {
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+  },
+  canModifyCardAssigned() {
+    const card = this.currentData();
+    return this.canModifyCard() || card.isAssigned(Meteor.userId());
+  },
+
+  isCreator() {
+    const card = this.currentData();
+    return card.userId === Meteor.userId();
+  }
+
+}).register('attachmentsGalery');
