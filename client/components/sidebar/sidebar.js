@@ -211,7 +211,11 @@ Template.membersWidget.events({
 });
 
 Template.labelsWidget.events({
-  'click .js-label': Popup.open('editLabel'),
+  'click .js-label' () {
+    if(Meteor.user().isBoardAdmin()) {
+      Popup.open('editLabel')
+    }
+  },
   'click .js-add-label': Popup.open('createLabel'),
 });
 
