@@ -251,6 +251,10 @@ Cards.helpers({
     return cover && cover.url() && cover;
   },
 
+  isFinished() {
+    return this.status === 'finished';
+  },
+
   checklists() {
     if (this.isLinkedCard()) {
       return Checklists.find({cardId: this.linkedId}, {sort: { sort: 1 } });

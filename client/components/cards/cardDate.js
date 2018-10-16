@@ -352,7 +352,10 @@ class CardEndDate extends CardDate {
 
   events() {
     return super.events().concat({
-      'click .js-edit-date': Popup.open('editCardEndDate'),
+      'click .js-edit-date' () {
+        if(this.currentData().userId === Meteor.userId())
+          Popup.open('editCardEndDate')
+      },
     });
   }
 }

@@ -12,6 +12,11 @@ template(name="cardDetails")
             a.fa.fa-lock.card-details-menu.card-permission
 
           a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
+
+        if canModifyCardAssigned
+          .card-details-menu.js-card-finished
+            .check-box.materialCheckBox(class="{{#if isFinished }}is-checked{{/if}}")
+
         h2.card-details-title.js-card-title(
           class="{{#if canModifyCard}}js-open-inlined-form is-editable{{/if}}")
             +viewer

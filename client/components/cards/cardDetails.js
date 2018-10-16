@@ -60,6 +60,11 @@ BlazeComponent.extendComponent({
     return card.userId === Meteor.user()._id;
   },
 
+  isFinished() {
+    const card = this.currentData();
+    return card.isFinished();
+  },
+
   scrollParentContainer() {
     const cardPanelWidth = 510;
     const bodyBoardComponent = this.parentComponent().parentComponent();
@@ -233,6 +238,15 @@ BlazeComponent.extendComponent({
           }
         });
       },
+      'click .js-card-finished' () {
+        const card = this.currentData();
+        Cards.update(card._id, {
+          $set: {
+            status : 'finished',
+            endAt : new Date()
+          }
+        });
+      },
       'click .js-open-card-details-menu': Popup.open('cardDetailsActions'),
       'submit .js-card-description' (evt) {
         evt.preventDefault();
@@ -268,10 +282,19 @@ BlazeComponent.extendComponent({
         card.removeAssignedTo();
       },
       'click .js-add-labels': Popup.open('cardLabels'),
-      'click .js-received-date': Popup.open('editCardReceivedDate'),
-      'click .js-start-date': Popup.open('editCardStartDate'),
-      'click .js-due-date': Popup.open('editCardDueDate'),
-      'click .js-end-date': Popup.open('editCardEndDate'),
+      'click .js-received-date' () {
+        Popup.open('editCardReceivedDate')
+      },
+      'click .js-start-date' () {
+        Popup.open('editCardStartDate')
+      },
+      'click .js-due-date' () {
+        Popup.open('editCardDueDate')
+      },
+      'click .js-end-date' () {
+        if(this.canModifyCard())
+          Popup.open('editCardEndDate')
+      },
       'mouseenter .js-card-details' () {
         const parentComponent =  this.parentComponent().parentComponent();
         //on mobile view parent is Board, not BoardBody.
@@ -343,10 +366,19 @@ Template.cardDetailsActionsPopup.events({
   'click .js-labels': Popup.open('cardLabels'),
   'click .js-attachments': Popup.open('cardAttachments'),
   'click .js-custom-fields': Popup.open('cardCustomFields'),
-  'click .js-received-date': Popup.open('editCardReceivedDate'),
-  'click .js-start-date': Popup.open('editCardStartDate'),
-  'click .js-due-date': Popup.open('editCardDueDate'),
-  'click .js-end-date': Popup.open('editCardEndDate'),
+  'click .js-received-date' () {
+    Popup.open('editCardReceivedDate')
+  },
+  'click .js-start-date' () {
+    Popup.open('editCardStartDate')
+  },
+  'click .js-due-date' () {
+    Popup.open('editCardDueDate')
+  },
+  'click .js-end-date' () {
+    if(this.canModifyCard())
+      Popup.open('editCardEndDate')
+  },
   'click .js-spent-time': Popup.open('editCardSpentTime'),
   'click .js-move-card': Popup.open('moveCard'),
   'click .js-copy-card': Popup.open('copyCard'),
