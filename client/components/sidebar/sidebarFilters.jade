@@ -24,7 +24,8 @@ template(name="filterSidebar")
             i.fa.fa-check
   hr
   ul.sidebar-list
-    li(class="{{#if Filter.members.isSelected undefined}}active{{/if}}")
+    span Privado para
+    //li(class="{{#if Filter.members.isSelected undefined}}active{{/if}}")
           a.name.js-toggle-member-filter
             span.sidebar-list-item-description
               | {{_ 'filter-no-member'}}
@@ -51,6 +52,7 @@ template(name="filterSidebar")
               i.fa.fa-check
   hr
   ul.sidebar-list
+    span Asignados a
     li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
           a.name.js-toggle-assignedTo-filter
             span.sidebar-list-item-description

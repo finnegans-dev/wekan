@@ -250,7 +250,7 @@ function draggableMembersLabelsWidgets() {
       });
 
       function userIsMember() {
-        return Meteor.user() && Meteor.user().isBoardMember();
+        return Meteor.user() && Meteor.user().isBoardAdmin();
       }
 
       this.autorun(() => {

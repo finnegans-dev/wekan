@@ -80,7 +80,7 @@ Lists.helpers({
       listId: this._id,
       archived: false,
     };
-    if(Meteor.user().profile.boardStatusView && Meteor.user().profile.boardStatusView !== 'all') {
+    if(!Meteor.user().profile.boardStatusView || (Meteor.user().profile.boardStatusView && Meteor.user().profile.boardStatusView !== 'all')) {
       if(Meteor.user().profile.boardStatusView === 'finished') {
         selector.status = Meteor.user().profile.boardStatusView;
       } else {

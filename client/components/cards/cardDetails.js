@@ -238,16 +238,22 @@ BlazeComponent.extendComponent({
           }
         });
       },
-      'click .js-card-finished' () {
-        const card = this.currentData();
+      'click .js-card-finished' : Popup.afterConfirm('cardFinished', (action) => {
+        Popup.close();
+        const card = this.currentData().dataContext;
         Cards.update(card._id, {
           $set: {
             status : 'finished',
             endAt : new Date()
           }
         });
-      },
+      }),
       'click .js-open-card-details-menu': Popup.open('cardDetailsActions'),
+      'click .js-archive-card': Popup.afterConfirm('cardArchived', (action) => {
+          Popup.close();
+          const card = this.currentData().dataContext;
+          card.archive();
+      }),
       'submit .js-card-description' (evt) {
         evt.preventDefault();
         const description = this.currentComponent().getValue();

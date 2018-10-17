@@ -7,15 +7,16 @@ template(name="cardDetails")
         a.fa.fa-times-thin.close-card-details.js-close-card-details
         if canModifyCard
           if isPublic
-            a.fa.fa-globe.card-details-menu.card-permission
+            a.fa.fa-globe.card-details-menu.card-permission(title="Pública" style="color:green;")
           else
-            a.fa.fa-lock.card-details-menu.card-permission
+            a.fa.fa-lock.card-details-menu.card-permission(title="Privada" style="color:red;")
 
-          a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
+          //a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
+
+          a.fa.fa-archive.card-details-menu.js-archive-card(title="Archivar")
 
         if canModifyCardAssigned
-          .card-details-menu.js-card-finished
-            .check-box.materialCheckBox(class="{{#if isFinished }}is-checked{{/if}}")
+          a.fa.fa-check.card-details-menu.js-card-finished(title="{{#if isFinished}}Finalizada{{else}}Finalizar{{/if}}" style="{{#if isFinished}}color:green;{{/if}}")
 
         h2.card-details-title.js-card-title(
           class="{{#if canModifyCard}}js-open-inlined-form is-editable{{/if}}")
@@ -140,7 +141,7 @@ template(name="cardDetails")
 
     .card-details-items
       .card-details-item.card-details-item-name
-        h3.card-details-item-title {{_ 'requested-by'}}
+        h3.card-details-item-title {{_ 'assigned-by'}}
         if getRequestedBy
           +viewer
             = getRequestedBy
@@ -352,3 +353,12 @@ template(name="cardDeletePopup")
   unless archived
    p {{_ "card-delete-suggest-archive"}}
   button.js-confirm.negate.full(type="submit") {{_ 'delete'}}
+
+
+template(name="cardArchivedPopup")
+  p ¿Estas seguro que deseas archivar la tarjeta?
+  button.js-confirm.negate.full(type="submit") Archivar
+
+template(name="cardFinishedPopup")
+  p ¿Estas seguro que deseas finalizar la tarjeta?
+  button.js-confirm.negate.full(type="submit") Finalizar

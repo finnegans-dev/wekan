@@ -64,7 +64,7 @@ Template.viewMenuPopup.events({
 
 Template.viewMenuPopup.helpers({
   isSelected(view) {
-    return !Meteor.user().profile.boardStatusView || view == Meteor.user().profile.boardStatusView
+    return (!Meteor.user().profile.boardStatusView && view === 'pending') || view == Meteor.user().profile.boardStatusView
   },
 });
 

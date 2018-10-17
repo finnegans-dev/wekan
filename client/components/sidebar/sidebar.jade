@@ -33,7 +33,7 @@ template(name="membersWidget")
   .board-widget.board-widget-members
     h3
       i.fa.fa-user
-      | {{_ 'members'}}
+      | Miembros
     .board-widget-content
       each currentBoard.activeMembers
         +userAvatar(userId=this.userId showStatus=true)

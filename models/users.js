@@ -265,7 +265,7 @@ Users.helpers({
       }, '').toUpperCase();
 
     } else {
-      return this.username[0].toUpperCase();
+      return (this.username[0] + this.username[1]).toUpperCase();
     }
   },
 
