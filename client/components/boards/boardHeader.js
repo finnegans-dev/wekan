@@ -44,6 +44,30 @@ Template.boardMenuPopup.helpers({
   },
 });
 
+Template.viewMenuPopup.events({
+  'click .js-view-all' () {
+    const currentUser = Meteor.user();
+    currentUser.setBoardStatusView('all');
+    Popup.close();
+  },
+  'click .js-view-pending' () {
+    const currentUser = Meteor.user();
+    currentUser.setBoardStatusView('pending');
+    Popup.close();
+  },
+  'click .js-view-finished' () {
+    const currentUser = Meteor.user();
+    currentUser.setBoardStatusView('finished');
+    Popup.close();
+  },
+});
+
+Template.viewMenuPopup.helpers({
+  isSelected(view) {
+    return !Meteor.user().profile.boardStatusView || view == Meteor.user().profile.boardStatusView
+  },
+});
+
 Template.boardChangeTitlePopup.events({
   submit(evt, tpl) {
     const newTitle = tpl.$('.js-board-name').val().trim();
@@ -82,6 +106,7 @@ BlazeComponent.extendComponent({
         Meteor.user().toggleBoardStar(Session.get('currentBoard'));
       },
       'click .js-open-board-menu': Popup.open('boardMenu'),
+      'click .js-open-view-menu': Popup.open('viewMenu'),
       'click .js-change-visibility': Popup.open('boardChangeVisibility'),
       'click .js-watch-board': Popup.open('boardChangeWatch'),
       'click .js-open-archived-board'() {

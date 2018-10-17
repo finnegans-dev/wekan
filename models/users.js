@@ -106,6 +106,10 @@ Users.attachSchema(new SimpleSchema({
       'board-view-cal',
     ],
   },
+  'profile.boardStatusView': {
+    type: String,
+    optional: true
+  },
   services: {
     type: Object,
     optional: true,
@@ -385,6 +389,14 @@ Users.mutations({
       },
     };
   },
+
+  setBoardStatusView(view) {
+    return {
+      $set : {
+        'profile.boardStatusView' : view
+      }
+    }
+  }
 });
 
 Meteor.methods({

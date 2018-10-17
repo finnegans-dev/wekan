@@ -80,8 +80,33 @@ Lists.helpers({
       listId: this._id,
       archived: false,
     };
+    if(Meteor.user().profile.boardStatusView && Meteor.user().profile.boardStatusView !== 'all') {
+      if(Meteor.user().profile.boardStatusView === 'finished') {
+        selector.status = Meteor.user().profile.boardStatusView;
+      } else {
+        selector.$or = [
+          {
+            status : {
+              $type : 10
+            }
+          },
+          {
+            status : null
+          },
+          {
+            status : {
+              $exists : false
+            }
+          },
+          {
+            status : Meteor.user().profile.boardStatusView
+          }
+        ]
+      }
+    }
     if (swimlaneId)
       selector.swimlaneId = swimlaneId;
+    //console.log('por aca lists:85')
     return Cards.find(Filter.mongoSelector(selector),
       { sort: ['sort'] });
   },
