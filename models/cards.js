@@ -1110,6 +1110,73 @@ if (Meteor.isServer) {
 }
 //LISTS REST API
 if (Meteor.isServer) {
+
+
+  JsonRoutes.add('GET', '/api/report/cards/week', function(req, res) {
+    if(!req.userId) {
+      return JsonRoutes.sendResult(res, {
+        code: 403,
+        data: {
+          status : 'forbidden'
+        }
+      });
+    }
+    let curr = new Date; // get current date
+    let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+    let last = first + 6; // last day is the first day + 6
+
+    let firstday = new Date(curr.setDate(first));
+    let lastday = new Date(curr.setDate(last));
+
+    const boards = Boards.find({
+      archived: false,
+      domains : { '$in' : [Users.findOne(req.userId).currentDomain] },
+      $or: [
+        { members: { $elemMatch: { userId: req.userId, isActive: true }}},
+      ],
+    }).map(doc => {
+      return {
+        _id: doc._id,
+        title: doc.title,
+      }
+    });
+    let boardIds = [];
+    boards.forEach(b => {
+      boardIds.push(b._id);
+    })
+
+    let cards = Cards.find({
+      boardId : {
+        $in : boardIds
+      },
+      status : {
+        $not : {
+          $eq : 'finished'
+        }
+      },
+      startAt : {
+        $gte : firstday,
+        $lt : lastday
+      }
+    }).map(doc => {
+      return {
+        _id : doc._id,
+        title : doc.title,
+        boardId : doc.boardId,
+        description : doc.description,
+        boardTitle : boards.find((e) => e._id === doc.boardId).title,
+        startAt : doc.startAt,
+        listId : doc.listId,
+        listTitle : Lists.findOne({_id : doc.listId}).title
+      }
+    });
+
+    JsonRoutes.sendResult(res, {
+      code : 200,
+      data : cards
+    })
+  });
+
   JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards', function (req, res) {
     const paramBoardId = req.params.boardId;
     const paramListId = req.params.listId;

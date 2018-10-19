@@ -304,11 +304,30 @@ const CreateBoard = BlazeComponent.extendComponent({
     evt.preventDefault();
     const title = this.find('.js-new-board-title').value;
     const visibility = this.visibility.get();
+    const template = this.find('.js-new-board-template').value;
 
     this.boardId.set(Boards.insert({
       title,
       permission: visibility,
     }));
+    let p
+    if(template === 'kanban') {
+      Lists.insert({
+        title : 'PENDIENTE',
+        boardId: this.boardId.get(),
+        sort: 0,
+      });
+      Lists.insert({
+        title : 'EN CURSO',
+        boardId: this.boardId.get(),
+        sort: 1,
+      });
+      Lists.insert({
+        title : 'HECHO',
+        boardId: this.boardId.get(),
+        sort: 2,
+      });
+    }
 
     Swimlanes.insert({
       title: 'Default',

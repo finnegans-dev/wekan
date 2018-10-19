@@ -1,5 +1,5 @@
 template(name="boardHeaderBar")
-  .board-header-btns.left
+  //.board-header-btns.left
     a(href="{{pathFor 'home'}}")
       span.fa.fa-arrow-left(style="width: 20px;text-align: center;line-height: 28px;")
   h1.header-board-menu
@@ -277,9 +277,9 @@ template(name="createBoard")
     label
       | {{_ 'title'}}
       input.js-new-board-title(type="text" placeholder="{{_ 'bucket-example'}}" autofocus required)
-    if visibilityMenuIsOpen.get
+    //if visibilityMenuIsOpen.get
       +boardVisibilityList
-    else
+    //else
       p.quiet
         if $eq visibility.get 'public'
           span.fa.fa-globe.colorful
@@ -290,6 +290,12 @@ template(name="createBoard")
           = " "
           | {{{_ 'board-private-info'}}}
         a.js-change-visibility {{_ 'change'}}.
+    label
+      | Plantilla
+      select.js-new-board-template
+        option(value="kanban") Kanban
+        option Ninguna
+
     input.primary.wide(type="submit" value="{{_ 'create'}}")
     span.quiet
       | {{_ 'or'}}
