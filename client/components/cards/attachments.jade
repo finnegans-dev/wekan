@@ -36,7 +36,7 @@ template(name="attachmentsGalery")
             a.js-download(href="{{url download=true}}")
               i.fa.fa-download
               | {{_ 'download'}}
-            if currentUser.isBoardMember
+            if canModifyCardAssigned
               if isImage
                 a(class="{{#if $eq ../coverId _id}}js-remove-cover{{else}}js-add-cover{{/if}}")
                   i.fa.fa-thumb-tack

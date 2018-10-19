@@ -14,7 +14,8 @@ BlazeComponent.extendComponent({
           Utils.goCardId(this.data().linkedId);
         else if (this.data().isLinkedBoard())
           Utils.goBoardId(this.data().linkedId);
-      },
+      }
     }];
   },
+
 }).register('minicard');
