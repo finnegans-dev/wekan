@@ -16,3 +16,4 @@ package-lock.json
 **/*.snap
 snap/.snapcraft/
 .idea
+updateAWSWekan.sh
