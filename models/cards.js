@@ -1138,6 +1138,7 @@ if (Meteor.isServer) {
       return {
         _id: doc._id,
         title: doc.title,
+        labels : doc.labels
       }
     });
     let boardIds = [];
@@ -1145,7 +1146,7 @@ if (Meteor.isServer) {
       boardIds.push(b._id);
     })
 
-    let cards = Cards.find({
+    let query = {
       boardId : {
         $in : boardIds
       },
@@ -1153,21 +1154,60 @@ if (Meteor.isServer) {
         $not : {
           $eq : 'finished'
         }
-      },
-      startAt : {
-        $gte : firstday,
-        $lt : lastday
       }
-    }).map(doc => {
+    };
+
+    if(req.query.assignedBy) {
+      let user = Users.findOne({username : req.query.assignedBy});
+      if(user) {
+        query.userId = user._id;
+      }
+    }
+    let parseDate = (date) => {
+      try {
+        let dateStr = date.substr(0,4) + '-' + date.substr(4, 2) + '-' + date.substr(6, 2);
+        let date = new Data(dateStr);
+        return date;
+      } catch(ex) {
+
+      }
+      return;
+    }
+    /*if(res.query.startAt && res.query.startAt.length === 8) {
+      let date = parseDate(res.query.startAt);
+      if(date) {
+        query.startAt = {
+          $gte : date
+        }
+      }
+    }*/
+    console.log(query);
+    let cards = Cards.find(query).map(doc => {
+      let board = boards.find((e) => e._id === doc.boardId);
+      let tags = '';
+      if(board.labels && doc.labelIds) {
+        board.labels.forEach(lb => {
+          if(doc.labelIds.indexOf(lb._id) != -1) {
+            tags += (lb.name ? lb.name : lb.color) + ', '
+          }
+        });
+      }
+      tags = tags.trim()
+      if(tags.length > 0) {
+        tags = tags.substr(0, tags.length - 1);
+      }
       return {
         _id : doc._id,
         title : doc.title,
         boardId : doc.boardId,
         description : doc.description,
-        boardTitle : boards.find((e) => e._id === doc.boardId).title,
+        boardTitle : board.title,
         startAt : doc.startAt,
         listId : doc.listId,
-        listTitle : Lists.findOne({_id : doc.listId}).title
+        listTitle : Lists.findOne({_id : doc.listId}).title,
+        tags : tags,
+        dueAt : doc.dueAt,
+        status : doc.status
       }
     });
 

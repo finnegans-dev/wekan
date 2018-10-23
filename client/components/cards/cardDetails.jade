@@ -55,7 +55,7 @@ template(name="cardDetails")
         if getStart
           +cardStartDate
         else
-          if canModifyCard
+          if canModifyCardAssigned
             a.js-start-date {{_ 'add'}}
 
       .card-details-item.card-details-item-due
