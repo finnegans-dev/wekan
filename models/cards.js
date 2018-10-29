@@ -1121,12 +1121,6 @@ if (Meteor.isServer) {
         }
       });
     }
-    let curr = new Date; // get current date
-    let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-    let last = first + 6; // last day is the first day + 6
-
-    let firstday = new Date(curr.setDate(first));
-    let lastday = new Date(curr.setDate(last));
 
     const boards = Boards.find({
       archived: false,
@@ -1154,7 +1148,8 @@ if (Meteor.isServer) {
         $not : {
           $eq : 'finished'
         }
-      }
+      },
+      assignedTo : req.userId
     };
 
     if(req.query.assignedBy) {
@@ -1163,39 +1158,155 @@ if (Meteor.isServer) {
         query.userId = user._id;
       }
     }
-    let parseDate = (date) => {
+    let parseDate = function(date) {
+      let object = {};
       try {
-        let dateStr = date.substr(0,4) + '-' + date.substr(4, 2) + '-' + date.substr(6, 2);
-        let date = new Data(dateStr);
-        return date;
-      } catch(ex) {
+        let currStart = new Date();
+        currStart.setHours(0, 0, 0, 0);
+        let currEnd = new Date();
+        currEnd.setHours(23, 59, 59);
+        let firstWeekCurrDay = currStart.getDate() - currStart.getDay();
+        let lastWeekCurrDay = firstWeekCurrDay + 6;
+        let firstDayWeek = new Date();
+        firstDayWeek.setDate(firstWeekCurrDay);
+        let lastDayWeek = new Date();
+        lastDayWeek.setDate(lastWeekCurrDay);
+        let firstDayMonth = new Date();
+        firstDayMonth.setDate(1);
+        let lastDayMonth = new Date();
+        lastDayMonth.setMonth(lastDayMonth.getMonth() + 1);
+        lastDayMonth.setDate(0);
+        lastDayMonth.setHours(23, 59, 59);
 
+
+        switch(date) {
+          case 'today':
+            object = {
+              $gte : currStart,
+              $lt : currEnd
+            }
+            return object
+          case 'thisweek':
+            object = {
+              $gte : firstDayWeek,
+              $lt : lastDayWeek
+            }
+            return object
+          case 'nextweek':
+            firstDayWeek.setDate(firstDayWeek.getDate() + 7);
+            lastDayWeek.setDate(lastDayWeek.getDate() + 7);
+            object = {
+              $gte : firstDayWeek,
+              $lt : lastDayWeek
+            }
+            return object
+          case 'lastweek':
+            firstDayWeek.setDate(firstDayWeek.getDate() - 7);
+            lastDayWeek.setDate(lastDayWeek.getDate() - 7);
+            object = {
+              $gte : firstDayWeek,
+              $lt : lastDayWeek
+            }
+            return object
+          case 'thismonth':
+            object = {
+              $gte : firstDayMonth,
+              $lt : lastDayMonth
+            }
+            return object
+          case 'nextmonth':
+            firstDayMonth.setMonth(firstDayMonth.getMonth() + 1);
+            lastDayMonth.setMonth(lastDayMonth.getMonth() + 1);
+            object = {
+              $gte : firstDayMonth,
+              $lt : lastDayMonth
+            }
+            return object
+          case 'lastmonth':
+            firstDayMonth.setMonth(firstDayMonth.getMonth() - 1);
+            lastDayMonth.setMonth(lastDayMonth.getMonth() - 1);
+            object = {
+              $gte : firstDayMonth,
+              $lt : lastDayMonth
+            }
+            return object
+        }
+      } catch(ex) {
+        console.log(ex);
       }
       return;
     }
-    /*if(res.query.startAt && res.query.startAt.length === 8) {
-      let date = parseDate(res.query.startAt);
-      if(date) {
-        query.startAt = {
-          $gte : date
-        }
+
+    if(req.query.startAt && req.query.startAt !== '[null]' && req.query.startAt !== 'without') {
+      let condition = parseDate(req.query.startAt);
+      if(condition) {
+        query.startAt = condition;
       }
-    }*/
-    console.log(query);
+    } else if(req.query.startAt === 'without') {
+      let nullField = {
+        startAt : {
+          $type : 10
+        }
+      };
+      let existsField = {
+        startAt : {
+          $exists : false
+        }
+      };
+      if(query.$or) {
+        query.$or.push(nullField);
+        query.$or.push(existsField);
+      } else {
+        query.$or = [
+          nullField,
+          existsField
+        ]
+      }
+    }
+
+    if(req.query.dueAt && req.query.dueAt !== '[null]' && req.query.dueAt !== 'without') {
+      let condition = parseDate(req.query.dueAt);
+      if(condition) {
+        query.dueAt = condition;
+      }
+    } else if(req.query.dueAt === 'without') {
+      let nullField = {
+        dueAt : {
+          $type : 10
+        }
+      };
+      let existsField = {
+        dueAt : {
+          $exists : false
+        }
+      };
+      if(query.$or) {
+        query.$or.push(nullField);
+        query.$or.push(existsField);
+      } else {
+        query.$or = [
+          nullField,
+          existsField
+        ]
+      }
+    }
+
     let cards = Cards.find(query).map(doc => {
       let board = boards.find((e) => e._id === doc.boardId);
-      let tags = '';
+      let tags = '<div class="containter-tags">';
       if(board.labels && doc.labelIds) {
         board.labels.forEach(lb => {
           if(doc.labelIds.indexOf(lb._id) != -1) {
-            tags += (lb.name ? lb.name : lb.color) + ', '
+            tags += '<div class=\"tags tags-' + lb.color + '\">' + lb.name + '</div>';
+            //tags += (lb.name ? lb.name : lb.color) + ', '
           }
         });
       }
-      tags = tags.trim()
-      if(tags.length > 0) {
+      tags += '</div>';
+      /*if(tags.length > 0) {
         tags = tags.substr(0, tags.length - 1);
-      }
+      }*/
+      let swimlane = Swimlanes.findOne(doc.swimlaneId);
       return {
         _id : doc._id,
         title : doc.title,
@@ -1205,9 +1316,12 @@ if (Meteor.isServer) {
         startAt : doc.startAt,
         listId : doc.listId,
         listTitle : Lists.findOne({_id : doc.listId}).title,
+        swimlaneId : doc.swimlaneId,
+        swimlaneTitle : swimlane ? swimlane.title : '',
         tags : tags,
         dueAt : doc.dueAt,
-        status : doc.status
+        status : doc.status,
+        assignedBy : Users.findOne(doc.userId).username
       }
     });
 

@@ -158,18 +158,19 @@ Template.cardAssignedPopup.helpers({
   isAssigned() {
     const card = Template.parentData();
 
-    return card.assignedTo === this.userId;
+    return card.assignedTo === this._id;
   },
 
   user() {
-    return Users.findOne(this.userId);
+    return Users.findOne(this._id);
   },
 });
 
 Template.cardAssignedPopup.events({
   'click .js-select-member'(evt) {
+
     const card = Cards.findOne(Session.get('currentCard'));
-    const memberId = this.userId;
+    const memberId = this._id;
     //card.toggleMember(memberId);
     card.setAssignedTo(memberId);
     Popup.close();

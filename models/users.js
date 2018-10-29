@@ -172,6 +172,12 @@ Users.initEasySearch(searchInFields, {
   }*/
 });
 
+EasySearch.createSearchIndex('usersIndex', {
+  'field': ['username', 'profile.fullname'],
+  'collection': Meteor.users,
+  'use': 'mongo-db'
+});
+
 if (Meteor.isClient) {
   Users.helpers({
     isBoardMember() {
