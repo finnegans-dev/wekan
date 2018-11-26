@@ -1,0 +1,116 @@
+*:not(i):not(.fa) {
+	font-family: 'Montserrat' !important;
+}
+
+#header:not(.board-color-belize) {
+    display: none;
+}
+
+#content{
+    background-color: #6A67CE;
+}
+
+.board-list li{
+    width: 296px;
+}
+
+.board-list li a {
+    background-color: #f0edfa !important;
+    color: #43485a !important;
+    font-weight:normal !important;
+    border-radius: 0px !important;
+    outline: 1px solid white;
+    position: relative;
+    padding-bottom: 12px !important;
+}
+
+.board-list li a:hover{
+    background-color:#f8ba20 !important;
+}
+
+.board-list .board-list-item-name{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.fa-star:before{
+    color: #43485a;
+}
+#header{
+    margin-top: 7px !important;
+}
+
+#header, #header-main-bar {
+	background-color: #a177ff !important;
+    height: 36px !important;
+    padding: 0px !important;
+    margin-top: 0px !important;
+}
+
+#header{
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+.header-board-menu{
+    padding-left:25px !important;
+}
+
+.header-board-menu .viewer {
+    font-size: 15px;
+}
+
+.board-sidebar.is-open, sidebar-shadow, .board-wrapper .sidebar-content{
+    width: 339px !important;
+}
+
+
+.board-canvas.js-swimlanes.js-perfect-scrollbar.is-sibling-sidebar-open.ui-sortable {
+    background: #dedede;
+}
+
+/* 	CARD DETAILS */
+.card-details{
+	position: absolute;
+    z-index: 99 !important;
+    top: 0 !important;
+    margin: 0 auto;
+    width: 100%;
+	background: #a5a5a508;
+}
+
+.card-details-canvas{
+    width: 60% !important;
+    background: white;
+    margin: 0 auto;
+}
+.card-details .card-details-header{
+	margin: 0px;
+}
+
+.card-details h3 ,.card-details-item-title, .card-details .js-open-inlined-form, .card-details .viewer,
+.card-details-item a:not(.card-label):not(.card-details-item-add-button) {
+    padding-left: 20px;
+}
+
+.card-details .new-comment{
+	padding:10px;
+}
+
+.card-details .new-comment .member{
+	margin-left:10px;
+}
+
+.card-details .activities{
+	padding-left: 10px;
+}
+
+.board-list-item:not(.js-open-board) .board-list-item-name {
+    position: absolute;
+    top: 30px;
+}
+
+.board-list-item:not(.js-open-board) p.board-list-item-desc {
+    margin-bottom: 28px;
+}

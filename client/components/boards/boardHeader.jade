@@ -82,6 +82,16 @@ template(name="boardHeaderBar")
             i.fa.fa-archive
             span {{_ 'archives'}}
 
+      if isAdmin
+        a.board-header-btn.js-open-add-list(title="{{_ 'addListPopup-title'}}" )
+          i.fa.fa-plus
+          span {{_ 'add-list' }}
+
+        if isSwimlaneBoardView
+          a.board-header-btn.js-open-add-swimlane(title="{{_ 'addSwimlanePopup-title'}}")
+            i.fa.fa-plus
+            span {{_ 'add-swimlane' }}
+
       a.board-header-btn.js-open-view-menu(title="{{_ 'viewMenuPopup-title'}}")
         i.fa.fa-eye
         span Ver
@@ -291,10 +301,17 @@ template(name="createBoard")
           | {{{_ 'board-private-info'}}}
         a.js-change-visibility {{_ 'change'}}.
     label
-      | Plantilla
+      | Tipo
       select.js-new-board-template
         option(value="kanban") Kanban
+        option(value="proyecto") Proyecto
+        option(value="simple") Simple
         option Ninguna
+
+    if visibilityProjects.get
+      select.js-project-teamplace
+        each projectsData.get
+          option(value="{{id}}") {{ getCaption caption }}
 
     input.primary.wide(type="submit" value="{{_ 'create'}}")
     span.quiet
@@ -341,3 +358,15 @@ template(name="outgoingWebhooksPopup")
       | URL
       input.js-outgoing-webhooks-url(type="text" name="url" autofocus)
     input.primary.wide(type="submit" value="{{_ 'save'}}")
+
+template(name="addListPopup")
+  input.list-name-input.full-line(type="text" placeholder="{{_ 'add-list'}}" autocomplete="off" autofocus)
+  .edit-controls.clearfix
+    button.primary.confirm.js-create-list {{_ 'save'}}
+    a.fa.fa-times-thin.js-close-form
+
+template(name="addSwimlanePopup")
+  input.swimlane-name-input.full-line(type="text" placeholder="{{_ 'add-swimlane'}}" autocomplete="off" autofocus)
+  .edit-controls.clearfix
+    button.primary.confirm.js-create-swimlane {{_ 'save'}}
+    a.fa.fa-times-thin.js-close-form

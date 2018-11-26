@@ -214,7 +214,6 @@ if (Meteor.isClient) {
 
 Users.helpers({
   boards() {
-    console.log(Meteor.user().currentDomain);
     return Boards.find({ 'members.userId': this._id, domains : { '$in' : [Meteor.user().currentDomain] }});
   },
 
@@ -273,6 +272,10 @@ Users.helpers({
     } else {
       return (this.username[0] + this.username[1]).toUpperCase();
     }
+  },
+
+  isSwimlaneBoardView() {
+    return this.profile.boardView == 'board-view-swimlanes'
   },
 
   getLimitToShowCardsCount() {
@@ -843,6 +846,7 @@ if (Meteor.isServer) {
               user.domains.push(dom);
             }
           });
+          //Meteor.call('setPassword', req.body.password, id);
           Users.update({ _id: id }, { $set: { 'domains': user.domains, 'currentDomain' : req.body.currentDomain } });
         } else {
             id = Accounts.createUser({

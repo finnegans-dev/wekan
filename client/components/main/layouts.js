@@ -16,9 +16,11 @@ Template.userFormsLayout.onRendered(() => {
   let id = url.searchParams.get("id");
   let token = url.searchParams.get("token");
   let expires = url.searchParams.get("expires");
+  let ecoToken = url.searchParams.get("ecoToken");
   if(token) localStorage.setItem('Meteor.loginToken', token);
   if(id) localStorage.setItem('Meteor.userId', id);
   if(expires) localStorage.setItem('Meteor.loginTokenExpires', expires);
+  if(ecoToken) localStorage.setItem('token', ecoToken);
   if(token || id || expires) setTimeout(() => {document.location.href="/";}, 500);
 });
 

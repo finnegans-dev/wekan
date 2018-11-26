@@ -11,8 +11,11 @@ Meteor.startup(() => {
     //BrowserPolicy.content.disallowEval();
     //BrowserPolicy.content.allowInlineStyles();
     //BrowserPolicy.content.allowFontDataUrl();
-    BrowserPolicy.framing.restrictToOrigin(trusted);
+    //console.log(BrowserPolicy);
+    //BrowserPolicy.content.allowFrameAncestorsOrigin(trusted);
+    //BrowserPolicy.framing.restrictToOrigin(trusted);
     //BrowserPolicy.content.allowScriptOrigin(trusted);
+    BrowserPolicy.framing.allowAll();
   }
   else {
     // Disable browser policy and allow all framing and including.

@@ -68,6 +68,40 @@ Template.viewMenuPopup.helpers({
   },
 });
 
+Template.addListPopup.events({
+  'click .js-create-list'(evt, tpl) {
+    const newTitle = tpl.$('.list-name-input').val().trim();
+    if(newTitle) {
+      Lists.insert({
+        title : newTitle,
+        boardId: Session.get('currentBoard'),
+        sort: $('.list').length,
+      });
+      Popup.close();
+    }
+  },
+  'click .js-close-form'() {
+    Popup.close()
+  }
+});
+
+Template.addSwimlanePopup.events({
+  'click .js-create-swimlane'(evt, tpl) {
+    const newTitle = tpl.$('.swimlane-name-input').val().trim();
+    if (newTitle) {
+      Swimlanes.insert({
+        title : newTitle,
+        boardId: Session.get('currentBoard'),
+        sort: $('.swimlane').length,
+      });
+      Popup.close();
+    }
+  },
+  'click .js-close-form'() {
+    Popup.close()
+  }
+});
+
 Template.boardChangeTitlePopup.events({
   submit(evt, tpl) {
     const newTitle = tpl.$('.js-board-name').val().trim();
@@ -107,6 +141,8 @@ BlazeComponent.extendComponent({
       },
       'click .js-open-board-menu': Popup.open('boardMenu'),
       'click .js-open-view-menu': Popup.open('viewMenu'),
+      'click .js-open-add-list': Popup.open('addList'),
+      'click .js-open-add-swimlane': Popup.open('addSwimlane'),
       'click .js-change-visibility': Popup.open('boardChangeVisibility'),
       'click .js-watch-board': Popup.open('boardChangeWatch'),
       'click .js-open-archived-board'() {
@@ -155,6 +191,14 @@ Template.boardHeaderBar.helpers({
   canModifyBoard() {
     return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();
   },
+
+  isSwimlaneBoardView() {
+    return Meteor.user().isSwimlaneBoardView();
+  },
+
+  isAdmin() {
+    return Meteor.user().isBoardAdmin();
+  }
 });
 
 BlazeComponent.extendComponent({
@@ -285,6 +329,26 @@ const CreateBoard = BlazeComponent.extendComponent({
     this.visibilityMenuIsOpen = new ReactiveVar(false);
     this.visibility = new ReactiveVar('private');
     this.boardId = new ReactiveVar('');
+    this.visibilityProjects = new ReactiveVar(false);
+    this.projectsData = new ReactiveVar([]);
+    this.url = Meteor.settings.public.ecoUrl;
+
+    //this.projects =
+    HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTO&filtroString=TransaccionCategoria:-6&access_token=' + localStorage.getItem('token'),
+    (error, response) => {
+      if(!error) {
+        this.projectsData.set(response ? response.data ? response.data : [] : []);
+      }
+    });
+  },
+
+  getCaption(v) {
+    if(v && v.startsWith('<') && v.indexOf("072C3E1X-9G8C-27IG-9A6C-99DEN6A173B3") != -1) {
+      let start = v.indexOf("alt=\"");
+      let aux = v.substr(v.indexOf("alt=") + "alt=\"".length);
+      v = aux.substr(0, aux.indexOf("\""));
+  }
+    return v;
   },
 
   visibilityCheck() {
@@ -310,31 +374,90 @@ const CreateBoard = BlazeComponent.extendComponent({
       title,
       permission: visibility,
     }));
-    let p
-    if(template === 'kanban') {
-      Lists.insert({
-        title : 'PENDIENTE',
-        boardId: this.boardId.get(),
-        sort: 0,
-      });
-      Lists.insert({
-        title : 'EN CURSO',
-        boardId: this.boardId.get(),
-        sort: 1,
-      });
-      Lists.insert({
-        title : 'HECHO',
-        boardId: this.boardId.get(),
-        sort: 2,
-      });
+
+    switch(template) {
+      case 'kanban':
+        this.createKanbanLists();
+        Utils.goBoardId(this.boardId.get());
+        break;
+      case 'simple':
+        this.createSimpleLists();
+        Utils.goBoardId(this.boardId.get());
+        break;
+      case 'proyecto':
+        this.createProjectLists();
+        break;
+      default:
+        this.createDefaultSwimlane();
+        Utils.goBoardId(this.boardId.get());
     }
 
+  },
+
+  createKanbanLists() {
+    this.createDefaultSwimlane();
+    this.createPendienteList(0);
+    this.createEnCuersoList(1);
+    this.createHechoList(2);
+  },
+
+  createSimpleLists() {
+    this.createDefaultSwimlane();
+    this.createPendienteList(0);
+  },
+
+  createProjectLists() {
+    const project = this.find('.js-project-teamplace').value;
+    this.createPendienteList(0);
+    this.createEnCuersoList(1);
+    this.createHechoList(2);
+    HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTOITEM&filtroString=ProyectoID:'+project+'&access_token=' + localStorage.getItem('token'),
+    (error, response) => {
+      if(error) {
+        this.createDefaultSwimlane();
+      } else {
+        const items = response ? response.data ? response.data : [] : [];
+        if(items.length > 0) {
+          items.forEach(item => {
+            this.createSwimlane(this.getCaption(item.caption));
+          });
+        } else {
+          this.createDefaultSwimlane();
+        }
+      }
+      Utils.goBoardId(this.boardId.get());
+    })
+  },
+
+  createPendienteList(order) {
+    this.createList('PENDIENTE', order);
+  },
+
+  createEnCuersoList(order) {
+    this.createList('EN CURSO', order);
+  },
+
+  createHechoList(order) {
+    this.createList('HECHO', order);
+  },
+
+  createDefaultSwimlane() {
+    this.createSwimlane('Default');
+  },
+
+  createList(list, order) {
+    Lists.insert({
+      title : list,
+      boardId: this.boardId.get(),
+      sort: order,
+    });
+  },
+
+  createSwimlane(swimlane) {
     Swimlanes.insert({
-      title: 'Default',
+      title: swimlane,
       boardId: this.boardId.get(),
     });
-
-    Utils.goBoardId(this.boardId.get());
   },
 
   events() {
@@ -346,6 +469,26 @@ const CreateBoard = BlazeComponent.extendComponent({
       'click .js-import': Popup.open('boardImportBoard'),
       submit: this.onSubmit,
       'click .js-import-board': Popup.open('chooseBoardSource'),
+      'change .js-new-board-template' () {
+        const template = this.find('.js-new-board-template').value;
+        if(template == 'proyecto') {
+          const item = this.projectsData.get()[0];
+          if(item) {
+            this.find('.js-new-board-title').value = this.getCaption(item.caption);
+          }
+          this.visibilityProjects.set(true);
+
+        } else {
+          this.visibilityProjects.set(false);
+        }
+      },
+      'change .js-project-teamplace'() {
+        const project = this.find('.js-project-teamplace').value;
+        const item = this.projectsData.get().find(i => i.id == project);
+        if(item) {
+          this.find('.js-new-board-title').value = this.getCaption(item.caption);
+        }
+      }
     }];
   },
 }).register('createBoardPopup');

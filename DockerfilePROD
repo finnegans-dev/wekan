@@ -67,7 +67,7 @@ COPY ${SRC_PATH} /home/wekan/app
 USER wekan
 
 ENV PORT=8080
-EXPOSE 8080 8081
+EXPOSE $PORT
 USER wekan
 
 CMD ["node", "/home/wekan/app/main.js"]

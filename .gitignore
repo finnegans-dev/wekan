@@ -17,3 +17,7 @@ package-lock.json
 snap/.snapcraft/
 .idea
 updateAWSWekan.sh
+updateECSWekan-PROD.sh
+updateECSWekan-TEST.sh
+STAR_finneg_com.crt
+finneg.com.key
