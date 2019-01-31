@@ -1,0 +1,8 @@
+time="2018-12-07T10:49:15-03:00" level=info msg="Using TOML configuration file /home/administrador/workspace/wekan-finneg/traefik/conf.toml"
+time="2018-12-07T10:49:15-03:00" level=info msg="Traefik version v1.7.5 built on 2018-12-03_11:01:00AM"
+time="2018-12-07T10:49:15-03:00" level=info msg="\nStats collection is disabled.\nHelp us improve Traefik by turning this feature on :)\nMore details on: https://docs.traefik.io/basics/#collected-data\n"
+time="2018-12-07T10:49:15-03:00" level=info msg="Preparing server http &{Address::8080 TLS:<nil> Redirect:<nil> Auth:<nil> WhitelistSourceRange:[] WhiteList:<nil> Compress:false ProxyProtocol:<nil> ForwardedHeaders:0xc000553ca0} with readTimeout=0s writeTimeout=0s idleTimeout=3m0s"
+time="2018-12-07T10:49:15-03:00" level=info msg="Starting provider configuration.ProviderAggregator {}"
+time="2018-12-07T10:49:15-03:00" level=info msg="Starting server on :8080"
+time="2018-12-07T10:49:15-03:00" level=info msg="Starting provider *file.Provider {\"Watch\":true,\"Filename\":\"\",\"Constraints\":null,\"Trace\":false,\"TemplateVersion\":0,\"DebugLogGeneratedTemplate\":false,\"Directory\":\"\",\"TraefikFile\":\"/home/administrador/workspace/wekan-finneg/traefik/conf.toml\"}"
+time="2018-12-07T10:49:15-03:00" level=info msg="Server configuration reloaded on :8080"

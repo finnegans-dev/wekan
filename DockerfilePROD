@@ -46,8 +46,8 @@ ENV BUILD_DEPS="apt-utils bsdtar gnupg gosu wget curl bzip2 build-essential pyth
     MATOMO_DO_NOT_TRACK=true \
     MATOMO_WITH_USERNAME=false \
     BROWSER_POLICY_ENABLED=true \
-    TRUSTED_URL="http://eco.finneg.com/" \
-    ECO_URL="http://eco.finneg.com" \
+    TRUSTED_URL="https://go.finneg.com/" \
+    ECO_URL="https://go.finneg.com" \
     WEBHOOKS_ATTRIBUTES="" \
     OAUTH2_CLIENT_ID="" \
     OAUTH2_SECRET="" \
@@ -56,18 +56,32 @@ ENV BUILD_DEPS="apt-utils bsdtar gnupg gosu wget curl bzip2 build-essential pyth
     OAUTH2_USERINFO_ENDPOINT="" \
     OAUTH2_TOKEN_ENDPOINT="" \
     USE_CDN="true" \
-    USE_CDN_URL="http://d3mccnbh54r0fh.cloudfront.net/wekan" \
+    USE_CDN_URL="https://d3mccnbh54r0fh.cloudfront.net/wekan" \
     #MONGO_URL=mongodb://wekanfinneg:asdasd123@ds223763.mlab.com:23763/testwekan \
     MONGO_URL="mongodb://172.31.46.141:27017/wekan" \
     #CDN_URL="http://d3mccnbh54r0fh.cloudfront.net/wekan" \
-    ROOT_URL=http://eco.finneg.com/wekan/
+    ROOT_URL=https://go.finneg.com/wekan/
 
 # Copy the app to the image
 COPY ${SRC_PATH} /home/wekan/app
+
+COPY ./traefik /home/wekan/app
+
+COPY run.sh /home/wekan/app
+
+#USER wekan
+
 USER wekan
 
-ENV PORT=8080
-EXPOSE $PORT
-USER wekan
+WORKDIR /home/wekan/app
 
-CMD ["node", "/home/wekan/app/main.js"]
+RUN node main.js &
+
+ENV PORT=3000
+EXPOSE 9080 9081 3000
+
+#RUN ls -all
+
+#RUN ./traefik --configFile=conf.toml
+
+CMD ["sh", "run.sh"]

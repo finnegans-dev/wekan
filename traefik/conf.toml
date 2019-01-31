@@ -1,0 +1,51 @@
+defaultEntryPoints = ["http", "https"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":9080"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+
+  [entryPoints.https]
+  address = ":9081"
+    [entryPoints.https.tls]
+
+     [[entryPoints.https.tls.certificates]]
+     certFile = "crt/STAR_finneg_com.crt"
+     keyFile  = "crt/finneg.com.key"
+
+
+[file]
+
+[backends]
+  [backends.backend1]
+    [backends.backend1.servers.server1]
+       url = "http://localhost:3000"
+
+[frontends]
+  [frontends.frontend1]
+      backend = "backend1"
+      passHostHeader = true
+
+[docker]
+
+# Docker server endpoint. Can be a tcp or a unix socket endpoint.
+#
+# Required
+# Default: "unix:///var/run/docker.sock"
+#
+# endpoint = "tcp://10.10.10.10:2375"
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on a container.
+#
+# Optional
+# Default: ""
+#
+# domain = "docker.localhost"
+
+# Expose containers by default in traefik
+#
+# Optional
+# Default: true
+#
+# exposedByDefault = true
