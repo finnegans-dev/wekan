@@ -65,8 +65,8 @@ RUN \
     chown wekan: --recursive /home/wekan && \
     # OS dependencies
     apt-get update -y && apt-get install -y --no-install-recommends ${BUILD_DEPS} && \
-    sudo systemctl start nginx && \
-    sudo systemctl enable nginx  && \
+    #sudo systemctl start nginx && \
+    #sudo systemctl enable nginx  && \
     \
     # Meteor installer doesn't work with the default tar binary, so using bsdtar while installing.
     # https://github.com/coreos/bugs/issues/1095#issuecomment-350574389
