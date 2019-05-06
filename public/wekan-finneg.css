@@ -53,6 +53,30 @@
     padding-bottom: 7px !important;
 }
 
+.js-change-visibility {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+}
+
+.js-watch-board {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+}
+
+.js-toggle-board-view {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+}
+
+.js-multiselection-activate {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+}
+
 .header-board-menu{
     padding-left:25px !important;
 }
