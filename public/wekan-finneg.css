@@ -53,6 +53,10 @@
     padding-bottom: 7px !important;
 }
 
+.board-header-btn span {
+    margin-top: 0px !important;
+}
+
 .js-change-visibility {
     width: 0px;
     height: 0px;
