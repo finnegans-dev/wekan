@@ -51,7 +51,7 @@
     "activity-checklist-uncompleted": "uncompleted the checklist %s of %s",
     "activity-checklist-item-added": "ha añadido el elemento de la lista de verificación a '%s' en %s",
     "activity-checklist-item-removed": "removed a checklist item from '%s' in %s",
-    "add": "Añadir",
+    "add": "Guardar",
     "activity-checked-item-card": "checked %s in checklist %s",
     "activity-unchecked-item-card": "unchecked %s in checklist %s",
     "activity-checklist-completed-card": "completed the checklist %s",
