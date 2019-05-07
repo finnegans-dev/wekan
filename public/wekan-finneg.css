@@ -98,6 +98,11 @@
     background: #dedede;
 }
 
+/* MINICARD */
+.add-controls {
+    margin-bottom: 6px;
+}
+
 /* 	CARD DETAILS */
 .card-details{
     position: fixed;
