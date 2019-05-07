@@ -99,8 +99,20 @@
 }
 
 /* MINICARD */
+.minicard > textarea {
+    margin-bottom: 8px !important;
+}
+
 .add-controls {
-    margin-bottom: 6px;
+    margin: 0px;
+    height: 36px;
+}
+
+.add-controls button.primary.confirm {
+    margin: 0px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
 }
 
 /* 	CARD DETAILS */
