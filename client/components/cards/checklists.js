@@ -64,7 +64,7 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
 
   isCreator() {
@@ -119,7 +119,7 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
 
   isCreator() {
@@ -223,7 +223,7 @@ Template.checklistDeleteDialog.onDestroyed(() => {
 
 Template.checklistItemDetail.helpers({
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly();// && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
 
   isCreator() {

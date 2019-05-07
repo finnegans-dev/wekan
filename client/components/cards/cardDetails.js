@@ -43,7 +43,7 @@ BlazeComponent.extendComponent({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
 
   canModifyCardAssigned() {
@@ -352,7 +352,7 @@ Template.cardDetailsActionsPopup.helpers({
   },
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
 
   isCreator() {
