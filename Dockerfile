@@ -1,4 +1,4 @@
-FROM wekan-base:latest
+FROM wekanteam/wekan:latest
 LABEL maintainer="wekan"
 
 # Declare Arguments
