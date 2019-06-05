@@ -1,5 +1,5 @@
 FROM wekanteam/wekan:latest
-LABEL maintainer="wekan"
+LABEL maintainer="finnegans"
 
 # Declare Arguments
 ARG NODE_VERSION
@@ -46,8 +46,6 @@ ENV BUILD_DEPS="apt-utils bsdtar gnupg gosu wget curl bzip2 build-essential pyth
     MATOMO_DO_NOT_TRACK=true \
     MATOMO_WITH_USERNAME=false \
     BROWSER_POLICY_ENABLED=true \
-    #TRUSTED_URL="https://go.finneg.com/" \
-    #ECO_URL="https://go.finneg.com" \
     WEBHOOKS_ATTRIBUTES="" \
     OAUTH2_CLIENT_ID="" \
     OAUTH2_SECRET="" \
@@ -56,6 +54,8 @@ ENV BUILD_DEPS="apt-utils bsdtar gnupg gosu wget curl bzip2 build-essential pyth
     OAUTH2_USERINFO_ENDPOINT="" \
     OAUTH2_TOKEN_ENDPOINT="" \
     USE_CDN="true"
+    #TRUSTED_URL="https://go.finneg.com/" \
+    #ECO_URL="https://go.finneg.com" \
     #USE_CDN_URL="https://d3mccnbh54r0fh.cloudfront.net/wekan"
     #MONGO_URL=mongodb://wekanfinneg:asdasd123@ds223763.mlab.com:23763/testwekan \
     #MONGO_URL="mongodb://172.31.46.141:27017/wekan" \
@@ -69,8 +69,6 @@ COPY ./traefik /home/wekan/app
 
 COPY run.sh /home/wekan/app
 
-#USER wekan
-
 USER wekan
 
 WORKDIR /home/wekan/app
@@ -79,9 +77,5 @@ RUN node main.js &
 
 ENV PORT=3000
 EXPOSE 9080 9081 3000
-
-#RUN ls -all
-
-#RUN ./traefik --configFile=conf.toml
 
 CMD ["sh", "run.sh"]
