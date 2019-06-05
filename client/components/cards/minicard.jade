@@ -82,3 +82,6 @@ template(name="minicard")
         .badge(class="{{#if checklistFinished}}is-finished{{/if}}")
           span.badge-icon.fa.fa-check-square-o
           span.badge-text.check-list-text {{checklistFinishedCount}}/{{checklistItemCount}}
+    unless archived
+      a.fa.fa-archive.card-details-menu.js-archive-card(title="Archivar")
+      a.fa.fa-check.card-details-menu.js-card-finished(title="{{#if isFinished}}Finalizada{{else}}Finalizar{{/if}}" style="float:right;{{#if isFinished}}color:green;{{/if}}")
