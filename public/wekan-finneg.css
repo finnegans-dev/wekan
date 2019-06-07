@@ -99,6 +99,33 @@
 }
 
 /* MINICARD */
+.minicard .minicard-badges-and-actions {
+    width: 100%;
+    margin-top: 7px;
+}
+
+.minicard .minicard-badges-and-actions .badges {
+    margin-top: 0px;
+}
+
+.minicard .minicard-badges-and-actions .minicard-actions {
+    visibility: hidden;
+}
+
+.minicard:hover .minicard-badges-and-actions .minicard-actions {
+    float: right;
+    visibility: visible;
+}
+
+.minicard .minicard-badges-and-actions .minicard-actions .minicard-action {
+    margin-right: 11px;
+    margin-bottom: 3px;
+}
+
+.minicard .minicard-badges-and-actions .minicard-actions .minicard-action.fa-check {
+    margin-right: 0px;
+}
+
 .minicard > textarea {
     margin-bottom: 8px !important;
 }
