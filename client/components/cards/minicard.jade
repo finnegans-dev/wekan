@@ -64,21 +64,25 @@ template(name="minicard")
       .minicard-members.js-minicard-members
         each getMembers
           +userAvatar(userId=this)
-
-    .badges
-      unless currentUser.isNoComments
-        if comments.count
-          .badge(title="{{_ 'card-comments-title' comments.count }}")
-            span.badge-icon.fa.fa-comment-o.badge-comment
-            span.badge-text= comments.count
-      if getDescription
-        .badge.badge-state-image-only(title=getDescription)
-          span.badge-icon.fa.fa-align-left
-      if attachments.count
-        .badge
-          span.badge-icon.fa.fa-paperclip
-          span.badge-text= attachments.count
-      if checklists.count
-        .badge(class="{{#if checklistFinished}}is-finished{{/if}}")
-          span.badge-icon.fa.fa-check-square-o
-          span.badge-text.check-list-text {{checklistFinishedCount}}/{{checklistItemCount}}
+    .minicard-badges-and-actions
+      .badges
+        unless currentUser.isNoComments
+          if comments.count
+            .badge(title="{{_ 'card-comments-title' comments.count }}")
+              span.badge-icon.fa.fa-comment-o.badge-comment
+              span.badge-text= comments.count
+        if getDescription
+          .badge.badge-state-image-only(title=getDescription)
+            span.badge-icon.fa.fa-align-left
+        if attachments.count
+          .badge
+            span.badge-icon.fa.fa-paperclip
+            span.badge-text= attachments.count
+        if checklists.count
+          .badge(class="{{#if checklistFinished}}is-finished{{/if}}")
+            span.badge-icon.fa.fa-check-square-o
+            span.badge-text.check-list-text {{checklistFinishedCount}}/{{checklistItemCount}}
+      .minicard-actions
+        unless archived
+          a.fa.fa-archive.minicard-action.js-archive-card(title="Archivar")
+          a.fa.fa-check.minicard-action.js-card-finished(title="{{#if isFinished}}Finalizada{{else}}Finalizar{{/if}}" style="{{#if isFinished}}color:green;{{/if}}")

@@ -32,15 +32,15 @@ template(name="addCardForm")
         each members.get
           +userAvatar(userId=this)
 
-  .add-controls.clearfix
-    button.primary.confirm(type="submit") {{_ 'add'}}
-    //span.quiet
-      | {{_ 'or'}}
-      a.js-link {{_ 'link'}}
-    //span.quiet
-      | &nbsp;
-      | /
-      a.js-search {{_ 'search'}}
+    .add-controls.clearfix
+      button.primary.confirm(type="submit") {{_ 'add'}}
+      //span.quiet
+        | {{_ 'or'}}
+        a.js-link {{_ 'link'}}
+      //span.quiet
+        | &nbsp;
+        | /
+        a.js-search {{_ 'search'}}
 
 template(name="autocompleteLabelLine")
   .minicard-label(class="card-label-{{colorName}}" title=labelName)

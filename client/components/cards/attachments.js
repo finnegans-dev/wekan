@@ -138,7 +138,7 @@ Template.attachmentsGalery.helpers({
 BlazeComponent.extendComponent({
 
   canModifyCard() {
-    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly() && this.isCreator();
+    return Meteor.user() && Meteor.user().isBoardMember() && !Meteor.user().isCommentOnly(); // && this.isCreator();
   },
   canModifyCardAssigned() {
     const card = this.currentData();
