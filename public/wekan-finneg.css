@@ -57,12 +57,6 @@
     margin-top: 0px !important;
 }
 
-.js-change-visibility {
-    width: 0px;
-    height: 0px;
-    visibility: hidden;
-}
-
 .js-watch-board {
     width: 0px;
     height: 0px;
