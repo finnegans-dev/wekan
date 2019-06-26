@@ -203,9 +203,9 @@ Boards.attachSchema(new SimpleSchema({
     defaultValue: false,
     optional: true,
   },
-  domains : {
-    type : [String],
-    optional : true
+  domains: {
+    type: [String],
+    optional: true
   }
 }));
 
@@ -254,13 +254,13 @@ Boards.helpers({
     return Swimlanes.find({ boardId: this._id, archived: false }, { sort: { sort: 1 } });
   },
 
-  hasOvertimeCards(){
-    const card = Cards.findOne({isOvertime: true, boardId: this._id, archived: false} );
+  hasOvertimeCards() {
+    const card = Cards.findOne({ isOvertime: true, boardId: this._id, archived: false });
     return card !== undefined;
   },
 
-  hasSpentTimeCards(){
-    const card = Cards.findOne({spentTime: { $gt: 0 }, boardId: this._id, archived: false} );
+  hasSpentTimeCards() {
+    const card = Cards.findOne({ spentTime: { $gt: 0 }, boardId: this._id, archived: false });
     return card !== undefined;
   },
 
@@ -357,16 +357,18 @@ Boards.helpers({
         permission: this.permission,
         members: this.members,
         color: this.color,
-        description: TAPi18n.__('default-subtasks-board', {board: this.title}),
+        description: TAPi18n.__('default-subtasks-board', { board: this.title }),
       });
 
       Swimlanes.insert({
         title: TAPi18n.__('default'),
         boardId: this.subtasksDefaultBoardId,
       });
-      Boards.update(this._id, {$set: {
-        subtasksDefaultBoardId: this.subtasksDefaultBoardId,
-      }});
+      Boards.update(this._id, {
+        $set: {
+          subtasksDefaultBoardId: this.subtasksDefaultBoardId,
+        }
+      });
     }
     return this.subtasksDefaultBoardId;
   },
@@ -381,9 +383,11 @@ Boards.helpers({
         title: TAPi18n.__('queue'),
         boardId: this._id,
       });
-      Boards.update(this._id, {$set: {
-        subtasksDefaultListId: this.subtasksDefaultListId,
-      }});
+      Boards.update(this._id, {
+        $set: {
+          subtasksDefaultListId: this.subtasksDefaultListId,
+        }
+      });
     }
     return this.subtasksDefaultListId;
   },
@@ -393,13 +397,13 @@ Boards.helpers({
   },
 
   getDefaultSwimline() {
-    let result = Swimlanes.findOne({boardId: this._id});
+    let result = Swimlanes.findOne({ boardId: this._id });
     if (result === undefined) {
       Swimlanes.insert({
         title: TAPi18n.__('default'),
         boardId: this._id,
       });
-      result = Swimlanes.findOne({boardId: this._id});
+      result = Swimlanes.findOne({ boardId: this._id });
     }
     return result;
   },
@@ -648,7 +652,7 @@ if (Meteor.isServer) {
   Boards.after.insert((userId, doc) => {
     console.log('AFTER INSERT')
     const user = Meteor.user();
-    if(doc.domains) {
+    if (doc.domains) {
       if (doc.domains.indexOf(user.currentDomain) == -1) {
         doc.domains.push(user.currentDomain)
       }
@@ -656,7 +660,7 @@ if (Meteor.isServer) {
       doc.domains = [user.currentDomain];
     }
 
-    Boards.update(doc._id, {$set : { domains : doc.domains}});
+    Boards.update(doc._id, { $set: { domains: doc.domains } });
 
     Activities.insert({
       userId,
@@ -794,17 +798,17 @@ if (Meteor.isServer) {
       console.log('boards');
       const data = Boards.find({
         archived: false,
-        'members.userId': paramUserId, domains : { '$in' : [Meteor.user().currentDomain] }
+        'members.userId': paramUserId, domains: { '$in': [Meteor.user().currentDomain] }
       }, {
-        sort: ['title'],
-      }).map(function(board) {
-        return {
-          _id: board._id,
-          title: board.title,
-        };
-      });
+          sort: ['title'],
+        }).map(function (board) {
+          return {
+            _id: board._id,
+            title: board.title,
+          };
+        });
 
-      JsonRoutes.sendResult(res, {code: 200, data});
+      JsonRoutes.sendResult(res, { code: 200, data });
     }
     catch (error) {
       JsonRoutes.sendResult(res, {
@@ -819,7 +823,7 @@ if (Meteor.isServer) {
       Authentication.checkUserId(req.userId);
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: Boards.find({ permission: 'public', domains : { '$in' : [Meteor.user().currentDomain] } }).map(function (doc) {
+        data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
           return {
             _id: doc._id,
             title: doc.title,
@@ -897,7 +901,7 @@ if (Meteor.isServer) {
       Boards.remove({ _id: id });
       JsonRoutes.sendResult(res, {
         code: 200,
-        data:{
+        data: {
           _id: id,
         },
       });
@@ -920,7 +924,7 @@ if (Meteor.isServer) {
         const name = req.body.label.name;
         const labelId = Random.id(6);
         if (!board.getLabel(name, color)) {
-          Boards.direct.update({ _id: id }, { $push: { labels: { _id: labelId,  name,  color } } });
+          Boards.direct.update({ _id: id }, { $push: { labels: { _id: labelId, name, color } } });
           JsonRoutes.sendResult(res, {
             code: 200,
             data: labelId,
@@ -938,4 +942,7 @@ if (Meteor.isServer) {
       });
     }
   });
+
+
+
 }
