@@ -206,6 +206,10 @@ Boards.attachSchema(new SimpleSchema({
   domains: {
     type: [String],
     optional: true
+  },
+  context: {
+    type: String,
+    optional: true
   }
 }));
 
@@ -823,7 +827,8 @@ if (Meteor.isServer) {
       Authentication.checkUserId(req.userId);
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
+        // data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
+        data: Boards.find({}).map(function (doc) {
           return {
             _id: doc._id,
             title: doc.title,
@@ -893,6 +898,63 @@ if (Meteor.isServer) {
       });
     }
   });
+
+  //Contextos
+  JsonRoutes.add('POST', '/api/boardsContext', function (req, res) {
+    try {
+      Authentication.checkUserId(req.userId);
+      const id = Boards.insert({
+        title: req.body.title,
+        members: [
+          {
+            userId: req.body.owner,
+            isAdmin: req.body.isAdmin || true,
+            isActive: req.body.isActive || true,
+            isNoComments: req.body.isNoComments || false,
+            isCommentOnly: req.body.isCommentOnly || false,
+          },
+        ],
+        domains: req.body.domains,
+        context: req.body.context,
+        permission: req.body.permission || 'private',
+        color: req.body.color || 'belize',
+      });
+
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: {
+          status: 'OK'
+        },
+      });
+    }
+    catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
+
+  //Get board contexto creado
+  JsonRoutes.add('GET', '/api/boardsContext/:id', function (req, res) {
+    try {
+      const id = req.params.id;
+      Authentication.checkUserId(req.userId);
+
+      let board = Boards.find({context: id}).fetch()
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: board
+      });
+    }
+    catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
+
 
   JsonRoutes.add('DELETE', '/api/boards/:id', function (req, res) {
     try {
