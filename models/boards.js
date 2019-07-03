@@ -827,22 +827,23 @@ if (Meteor.isServer) {
       Authentication.checkUserId(req.userId);
       JsonRoutes.sendResult(res, {
         code: 200,
-        // data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
-        data: Boards.find({}).map(function (doc) {
-          return {
-            _id: doc._id,
-            title: doc.title,
-          };
-        }),
+        data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
+          //Ver todos
+          // data: Boards.find({}).map(function (doc) {
+            return {
+              _id: doc._id,
+              title: doc.title,
+            };
+          }),
       });
-    }
+      }
     catch (error) {
-      JsonRoutes.sendResult(res, {
-        code: 200,
-        data: error,
-      });
-    }
-  });
+        JsonRoutes.sendResult(res, {
+          code: 200,
+          data: error,
+        });
+      }
+    });
 
   JsonRoutes.add('GET', '/api/boards/:id', function (req, res) {
     try {
@@ -901,8 +902,10 @@ if (Meteor.isServer) {
 
   //Contextos
   JsonRoutes.add('POST', '/api/boardsContext', function (req, res) {
+
     try {
       Authentication.checkUserId(req.userId);
+
       const id = Boards.insert({
         title: req.body.title,
         members: [
@@ -914,16 +917,20 @@ if (Meteor.isServer) {
             isCommentOnly: req.body.isCommentOnly || false,
           },
         ],
-        domains: req.body.domains,
-        context: req.body.context,
         permission: req.body.permission || 'private',
         color: req.body.color || 'belize',
+        context: req.body.context
+      });
+      const swimlaneId = Swimlanes.insert({
+        title: TAPi18n.__('default'),
+        boardId: id,
       });
 
       JsonRoutes.sendResult(res, {
         code: 200,
         data: {
-          status: 'OK'
+          _id: id,
+          defaultSwimlaneId: swimlaneId,
         },
       });
     }
@@ -933,6 +940,7 @@ if (Meteor.isServer) {
         data: error,
       });
     }
+
   });
 
   //Get board contexto creado
@@ -941,7 +949,7 @@ if (Meteor.isServer) {
       const id = req.params.id;
       Authentication.checkUserId(req.userId);
 
-      let board = Boards.find({context: id}).fetch()
+      let board = Boards.find({ context: id }).fetch()
       JsonRoutes.sendResult(res, {
         code: 200,
         data: board
