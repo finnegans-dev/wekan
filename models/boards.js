@@ -639,6 +639,25 @@ if (Meteor.isServer) {
         } else throw new Meteor.Error('error-board-notAMember');
       } else throw new Meteor.Error('error-board-doesNotExist');
     },
+    getContext() {
+
+      let url = this.url = Meteor.settings.public.ecoUrl;
+      url = "https://go-test.finneg.com/api/1/contexts?access_token=064f8ab8-8506-479d-9675-4d149411a7cf"
+      let contexts = []
+      HTTP.get(url, (err, data) => {
+        if (err) {
+          return contexts;
+        } else {
+          console.log(data.data)
+          for (let i = 0; i < data.data.length; i++) {
+            contexts.push(data.data[i].id)
+
+          }
+          console.log(contexts)
+          return contexts;
+        }
+      });
+    },
   });
 }
 
@@ -828,22 +847,22 @@ if (Meteor.isServer) {
       JsonRoutes.sendResult(res, {
         code: 200,
         data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
-          //Ver todos
-          // data: Boards.find({}).map(function (doc) {
-            return {
-              _id: doc._id,
-              title: doc.title,
-            };
-          }),
+        //Ver todos
+        //data: Boards.find({}).map(function (doc) {
+          return {
+            _id: doc._id,
+            title: doc.title,
+          };
+        }),
       });
-      }
+    }
     catch (error) {
-        JsonRoutes.sendResult(res, {
-          code: 200,
-          data: error,
-        });
-      }
-    });
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
 
   JsonRoutes.add('GET', '/api/boards/:id', function (req, res) {
     try {
@@ -929,6 +948,7 @@ if (Meteor.isServer) {
       JsonRoutes.sendResult(res, {
         code: 200,
         data: {
+          status: "Tablero de tareas creado correctamente",
           _id: id,
           defaultSwimlaneId: swimlaneId,
         },
@@ -1014,5 +1034,26 @@ if (Meteor.isServer) {
   });
 
 
+  JsonRoutes.add('GET', '/api/boardsPerso', function (req, res) {
+    try {
+      // const id = req.params.id;
+      // Authentication.checkUserId(req.userId);
+
+      let test = ['1d77e9f4-3c75-4a54-9a71-3bf39a2812b1', '640641d7-02e2-42aa-8c8a-19e25bfe4b5c', 'dsadsadsa']
+      // console.log(Boards.find({ "context": { $in: test } }).fetch())
+
+      let board = Boards.find({ "context": { $in: test } }).fetch()
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: board
+      });
+    }
+    catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
 
 }
