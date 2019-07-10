@@ -936,9 +936,10 @@ if (Meteor.isServer) {
             isCommentOnly: req.body.isCommentOnly || false,
           },
         ],
-        permission: req.body.permission || 'private',
+        permission: req.body.permission || 'public',
         color: req.body.color || 'belize',
-        context: req.body.context
+        context: req.body.context,
+        domains: req.body.domains
       });
       const swimlaneId = Swimlanes.insert({
         title: TAPi18n.__('default'),
@@ -1073,7 +1074,7 @@ if (Meteor.isServer) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: {"version": "10/07 - 1" }
+        data: {"version": "10/07 - 2" }
       });
     }
     catch (error) {
