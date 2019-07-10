@@ -1040,7 +1040,7 @@ if (Meteor.isServer) {
       Authentication.checkUserId(req.userId);
 
       //https://go.finneg.com/api/1/contexts?access_token=632d7b70-2ed3-4be5-8434-2fc5939e2f6c
-      let url = Meteor.settings.public.ecoUrl + "/api/1/contexts?access_token=" + token;
+      let url = Meteor.settings.public.ecoUrl + "api/1/contexts?access_token=" + token;
       //url = "https://go-test.finneg.com/api/1/contexts?access_token=" + token;
       HTTP.get(url, (err, data) => {
         if (err) {
