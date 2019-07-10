@@ -847,8 +847,8 @@ if (Meteor.isServer) {
       JsonRoutes.sendResult(res, {
         code: 200,
         data: Boards.find({ permission: 'public', domains: { '$in': [Meteor.user().currentDomain] } }).map(function (doc) {
-        //Ver todos
-        //data: Boards.find({}).map(function (doc) {
+          //Ver todos
+          // data: Boards.find({}).map(function (doc) {
           return {
             _id: doc._id,
             title: doc.title,
@@ -1033,19 +1033,32 @@ if (Meteor.isServer) {
     }
   });
 
-
-  JsonRoutes.add('GET', '/api/boardsPerso', function (req, res) {
+  JsonRoutes.add('GET', '/api/boardsUser/:token', function (req, res) {
     try {
-      // const id = req.params.id;
-      // Authentication.checkUserId(req.userId);
+      const token = req.params.token;
+      Authentication.checkUserId(req.userId);
 
-      let test = ['1d77e9f4-3c75-4a54-9a71-3bf39a2812b1', '640641d7-02e2-42aa-8c8a-19e25bfe4b5c', 'dsadsadsa']
-      // console.log(Boards.find({ "context": { $in: test } }).fetch())
+      //https://go.finneg.com/api/1/contexts?access_token=632d7b70-2ed3-4be5-8434-2fc5939e2f6c
+      let url = Meteor.settings.public.ecoUrl + "/api/1/contexts?access_token=" + token;
+      url = "https://go-test.finneg.com/api/1/contexts?access_token=" + token;
+      HTTP.get(url, (err, data) => {
+        if (err) {
+          JsonRoutes.sendResult(res, {
+            code: 200,
+            data: err,
+          });
+        } else {
+          let contexts = [];
+          data.data.forEach(element => {
+            contexts.push(element.id)
+          });
+          let board = Boards.find({ $or: [{ 'members.userId': req.userId }, { "context": { $in: contexts } }] }).fetch()
+          JsonRoutes.sendResult(res, {
+            code: 200,
+            data: board
+          });
 
-      let board = Boards.find({ "context": { $in: test } }).fetch()
-      JsonRoutes.sendResult(res, {
-        code: 200,
-        data: board
+        }
       });
     }
     catch (error) {
@@ -1055,5 +1068,21 @@ if (Meteor.isServer) {
       });
     }
   });
+
+  JsonRoutes.add('GET', '/api/boardsUser/:token', function (req, res) {
+    try {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: {"version": "10/07 - 1" }
+      });
+    }
+    catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
+
 
 }

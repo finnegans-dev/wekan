@@ -183,3 +183,11 @@
 .board-list-item:not(.js-open-board) p.board-list-item-desc {
     margin-bottom: 28px;
 }
+
+.js-add-board{
+    display: none;
+}
+
+.board-list .js-add-board {
+    display: none;
+}
