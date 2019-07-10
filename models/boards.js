@@ -1069,7 +1069,7 @@ if (Meteor.isServer) {
     }
   });
 
-  JsonRoutes.add('GET', '/api/boardsUser/:token', function (req, res) {
+  JsonRoutes.add('GET', '/api/version', function (req, res) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
