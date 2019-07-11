@@ -674,21 +674,21 @@ if (Meteor.isServer) {
   // Genesis: the first activity of the newly created board
   Boards.after.insert((userId, doc) => {
     console.log('AFTER INSERT')
-    if(doc.context){
+    if (doc.context) {
       Swimlanes.insert({
         title: "Default",
         boardId: doc._id,
       });
       Lists.insert({
-        title : "PENDIENTE",
+        title: "PENDIENTE",
         boardId: doc._id
       });
       Lists.insert({
-        title : "EN CURSO",
+        title: "EN CURSO",
         boardId: doc._id
       });
       Lists.insert({
-        title : "HECHO",
+        title: "HECHO",
         boardId: doc._id
       });
     }
@@ -960,8 +960,8 @@ if (Meteor.isServer) {
         ],
         permission: req.body.permission || 'public',
         color: req.body.color || 'belize'
-        ,context: req.body.context
-        ,domains: req.body.domains
+        , context: req.body.context
+        , domains: req.body.domains
       });
 
       JsonRoutes.sendResult(res, {
@@ -995,6 +995,27 @@ if (Meteor.isServer) {
       });
     }
     catch (error) {
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: error,
+      });
+    }
+  });
+
+
+  JsonRoutes.add('POST', '/api/boardsAddUser', function (req, res) {
+    try {
+      Authentication.checkUserId(req.userId);
+      let boardId = req.body.boardId;
+      let userId = req.body.userId;
+      const board = Boards.findOne(boardId);
+      board.addMember(userId)
+      JsonRoutes.sendResult(res, {
+        code: 200,
+        data: {message: 'ok'}
+      });
+
+    } catch (error) {
       JsonRoutes.sendResult(res, {
         code: 200,
         data: error,
@@ -1092,7 +1113,7 @@ if (Meteor.isServer) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: {"version": "10/07 - 2" }
+        data: { "version": "10/07 - 2" }
       });
     }
     catch (error) {
