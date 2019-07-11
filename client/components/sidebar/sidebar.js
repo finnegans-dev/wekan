@@ -303,8 +303,45 @@ BlazeComponent.extendComponent({
     Meteor.call('inviteUserToBoard', idNameEmail, boardId, (err, ret) => {
       self.setLoading(false);
       if (err) self.setError(err.error);
-      else if (ret.email) self.setError('email-sent');
-      else Popup.close();
+      else if (ret.email) {
+        let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+        let userInvited = Users.findOne(idNameEmail);
+        let prefix = Meteor.settings.public.ecoUrl;
+        let token = localStorage.getItem('token');
+        let domain = localStorage.getItem('currentdomain');
+
+        let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
+        let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;
+
+        let notificationData = {
+          product:"ecoTasks",
+          event:"invitek",
+          subject: "",
+          message: "",
+          destination: ""
+        };
+
+        if(!!userInvited){
+          HTTP.get(userUrl, (error, response) => {
+            if(!error) {
+              notificationData.destination = userInvited.username;
+              notificationData.message = response.data.firstName+' '+response.data.lastName+' te invitó a un nuevo tablero de tareas'
+
+              HTTP.post(notifyUrl, {data: notificationData}, function (err, data) {
+                if(err){
+                  console.log(err);
+                }
+              });
+            }
+          });
+        }
+
+
+        self.setError('email-sent');
+
+      } else {
+        Popup.close();
+      }
     });
   },
 

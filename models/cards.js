@@ -575,6 +575,39 @@ Cards.helpers({
   },
 
   setAssignedTo(assignedTo) {
+    let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+    let userAssigned = Users.findOne({ _id: assignedTo });
+
+    let prefix = Meteor.settings.public.ecoUrl;
+
+    let token = localStorage.getItem('token');
+    let domain = localStorage.getItem('currentdomain');
+    let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
+    let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;
+
+    let notificationData = {
+      product:"ecoTasks",
+      event:"assignment",
+      subject: "",
+      message: "",
+      destination: ""
+    };
+
+    if(!!userAssigned){
+      HTTP.get(userUrl, (error, response) => {
+        if(!error) {
+          notificationData.destination = userAssigned.username;
+          notificationData.message = response.data.firstName+' '+response.data.lastName+' te asignó una nueva tarea'
+
+          HTTP.post(notifyUrl, {data: notificationData}, function (err, data) {
+            if(err){
+              console.log(err);
+            }
+          });
+        }
+      });
+    }
+
     return Cards.update(
       { _id: this._id },
       { $set: { assignedTo } }
@@ -809,6 +842,40 @@ Cards.helpers({
         { $set: { title } }
       );
     } else {
+      let card = Cards.findOne({ _id: this._id });
+      let userAssigned = Users.findOne({ _id: card.assignedTo });
+      let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+
+      let prefix = Meteor.settings.public.ecoUrl;
+      let token = localStorage.getItem('token');
+      let domain = localStorage.getItem('currentdomain');
+
+      let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
+      let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;
+
+      let notificationData = {
+        product:"ecoTasks",
+        event:"modified",
+        subject: "",
+        message: "",
+        destination: ""
+      };
+
+      if(!!userAssigned){
+        HTTP.get(userUrl, (error, response) => {
+          if(!error) {
+            notificationData.destination = userAssigned.username;
+            notificationData.message = response.data.firstName+' '+response.data.lastName+' modificó una tarea que tenés asignada'
+
+            HTTP.post(notifyUrl, {data: notificationData}, function (err, data) {
+              if(err){
+                console.log(err);
+              }
+            });
+          }
+        });
+      }
+
       return Cards.update(
         { _id: this._id },
         { $set: { title } }
