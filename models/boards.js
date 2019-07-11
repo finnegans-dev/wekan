@@ -674,6 +674,26 @@ if (Meteor.isServer) {
   // Genesis: the first activity of the newly created board
   Boards.after.insert((userId, doc) => {
     console.log('AFTER INSERT')
+    if(doc.context){
+      Swimlanes.insert({
+        title: "Default",
+        boardId: doc._id,
+      });
+      Lists.insert({
+        title : "PENDIENTE",
+        boardId: doc._id
+      });
+      Lists.insert({
+        title : "EN CURSO",
+        boardId: doc._id
+      });
+      Lists.insert({
+        title : "HECHO",
+        boardId: doc._id
+      });
+    }
+
+
     const user = Meteor.user();
     if (doc.domains) {
       if (doc.domains.indexOf(user.currentDomain) == -1) {
@@ -684,6 +704,8 @@ if (Meteor.isServer) {
     }
 
     Boards.update(doc._id, { $set: { domains: doc.domains } });
+
+
 
     Activities.insert({
       userId,
@@ -900,7 +922,7 @@ if (Meteor.isServer) {
         color: req.body.color || 'belize',
       });
       const swimlaneId = Swimlanes.insert({
-        title: TAPi18n.__('default'),
+        title: "TAPi18n.__('default')",
         boardId: id,
       });
       JsonRoutes.sendResult(res, {
@@ -921,7 +943,7 @@ if (Meteor.isServer) {
 
   //Contextos
   JsonRoutes.add('POST', '/api/boardsContext', function (req, res) {
-
+    console.log("Here")
     try {
       Authentication.checkUserId(req.userId);
 
@@ -937,13 +959,9 @@ if (Meteor.isServer) {
           },
         ],
         permission: req.body.permission || 'public',
-        color: req.body.color || 'belize',
-        context: req.body.context,
-        domains: req.body.domains
-      });
-      const swimlaneId = Swimlanes.insert({
-        title: TAPi18n.__('default'),
-        boardId: id,
+        color: req.body.color || 'belize'
+        ,context: req.body.context
+        ,domains: req.body.domains
       });
 
       JsonRoutes.sendResult(res, {
