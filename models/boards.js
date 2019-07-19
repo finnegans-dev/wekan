@@ -1012,7 +1012,7 @@ if (Meteor.isServer) {
       board.addMember(userId)
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: {message: 'ok'}
+        data: { message: 'ok' }
       });
 
     } catch (error) {
@@ -1078,30 +1078,40 @@ if (Meteor.isServer) {
       const token = req.params.token;
       Authentication.checkUserId(req.userId);
 
-      //https://go.finneg.com/api/1/contexts?access_token=632d7b70-2ed3-4be5-8434-2fc5939e2f6c
-      let url = Meteor.settings.public.ecoUrl + "api/1/contexts?access_token=" + token;
-      //url = "https://go-test.finneg.com/api/1/contexts?access_token=" + token;
-      HTTP.get(url, (err, data) => {
+      ///auth/token/info?access_token
+      let url = Meteor.settings.public.ecoUrl + "auth/token/info?access_token=" + token;
+      // url = "https://go-test.finneg.com/auth/token/info?access_token=" + token;
+      HTTP.get(url, (err, info) => {
         if (err) {
           JsonRoutes.sendResult(res, {
             code: 200,
             data: err,
           });
         } else {
-          let contexts = [];
-          data.data.forEach(element => {
-            contexts.push(element.id)
-          });
-          let board = Boards.find({ $or: [{ 'members.userId': req.userId }, { "context": { $in: contexts } }] }).fetch()
-          JsonRoutes.sendResult(res, {
-            code: 200,
-            data: board
-          });
+          url = Meteor.settings.public.ecoUrl + "api/1/contexts?access_token=" + token;
+          // url = "https://go-test.finneg.com/api/1/contexts?access_token=" + token;
+          HTTP.get(url, (err, data) => {
+            if (err) {
+              JsonRoutes.sendResult(res, {
+                code: 200,
+                data: err,
+              });
+            } else {
+              let contexts = [];
+              data.data.forEach(element => {
+                contexts.push(element.id)
+              });
+              let board = Boards.find({ archived: false, domains: info.data.domain, $or: [{ 'members.userId': req.userId }, { "context": { $in: contexts } }] }).fetch()
+              JsonRoutes.sendResult(res, {
+                code: 200,
+                data: board
+              });
 
+            }
+          });
         }
-      });
-    }
-    catch (error) {
+      })
+    } catch (error) {
       JsonRoutes.sendResult(res, {
         code: 200,
         data: error,
@@ -1113,7 +1123,7 @@ if (Meteor.isServer) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: { "version": "10/07 - 2" }
+        data: { "version": "19/07 - 1" }
       });
     }
     catch (error) {

@@ -17,8 +17,6 @@ BlazeComponent.extendComponent({
     }, {
         sort: ['title'],
       });
-
-
   },
 
   isStarred() {
