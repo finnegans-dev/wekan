@@ -855,7 +855,7 @@ Cards.helpers({
 
       let notificationData = {
         product:"ecoTasks",
-        event:"modified",
+        event:"modification",
         subject: "",
         message: "",
         destination: ""
