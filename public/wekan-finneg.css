@@ -1,5 +1,9 @@
 *:not(i):not(.fa) {
-	font-family: 'Montserrat' !important;
+    font-family: 'Montserrat' !important;
+}
+
+.swimlane{
+    background-color: #EFF0F1;
 }
 
 #header:not(.board-color-belize) {
@@ -7,7 +11,7 @@
 }
 
 #content{
-    background-color: #6A67CE;
+    background-color: #efeff1;
 }
 
 .board-list li{
@@ -42,10 +46,16 @@
 }
 
 #header, #header-main-bar {
-	background-color: #a177ff !important;
+    background-color: #EBFCF7 !important;
     height: 36px !important;
     padding: 0px !important;
     margin-top: 0px !important;
+}
+
+#header, #header-main-bar span,
+#header, #header-main-bar i:before{
+    color:#8897A3;
+    font-size: 12px;
 }
 
 #header{
@@ -58,12 +68,6 @@
 }
 
 .js-watch-board {
-    width: 0px;
-    height: 0px;
-    visibility: hidden;
-}
-
-.js-toggle-board-view {
     width: 0px;
     height: 0px;
     visibility: hidden;
@@ -83,16 +87,222 @@
     font-size: 15px;
 }
 
-.board-sidebar.is-open, sidebar-shadow, .board-wrapper .sidebar-content{
-    width: 339px !important;
+.board-canvas.js-swimlanes.js-perfect-scrollbar.is-sibling-sidebar-open.ui-sortable {
+    background: white;
+}
+.board-wrapper .board-canvas .list{
+    background-color: #f8f8f9 !important;
+}
+
+/* SIDEBAR */
+.board-sidebar,
+.board-sidebar .sidebar-content{
+    background-color: white;
+}
+
+.sidebar .sidebar-shadow{
+    box-shadow: none
+}
+
+/*.sidebar-tongue{
+    display: none;
+}*/
+
+.sidebar-content hr{
+    display: none;
+}
+
+.sidebar-content .board-widget,
+.sidebar-content .js-sidebar-activities{
+    border: 1px solid lightgray;
+    padding: 10px;
+    margin: 10px auto !important;
+    box-shadow: 0px 0px 3px  #b3b3b3;
+    width: 178px;
+}
+
+.sidebar-content .add-member{
+    display: none;
+}
+
+.member .avatar.avatar-initials{
+    background-color: #B9BCC0;
 }
 
 
-.board-canvas.js-swimlanes.js-perfect-scrollbar.is-sibling-sidebar-open.ui-sortable {
-    background: #dedede;
+.avatar-initials text{
+    fill: white !important;
+}
+
+.sidebar-content .card-label{
+    font-size:10px;
+}
+
+
+.sidebar-content > h3{
+    display: none;
+}
+
+.sidebar-content .js-sidebar-activities{
+    position: relative;
+}
+
+.sidebar-content .js-sidebar-activities .activity:first-child{
+    padding-top: 20px;
+}
+
+.sidebar-content .js-sidebar-activities .activity:first-child:before{
+    content: 'Actividades';
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 13px;
+}
+
+.sidebar-content .activity .js-member{
+    display: none;
+}
+
+.sidebar-content .activity .activity-desc{
+    font-size: 10px;
+}
+
+/* BODY */
+.list-header{
+    text-align: center;
+    font-weight: normal !important;
+}
+
+.swimlane-header, .list-header-name{
+    font-weight: normal !important;
+   /* text-transform: lowercase;
+    display:block;*/
+}
+/*
+.swimlane-header:first-letter, .list-header-name:first-letter{
+    text-transform: uppercase;
+}
+*/
+.swimlane .swimlane-header-wrap,
+.board-canvas .list{
+    border-left: none;
+    border-right: none;
+}
+
+.swimlane.js-lists > div{
+    border-color: lightgray !important;
+}
+
+.list-header-menu{
+    visibility: hidden;
+    padding:12px !important;
+}
+
+.list-header-menu a{
+    color: white !important;
+}
+
+.list-header:hover .list-header-menu{
+    visibility: visible;
+}
+
+.js-swimlanes .swimlane:not(:first-child) .list-header{
+    display:none;
+}
+
+.js-swimlanes .swimlane .minicards{
+    margin-bottom: 10px;
+}
+
+.js-swimlanes .swimlane:not(:first-child) .minicards{
+    padding-top:10px;
+    
+}
+
+
+.list .list-header{
+    color: white;
+    padding:5px;
+    /*width: 200px;*/
+    /* margin-left:0px; */
+}
+.list:nth-child(n+2) .list-header{
+    color: #FF6D92;
+}
+
+.list:nth-child(n+2) .minicard{
+    border-left-color: #FF6D92;
+}
+
+.list:nth-child(n+3) .list-header{
+    color: #FD9A00;
+}
+
+.list:nth-child(n+3) .minicard{
+    border-left-color: #FD9A00;
+}
+
+.list:nth-child(n+4) .list-header{
+    color: #02CEFF;
+}
+
+.list:nth-child(n+4) .minicard{
+    border-left-color: #02CEFF;
+}
+
+.list:nth-child(n+5) .list-header{
+    color: #3BF7D1;
+}
+
+.list:nth-child(n+5) .minicard{
+    border-left-color: #3BF7D1;
+}
+
+.list:nth-child(n+6) .list-header{
+    color: #A177FF;
+}
+
+.list:nth-child(n+6) .minicard{
+    border-left-color: #A177FF;
+}
+
+/*
+.swimlane .list,.list-body{
+    width: 210px;
+    max-width: 222px;
+}
+*/
+.list-body{
+    /* padding-left:0px; */
 }
 
 /* MINICARD */
+/*.minicards{
+    width: 210px;
+}*/
+
+.minicard,
+.minicards .open-minicard-composer{
+    border: 1px solid lightgray;
+    box-shadow: none;
+    /*width: 182px;*/
+    border-left: 6px solid #898E95;
+    background-color: white;
+}
+/*
+.inlined-form .minicard{
+    width: 188px;
+}
+*/
+.minicards .open-minicard-composer{
+    height: 30px;
+    color: #273347;
+}
+
+.minicards .open-minicard-composer i{
+    color: #676D76;
+}
+
 .minicard .minicard-badges-and-actions {
     width: 100%;
     margin-top: 7px;
@@ -136,7 +346,15 @@
     bottom: 8px;
 }
 
-/* 	CARD DETAILS */
+/*  CARD DETAILS */
+.card-details-canvas > hr{
+    display:none;
+}
+
+.card-details-canvas .material-toggle-switch{
+    display: none;
+}
+
 .card-details{
     position: fixed;
     top: 75px;
@@ -153,9 +371,22 @@
     width: 60% !important;
     background: white;
     margin: 0 auto;
+    border-left: 220px solid #273347;
+    position:relative;
 }
 .card-details .card-details-header{
-	margin: 0px;
+    margin: 0px;
+    background-color:white;
+    padding-left:0px;
+    padding-top:20px;
+}
+
+.card-details .card-details-header .card-permission{
+    display: none;
+}
+
+.card-details .card-details-header a{
+    margin-top: -20px;
 }
 
 .card-details h3 ,.card-details-item-title, .card-details .js-open-inlined-form, .card-details .viewer,
@@ -164,20 +395,127 @@
 }
 
 .card-details .new-comment{
-	padding:10px;
+    padding:10px;
 }
 
 .card-details .new-comment .member{
-	margin-left:10px;
+    margin-left:10px;
 }
 
 .card-details .activities{
-	padding-left: 10px;
+    padding-left: 10px;
+}
+
+.card-details-item-start,
+.card-details-item-end,
+.card-details-item-members,
+.card-details-items .card-details-item-name:first-child,
+.card-checklist-items{
+    display: none;
+}
+
+.card-details-canvas > h3:not(.card-details-item-title){
+    display:none;
+}
+
+.card-details-canvas > .card-checklist-items + .js-open-inlined-form{
+    display: none;
+}
+
+.card-details-items{
+    margin-top: 0px !important;
+    margin-bottom:0px !important;    
+}
+
+.card-details-items .card-details-item{
+
+    position:absolute;
+    left:-220px;
+    top: 50px;
+    font-size:12px;
+}
+
+.card-details-items .card-details-item-title{
+    color: white;
+}
+
+.card-details-items .card-details-item-due{
+    position:absolute;
+    color:gray;
+    top: 150px;
+}
+
+.card-details-item-labels .card-details-item-title{
+    padding-left:0px;
+}
+
+.card-details-items .card-details-item-labels{
+    position:absolute;
+    top:250px;
+    width: 200px;
+    padding-left:20px;
+}
+
+.card-details-items .card-details-item-labels .js-add-labels:not(.add-label){
+    padding-left:0px;
+}
+
+.card-details-canvas > .card-details-item-title{
+    padding-top:10px;
 }
 
 .board-list-item:not(.js-open-board) .board-list-item-name {
     position: absolute;
     top: 30px;
+}
+
+.card-details-item-name .viewer p{
+  width: 2ch;
+  font-size:16px;
+  font-family: monospace !important;
+  overflow: hidden;
+  white-space: nowrap;  
+  text-transform:uppercase;
+}
+
+.card-details-item-name:hover .viewer p{
+    font-family: 'Montserrat' !important;
+    width:auto;
+    font-size:11px;
+    cursor:pointer;
+    text-transform:lowercase;
+}
+
+.card-details-item-name .viewer p i{
+    /* width: auto; */
+    /* font-family: 'Montserrat'; */
+    white-space: pre;
+}
+
+.card-details-item-name .add-member{
+    margin-left:18px;
+}
+
+.card-details-item-name p{
+    color:white;
+}
+
+.card-details .js-new-comment .member{
+    display: none;
+}
+
+.card-details .js-new-comment{
+    margin-left:10px;
+    width: 95%;
+}
+
+.card-details .activities .activity .member{
+    display: none;
+}
+
+.card-details .activities .activity .activity-desc{
+    margin-left:10px;
+    max-width:95%;
 }
 
 .board-list-item:not(.js-open-board) p.board-list-item-desc {
@@ -191,3 +529,33 @@
 .board-list .js-add-board {
     display: none;
 }
+
+
+
+.attachments-galery{
+    position:relative;
+    padding-top:30px;
+    padding-left:12px;
+}
+.attachments-galery::before{
+    content: 'Adjuntos';
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    font-family: 'Montserrat';
+    color:black;
+    font-size:16px;
+}
+
+.card-details .activity-title{
+    padding-top:20px;
+    color:black;
+}
+
+.card-details .card-description{
+    width:95%;
+    margin: 0 20px;
+}
+
+

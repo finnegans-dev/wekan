@@ -1123,7 +1123,7 @@ if (Meteor.isServer) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: { "version": "19/07 - 1" }
+        data: { "version": "17/09 - ALBANO" }
       });
     }
     catch (error) {
