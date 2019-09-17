@@ -1200,7 +1200,8 @@ if (Meteor.isServer) {
       return {
         _id: doc._id,
         title: doc.title,
-        labels: doc.labels
+        labels: doc.labels,
+        context: doc.context
       }
     });
 
@@ -1423,7 +1424,8 @@ if (Meteor.isServer) {
       return {
         _id: doc._id,
         title: doc.title,
-        labels: doc.labels
+        labels: doc.labels,
+        context: doc.context
       }
     });
 
