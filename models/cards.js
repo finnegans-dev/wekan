@@ -577,7 +577,7 @@ Cards.helpers({
   setAssignedTo(assignedTo) {
     let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
     let userAssigned = Users.findOne({ _id: assignedTo });
-
+    let board = this.board();
     let prefix = Meteor.settings.public.ecoUrl;
 
     let token = localStorage.getItem('token');
@@ -590,7 +590,8 @@ Cards.helpers({
       event:"assignment",
       subject: "",
       message: "",
-      destination: ""
+      destination: "",
+      redirect: `tareas;boardId=${board._id};boardTitle=${board.title};cardId=${this._id}`
     };
 
     if(!!userAssigned){
@@ -845,6 +846,7 @@ Cards.helpers({
       let card = Cards.findOne({ _id: this._id });
       let userAssigned = Users.findOne({ _id: card.assignedTo });
       let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+      let board = this.board();
 
       let prefix = Meteor.settings.public.ecoUrl;
       let token = localStorage.getItem('token');
@@ -858,7 +860,8 @@ Cards.helpers({
         event:"modification",
         subject: "",
         message: "",
-        destination: ""
+        destination: "",
+        redirect: `tareas;boardId=${board._id};boardTitle=${board.title};cardId=${this._id}`
       };
 
       if(!!userAssigned){
