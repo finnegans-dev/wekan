@@ -845,13 +845,13 @@ if (Meteor.isServer) {
         archived: false,
         'members.userId': paramUserId, domains: { '$in': [Meteor.user().currentDomain] }
       }, {
-          sort: ['title'],
-        }).map(function (board) {
-          return {
-            _id: board._id,
-            title: board.title,
-          };
-        });
+        sort: ['title'],
+      }).map(function (board) {
+        return {
+          _id: board._id,
+          title: board.title,
+        };
+      });
 
       JsonRoutes.sendResult(res, { code: 200, data });
     }
@@ -1074,6 +1074,7 @@ if (Meteor.isServer) {
   });
 
   JsonRoutes.add('GET', '/api/boardsUser/:token', function (req, res) {
+
     try {
       const token = req.params.token;
       Authentication.checkUserId(req.userId);
@@ -1102,6 +1103,13 @@ if (Meteor.isServer) {
                 contexts.push(element.id)
               });
               let board = Boards.find({ archived: false, domains: info.data.domain, $or: [{ 'members.userId': req.userId }, { "context": { $in: contexts } }] }).fetch()
+
+              //Numero de actividades en kamban realizadas en las ultimas 24 horas
+              board.map(data => {
+                let act = Activities.find({ boardId: data._id, "createdAt": { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) } }).fetch()
+                data.numberActivities = act.length;
+              })
+
               JsonRoutes.sendResult(res, {
                 code: 200,
                 data: board
@@ -1114,7 +1122,7 @@ if (Meteor.isServer) {
     } catch (error) {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: error,
+        data: error
       });
     }
   });
@@ -1123,7 +1131,7 @@ if (Meteor.isServer) {
     try {
       JsonRoutes.sendResult(res, {
         code: 200,
-        data: { "version": "20/09 - Julian + CSS 11:29" }
+        data: { "version": "10/01 - Numero actividades" }
       });
     }
     catch (error) {
