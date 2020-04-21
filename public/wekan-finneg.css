@@ -257,8 +257,12 @@ a.js-change-board-color, a.js-outgoing-webhooks, a.js-subtask-settings {
     visibility: visible;
 }
 
-.js-swimlanes .swimlane:not(:first-child) .list-header{
+.js-swimlanes .swimlane:not(:first-child) .list-header h2{
     display:none;
+}
+
+.js-swimlanes .swimlane:not(:first-child) .list-header div{
+    visibility:visible;
 }
 
 .js-swimlanes .swimlane .minicards{
@@ -267,7 +271,7 @@ a.js-change-board-color, a.js-outgoing-webhooks, a.js-subtask-settings {
 
 .js-swimlanes .swimlane:not(:first-child) .minicards{
     padding-top:10px;
-    
+
 }
 
 
@@ -481,7 +485,7 @@ a.js-change-board-color, a.js-outgoing-webhooks, a.js-subtask-settings {
 
 .card-details-items{
     margin-top: 0px !important;
-    margin-bottom:0px !important;    
+    margin-bottom:0px !important;
 }
 
 .card-details-items .card-details-item{
@@ -531,7 +535,7 @@ a.js-change-board-color, a.js-outgoing-webhooks, a.js-subtask-settings {
   font-size:16px;
   font-family: monospace !important;
   overflow: hidden;
-  white-space: nowrap;  
+  white-space: nowrap;
   text-transform:uppercase;
 }
 
@@ -617,7 +621,7 @@ a.js-change-board-color, a.js-outgoing-webhooks, a.js-subtask-settings {
 }
 
 .attachment-details-actions a.js-confirm-delete {
-    float: right;    
+    float: right;
 }
 
 .attachment-details-actions a.js-remove-cover{
@@ -672,7 +676,7 @@ a.js-add-attachment:before {
 
    a.board-header-btn.js-open-board-menu {
        display: none;
-   }  
+   }
 
   .swimlane .swimlane-header-wrap{
       padding-bottom: 0px;
@@ -699,7 +703,7 @@ a.js-add-attachment:before {
   .card-details .card-description {
       width: 95%;
       margin: 0 auto;
-  }  
+  }
 
   .card-details{
       width: 100%;
