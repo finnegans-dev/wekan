@@ -1,0 +1,18 @@
+template(name="finneg-import")
+  h4(mat-dialog-title='')
+    | Importar usuarios
+  .wrapper
+  if error.get
+    .warning {{_ error.get}}
+  div.js-upload-drop-zone
+    div.dropContent
+      | Arrastre su archivo CSV, XSL, XLSX o haga click aqui
+      br
+      input#selected-file(type='file', style='display: none;', accept='.csv,.xls, .xlsx')
+      #lstFiles
+      br
+    button.js-upload-file Subir archivo
+  div.actions-buttons
+    button.js-modal-cancel Cancelar
+    button.primary.js-modal-import Importar
+    mat-spinner(diameter='36')
