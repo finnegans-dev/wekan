@@ -60,8 +60,8 @@ BlazeComponent.extendComponent({
             //busco los titulos en el excel para generar los swimlanes (filas)
             let swimlanesTitles = [];
             for (let i = 0; i < this.data.length; i++) {
-                if (this.data[i][1] != null && swimlanesTitles.indexOf(this.data[i][1]) == -1) {
-                    swimlanesTitles.push(this.data[i][1]);
+                if (this.data[i][1] != null && swimlanesTitles.indexOf(this.data[i][1].toLowerCase()) == -1) {
+                    swimlanesTitles.push(this.data[i][1].toLowerCase());
                 }
             }
 
@@ -80,7 +80,7 @@ BlazeComponent.extendComponent({
             let swimlane;
 
             for (let dbSwimlane of dbSwimlanes) {
-                let index = swimlanesTitles.indexOf(dbSwimlane.title)
+                let index = swimlanesTitles.indexOf(dbSwimlane.title.toLowerCase())
                 if (index != -1) {
                     //agrrego los swimlanes de la db a la lista que usaré con los cards
                     swimlane = new FinnegWekanSwimlane(dbSwimlane._id,
@@ -113,15 +113,22 @@ BlazeComponent.extendComponent({
 
                 const preProcessedTitle = this.data[i][0];
                 let indexNewLine = preProcessedTitle.indexOf('\n')
-                const title = preProcessedTitle.slice(0, indexNewLine);
+                let title;
                 let description;
 
                 if (indexNewLine > -1) {
+                    title = preProcessedTitle.slice(0, indexNewLine);
                     description = preProcessedTitle.slice(indexNewLine, preProcessedTitle.length);
+                } else {
+                    title = preProcessedTitle;
                 }
 
-                let swimlaneName = this.data[i][1];
+                let swimlaneName = '';
                 let swimlaneId;
+
+                if (this.data[i][1] != null && this.data[i][1].toLowerCase() != 'default') {
+                    swimlaneName = this.data[i][1].toLowerCase();
+                }
 
                 let dbCardsOnDefaultSwimlane = Cards
                     .find({
@@ -213,13 +220,13 @@ BlazeComponent.extendComponent({
 
     importCards() {
         let dbCardsTitles = this.currentBoard.cards().map(function(doc) {
-            return doc.title;
+            return doc.title.toLowerCase();
         })
 
         for (let card of this.cards) {
             let cardTitle = card.title;
 
-            if (dbCardsTitles.indexOf(cardTitle.trim()) == -1) {
+            if (dbCardsTitles.indexOf(cardTitle.trim().toLowerCase()) == -1) {
                 Cards.direct.insert({
                     title: card.title,
                     description: card.description,
@@ -230,7 +237,7 @@ BlazeComponent.extendComponent({
                     type: card.type
                 });
             } else {
-                Cards.direct.update({ $set: { 'archived': false } });
+                Cards.direct.update(card._id, { $set: { 'archived': false } });
             }
         }
     },
