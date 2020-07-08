@@ -340,7 +340,7 @@ const CreateBoard = BlazeComponent.extendComponent({
         this.url = Meteor.settings.public.ecoUrl;
 
         //this.projects =
-        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTO&filtroString=TransaccionCategoria:-6&access_token=' + localStorage.getItem('token'),
+        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTO&filtroString=TransaccionCategoria:-6&access_token=' + sessionStorage.getItem('token'),
             (error, response) => {
                 if (!error) {
                     this.projectsData.set(response ? response.data ? response.data : [] : []);
@@ -417,7 +417,7 @@ const CreateBoard = BlazeComponent.extendComponent({
         this.createPendienteList(0);
         this.createEnCuersoList(1);
         this.createHechoList(2);
-        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTOITEM&filtroString=ProyectoID:' + project + '&access_token=' + localStorage.getItem('token'),
+        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTOITEM&filtroString=ProyectoID:' + project + '&access_token=' + sessionStorage.getItem('token'),
             (error, response) => {
                 if (error) {
                     this.createDefaultSwimlane();

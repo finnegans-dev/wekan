@@ -575,13 +575,13 @@ Cards.helpers({
   },
 
   setAssignedTo(assignedTo) {
-    let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+    let user = Users.findOne({ _id: sessionStorage.getItem('Meteor.userId:/:/wekan') });
     let userAssigned = Users.findOne({ _id: assignedTo });
     let board = this.board();
     let prefix = Meteor.settings.public.ecoUrl;
 
-    let token = localStorage.getItem('token');
-    let domain = localStorage.getItem('currentdomain');
+    let token = sessionStorage.getItem('token');
+    let domain = sessionStorage.getItem('currentdomain');
     let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
     let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;
 
@@ -845,12 +845,12 @@ Cards.helpers({
     } else {
       let card = Cards.findOne({ _id: this._id });
       let userAssigned = Users.findOne({ _id: card.assignedTo });
-      let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+      let user = Users.findOne({ _id: sessionStorage.getItem('Meteor.userId:/:/wekan') });
       let board = this.board();
 
       let prefix = Meteor.settings.public.ecoUrl;
-      let token = localStorage.getItem('token');
-      let domain = localStorage.getItem('currentdomain');
+      let token = sessionStorage.getItem('token');
+      let domain = sessionStorage.getItem('currentdomain');
 
       let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
       let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;

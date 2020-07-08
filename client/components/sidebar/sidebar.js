@@ -304,11 +304,11 @@ BlazeComponent.extendComponent({
       self.setLoading(false);
       if (err) self.setError(err.error);
       else if (ret.email) {
-        let user = Users.findOne({ _id: localStorage.getItem('Meteor.userId:/:/wekan') });
+        let user = Users.findOne({ _id: sessionStorage.getItem('Meteor.userId:/:/wekan') });
         let userInvited = Users.findOne(idNameEmail);
         let prefix = Meteor.settings.public.ecoUrl;
-        let token = localStorage.getItem('token');
-        let domain = localStorage.getItem('currentdomain');
+        let token = sessionStorage.getItem('token');
+        let domain = sessionStorage.getItem('currentdomain');
 
         let notifyUrl = `${prefix}api/1/notifications/notify?access_token=${token}`;
         let userUrl = `${prefix}api/1/users/${domain}/${user.username}?access_token=${token}`;
