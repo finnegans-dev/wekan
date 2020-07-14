@@ -417,7 +417,7 @@ const CreateBoard = BlazeComponent.extendComponent({
         this.createPendienteList(0);
         this.createEnCuersoList(1);
         this.createHechoList(2);
-        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTOITEM&filtroString=ProyectoID:' + project + '&access_token=' + sessionStorage.getItem('token'),
+        HTTP.get(this.url + '/api/1/teamplace/filters?diccAlias=PROYECTOITEM&filtroString=ProyectoID:' + project + '&access_token=' + localStorage.getItem('token'),
             (error, response) => {
                 if (error) {
                     this.createDefaultSwimlane();
