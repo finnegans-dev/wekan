@@ -8,17 +8,17 @@ template(name="finnegBoardHeaderBar")
         +viewer
           = title
 
-  //- .board-header-btns.left
+  .board-header-btns.left
     unless isMiniScreen
       unless isSandstorm
         if currentBoard
           if currentUser
             //- a.board-header-btn.js-star-board(class="{{#if isStarred}}is-active{{/if}}"
-            //-   title="{{#if isStarred}}{{_ 'click-to-unstar'}}{{else}}{{_ 'click-to-star'}}{{/if}} {{_ 'starred-boards-description'}}")
-            //-   i.fa(class="fa-star{{#unless isStarred}}-o{{/unless}}")
-            //-   if showStarCounter
-            //-     span
-            //-       = currentBoard.stars
+              title="{{#if isStarred}}{{_ 'click-to-unstar'}}{{else}}{{_ 'click-to-star'}}{{/if}} {{_ 'starred-boards-description'}}")
+              i.fa(class="fa-star{{#unless isStarred}}-o{{/unless}}")
+              if showStarCounter
+                span
+                  = currentBoard.stars
 
             a.board-header-btn(
               class="{{#if currentUser.isBoardAdmin}}js-change-visibility{{else}}is-disabled{{/if}}"
@@ -26,7 +26,7 @@ template(name="finnegBoardHeaderBar")
               i.fa(class="{{#if currentBoard.isPublic}}fa-globe{{else}}fa-lock{{/if}}")
               span {{_ currentBoard.permission}}
 
-            a.board-header-btn.js-watch-board(
+            //- a.board-header-btn.js-watch-board(
               title="{{_ watchLevel }}")
               if $eq watchLevel "watching"
                 i.fa.fa-eye

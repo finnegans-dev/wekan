@@ -49,7 +49,6 @@ a.board-header-btn.js-star-board {
 
 #header {
     margin-top: 7px !important;
-    border-bottom: 1px solid lightgray;
 }
 
 #header,
@@ -95,15 +94,6 @@ a.board-header-btn.js-star-board {
     line-height: 22.5px;
     text-align: center;
     margin: 4px 8px 4px 10px;
-}
-
-#header #header-main-bar .board-header-btns.right {
-    float: left;
-}
-
-.js-open-board-menu {
-    position: absolute;
-    right: 0px;
 }
 
 a.board-header-btn.is-active {
