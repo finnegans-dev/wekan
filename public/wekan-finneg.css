@@ -75,8 +75,8 @@ a.board-header-btn.js-star-board {
 }
 
 #header #header-main-bar .board-header-btn {
-    height: 35px;
-    width: 12%
+    height: 37px;
+    width: 8%
 }
 
 #header #header-main-bar .board-header-btns {
@@ -652,7 +652,7 @@ a.js-subtask-settings {
     left: 20px;
     font-family: 'Montserrat';
     color: black;
-    font-size: 16px;
+    board-header-btn font-size: 16px;
 }
 
 .attachment-details-actions a.js-download {
@@ -709,10 +709,6 @@ a.js-add-attachment:before {
     border-radius: 5px;
 }
 
-.swimlane-name-input {
-    width: 20%;
-}
-
 .swimlane-name-input:focus {
     border: 2px solid #7fe5fe !important;
     border-radius: 5px;
@@ -729,6 +725,14 @@ a.js-add-attachment:before {
 
 .list-name-input::placeholder {
     color: #7fe5fe;
+}
+
+.js-open-add-swimlane {
+    width: 12% !important;
+}
+
+.js-open-add-list {
+    width: 12% !important;
 }
 
 @media only screen and (max-width: 768px) {
