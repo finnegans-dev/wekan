@@ -83,15 +83,17 @@ template(name="finnegBoardHeaderBar")
 
         if isAdmin
           a.board-header-btn.js-open-add-list(title="{{_ 'addListPopup-title'}}" )
-            i.fa.fa-plus
-            span {{_ 'add-list' }}
+            unless showAddListInput.get
+              i.fa.fa-plus
+              span {{_ 'add-list' }}
             if showAddListInput.get
               +finnegAddListPopup
 
           if isSwimlaneBoardView
             a.board-header-btn.js-open-add-swimlane(title="{{_ 'addSwimlanePopup-title'}}")
-              i.fa.fa-plus
-              span {{_ 'add-swimlane' }}
+              unless showAddSwimlaneInput.get
+                  i.fa.fa-plus
+                  span {{_ 'add-swimlane' }}
               if showAddSwimlaneInput.get
                 +finnegAddSwimlanePopup
 
@@ -366,12 +368,6 @@ template(name="finnegOutgoingWebhooksPopup")
 
 template(name="finnegAddListPopup")
   input.list-name-input.full-line(type="text" placeholder="{{_ 'add-list'}}" autocomplete="off" autofocus)
-  .edit-controls.clearfix
-    //- button.primary.confirm.js-create-list {{_ 'save'}}
-    //- a.fa.fa-times-thin.js-close-form
 
 template(name="finnegAddSwimlanePopup")
   input.swimlane-name-input.full-line(type="text" placeholder="{{_ 'add-swimlane'}}" autocomplete="off" autofocus)
-  .edit-controls.clearfix
-    //- button.primary.confirm.js-create-swimlane {{_ 'save'}}
-    //- a.fa.fa-times-thin.js-close-form
