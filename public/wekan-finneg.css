@@ -714,19 +714,21 @@ a.js-add-attachment:before {
 }
 
 .swimlane-name-input:focus {
-    border: 1px solid lightgray !important;
+    border: 2px solid #7fe5fe !important;
+    border-radius: 5px;
 }
 
 .swimlane-name-input::placeholder {
-    color: rgb(178, 179, 183);
+    color: #7fe5fe;
 }
 
 .list-name-input:focus {
-    border: 1px solid lightgray !important;
+    border: 2px solid #7fe5fe !important;
+    border-radius: 5px;
 }
 
 .list-name-input::placeholder {
-    color: rgb(178, 179, 183);
+    color: #7fe5fe;
 }
 
 @media only screen and (max-width: 768px) {
