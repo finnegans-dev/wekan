@@ -728,11 +728,19 @@ a.js-add-attachment:before {
 }
 
 .js-open-add-swimlane {
-    width: 12% !important;
+    width: 13% !important;
 }
 
 .js-open-add-list {
-    width: 12% !important;
+    width: 13% !important;
+}
+
+#modal .modal-content {
+    background-color: white;
+    padding: 1px;
+    border: 1px solid black;
+    border-radius: 0;
+    border-top: 2px solid black;
 }
 
 @media only screen and (max-width: 768px) {

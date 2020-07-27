@@ -48,24 +48,6 @@ Template.finnegBoardMenuPopup.helpers({
     },
 });
 
-Template.finnegViewMenuPopup.events({
-    'click .js-view-all' () {
-        const currentUser = Meteor.user();
-        currentUser.setBoardStatusView('all');
-        Popup.close();
-    },
-    'click .js-view-pending' () {
-        const currentUser = Meteor.user();
-        currentUser.setBoardStatusView('pending');
-        Popup.close();
-    },
-    'click .js-view-finished' () {
-        const currentUser = Meteor.user();
-        currentUser.setBoardStatusView('finished');
-        Popup.close();
-    },
-});
-
 Template.finnegViewMenuPopup.helpers({
     isSelected(view) {
         return (!Meteor.user().profile.boardStatusView && view === 'pending') || view == Meteor.user().profile.boardStatusView
@@ -147,7 +129,7 @@ BlazeComponent.extendComponent({
                 }
             },
             'click .js-open-filter-view' () {
-                Sidebar.setView('filter');
+                Modal.open('finnegFilter');
             },
             'click .js-filter-reset' (evt) {
                 evt.stopPropagation();
