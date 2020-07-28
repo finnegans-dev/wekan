@@ -4,24 +4,63 @@ BlazeComponent.extendComponent({
         this.tagsSelected = new ReactiveVar("(0/0)");
         this.memebersSelected = new ReactiveVar("(0/0)");
         this.assingToSelected = new ReactiveVar("(0/0)");
+        this.isBeginView = new ReactiveVar(true);
+        this.currentBoard = Boards.findOne(Session.get('currentBoard'));
+        if (!Filter.isActive()) {
+            Filter.reset()
+            this.setAllFiltersSelected()
+        }
         this.getFiltersInfo()
     },
     getMenuSelected(menu) {
         return this.menuSelected.get() == menu;
     },
     getFiltersInfo() {
-        const currentBoard = Boards.findOne(Session.get('currentBoard'));
-        let num = currentBoard.labels.length + 1 - Filter.labelIds._selectedElements.length;
-        let den = currentBoard.labels.length + 1;
+        let num = Filter.labelIds._selectedElements.length;
+        let den = this.currentBoard.labels.length + 1;
         this.tagsSelected.set("(" + num.toString() + "/" + den.toString() + ")")
 
-        num = currentBoard.members.length - Filter.members._selectedElements.length;
-        den = currentBoard.members.length;
+        num = Filter.members._selectedElements.length;
+        den = this.currentBoard.members.length;
         this.memebersSelected.set("(" + num.toString() + "/" + den.toString() + ")")
 
-        num = currentBoard.members.length + 2 - Filter.assignedTo._selectedElements.length;
-        den = currentBoard.members.length + 2;
+        num = Filter.assignedTo._selectedElements.length + Filter.userId._selectedElements.length;
+        den = this.currentBoard.members.length + 2;
         this.assingToSelected.set("(" + num.toString() + "/" + den.toString() + ")")
+
+        if (this.currentBoard.labels.length + 1 == Filter.labelIds._selectedElements.length &&
+            this.currentBoard.members.length == Filter.members._selectedElements.length &&
+            this.currentBoard.members.length + 2 == Filter.assignedTo._selectedElements.length +
+            Filter.userId._selectedElements.length)
+            Filter.isAllSelected = true;
+        else
+            Filter.isAllSelected = false;
+        console.log(Filter)
+        Filter.resetExceptions();
+    },
+    setAllFiltersSelected() {
+        Filter.labelIds.toggle(undefined);
+        for (let i = 0; i < this.currentBoard.labels.length; i++) {
+            if (!Filter.labelIds.isSelected(this.currentBoard.labels[i]._id)) {
+                Filter.labelIds.toggle(this.currentBoard.labels[i]._id);
+                Filter.resetExceptions();
+            }
+        }
+        for (let i = 0; i < this.currentBoard.members.length; i++) {
+            if (!Filter.members.isSelected(this.currentBoard.members[i].userId)) {
+                Filter.members.toggle(this.currentBoard.members[i].userId);
+                Filter.resetExceptions();
+            }
+        }
+        Filter.assignedTo.toggle(undefined);
+        Filter.userId.toggle(Meteor.userId());
+        for (let i = 0; i < this.currentBoard.members.length; i++) {
+            if (!Filter.assignedTo.isSelected(this.currentBoard.members[i].userId)) {
+                Filter.assignedTo.toggle(this.currentBoard.members[i].userId);
+                Filter.resetExceptions();
+            }
+        }
+        this.getFiltersInfo()
     },
     events() {
         return [{
@@ -48,6 +87,7 @@ BlazeComponent.extendComponent({
                 //Filter.members.toggle(this.currentData()._id);
                 Filter.userId.toggle(Meteor.userId());
                 Filter.resetExceptions();
+                this.getFiltersInfo()
             },
             'click .js-toggle-custom-fields-filter' (evt) {
                 evt.preventDefault();
@@ -72,7 +112,6 @@ BlazeComponent.extendComponent({
             },
             'click .js-select-filter-tags' () {
                 this.menuSelected.set("tags")
-                console.log(this.currentBoard)
             },
             'click .js-select-filter-privacy' () {
                 this.menuSelected.set("privacy")

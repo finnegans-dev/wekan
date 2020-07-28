@@ -469,7 +469,7 @@ Filter = {
     assignedTo: new SetFilter(),
     customFields: new SetFilter('_id'),
     advanced: new AdvancedFilter(),
-
+    isAllSelected: false,
     _fields: ['labelIds', 'members', 'customFields', 'userId', 'assignedTo'],
 
     // We don't filter cards that have been added after the last filter change. To
@@ -478,11 +478,22 @@ Filter = {
     _exceptions: [],
     _exceptionsDep: new Tracker.Dependency(),
 
+    // isActive() {
+    //     return _.any(this._fields, (fieldName) => {
+    //         return this[fieldName]._isActive();
+    //     }) || this.advanced._isActive();
+    // },
+
+    //  finneg code
     isActive() {
-        return _.any(this._fields, (fieldName) => {
+        console.log(_.any(['labelIds', 'members', 'userId', 'assignedTo'], (fieldName) => {
             return this[fieldName]._isActive();
-        }) || this.advanced._isActive();
+        }) && !this.isAllSelected)
+        return _.any(['labelIds', 'members'], (fieldName) => {
+            return this[fieldName]._isActive();
+        }) && !this.isAllSelected || this.advanced._isActive();
     },
+    // end finneg code
 
     _getMongoSelector() {
         if (!this.isActive())
