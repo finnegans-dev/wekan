@@ -67,6 +67,7 @@ a.board-header-btn.js-star-board {
 #header-main-bar i:before {
     color: white;
     font-size: 12px;
+    margin: 0 !important;
 }
 
 #header {
@@ -75,8 +76,8 @@ a.board-header-btn.js-star-board {
 }
 
 #header #header-main-bar .board-header-btn {
-    height: 37px;
-    width: 8%
+    height: 33px;
+    width: 90px;
 }
 
 #header #header-main-bar .board-header-btns {
@@ -652,7 +653,7 @@ a.js-subtask-settings {
     left: 20px;
     font-family: 'Montserrat';
     color: black;
-    board-header-btn font-size: 16px;
+    /* board-header-btn font-size: 16px; */
 }
 
 .attachment-details-actions a.js-download {
@@ -709,6 +710,11 @@ a.js-add-attachment:before {
     border-radius: 5px;
 }
 
+.swimlane-name-input {
+    min-height: 0 !important;
+    height: 100%;
+}
+
 .swimlane-name-input:focus {
     border: 2px solid #7fe5fe !important;
     border-radius: 5px;
@@ -728,11 +734,11 @@ a.js-add-attachment:before {
 }
 
 .js-open-add-swimlane {
-    width: 13% !important;
+    width: 140px !important;
 }
 
 .js-open-add-list {
-    width: 13% !important;
+    width: 140px !important;
 }
 
 #modal .modal-content {
@@ -780,4 +786,43 @@ a.js-add-attachment:before {
     .card-details-canvas {
         border: none;
     }
+}
+
+.sidebar-list>li>.name {
+    height: 30px;
+    display: flex;
+    line-height: 40px;
+    margin-bottom: 5px;
+}
+
+.card-label .square {
+    margin: 0;
+}
+
+.js-toggle-assignedTo-filter>.fa-check,
+.js-toggle-label-filter>.fa-check,
+.js-toggle-member-filter>.fa-check {
+    line-height: 30px;
+}
+
+.sidebar-list-item-description {
+    text-align: center;
+    line-height: 30px;
+}
+
+.js-open-filter-view-active {
+    border: 1px solid #02ceff !important;
+    height: 31px !important;
+}
+
+.js-filter-reset>.fa {
+    height: 21px !important;
+    width: 21px !important;
+    background-color: transparent !important;
+    border: 1px solid #02ceff !important;
+}
+
+.js-filter-reset>i:before {
+    color: #02ceff !important;
+    font-size: 15px !important;
 }
