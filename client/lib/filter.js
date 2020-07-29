@@ -16,11 +16,22 @@ class SetFilter {
         this._dep = new Tracker.Dependency();
         this._selectedElements = [];
         this.subField = subField;
+        this.allSelected = false;
     }
 
     isSelected(val) {
         this._dep.depend();
         return this._selectedElements.indexOf(val) > -1;
+    }
+
+    isAllSelected() {
+        this._dep.depend();
+        return this.allSelected;
+    }
+
+    setAllSelected(val) {
+        this.allSelected = val;
+        this._dep.changed();
     }
 
     add(val) {
@@ -486,9 +497,6 @@ Filter = {
 
     //  finneg code
     isActive() {
-        console.log(_.any(['labelIds', 'members', 'userId', 'assignedTo'], (fieldName) => {
-            return this[fieldName]._isActive();
-        }) && !this.isAllSelected)
         return _.any(['labelIds', 'members'], (fieldName) => {
             return this[fieldName]._isActive();
         }) && !this.isAllSelected || this.advanced._isActive();

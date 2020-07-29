@@ -813,6 +813,7 @@ a.js-add-attachment:before {
 .js-open-filter-view-active {
     border: 1px solid #02ceff !important;
     height: 31px !important;
+    background-color: white;
 }
 
 .js-filter-reset>.fa {
@@ -825,4 +826,5 @@ a.js-add-attachment:before {
 .js-filter-reset>i:before {
     color: #02ceff !important;
     font-size: 15px !important;
+    line-height: 20px;
 }

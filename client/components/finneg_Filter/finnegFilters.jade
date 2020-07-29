@@ -86,70 +86,101 @@ template(name="finnegMoveSelectionPopup")
   +boardLists
 
 template(name="finnegTags")
+  .top
+    .selectAllBox
+      input.select-check.js-select-all-tags(type='checkbox', name='slectAllTags' checked='{{Filter.labelIds.isAllSelected}}')
+    .searchBox
+      input.js-search-tags(placeholder="Buscar")
   ul.sidebar-list
-    li(class="{{#if Filter.labelIds.isSelected undefined}}active{{/if}}")
-      a.name.js-toggle-label-filter
-        span.sidebar-list-item-description
-          | {{_ 'filter-no-label'}}
-        if Filter.labelIds.isSelected undefined
-          i.fa.fa-check
-    each currentBoard.labels
+    unless filterNoLabel.get
+      li(class="{{#if Filter.labelIds.isSelected undefined}}active{{/if}}")
+        .top
+          .selectBox
+            input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected undefined}}")
+          .tag
+            a.name.js-toggle-label-filter
+              span.sidebar-list-item-description
+                | {{_ 'filter-no-label'}}
+    each filterLabels.get
       li
-        a.name.js-toggle-label-filter
-          span.card-label.square(class="card-label-{{color}}")
-          span.sidebar-list-item-description
-            if name
-              = name
-            else
-              span.quiet {{_ "label-default" (_ (concat "color-" color))}}
-          if Filter.labelIds.isSelected _id
-            i.fa.fa-check
+        .top
+          .selectBox
+            input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected _id}}")
+          .description
+            a.name.js-toggle-label-filter
+              span.card-label.square(class="card-label-{{color}}")
+              span.sidebar-list-item-description
+                if name
+                  = name
+                else
+                  span.quiet {{_ "label-default" (_ (concat "color-" color))}}
 
 
 template(name="finnegPrivacy")
+  .top
+    .selectAllBox
+      input.select-check.js-select-all-members(type='checkbox', name='slectAllMembers' checked='{{Filter.members.isAllSelected}}')
+    .searchBox
+      input.js-search-members(placeholder="Buscar")
   ul.sidebar-list
     span Privado para
-    //li(class="{{#if Filter.members.isSelected undefined}}active{{/if}}")
+    //-li(class="{{#if Filter.members.isSelected undefined}}active{{/if}}")
           a.name.js-toggle-member-filter
             span.sidebar-list-item-description
               | {{_ 'filter-no-member'}}
             if Filter.members.isSelected undefined
               i.fa.fa-check
-    each currentBoard.activeMembers
+    each filterMembers.get
       with getUser userId
         li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
-          a.name.js-toggle-member-filter
-            +userAvatar(userId=this._id)
-            span.sidebar-list-item-description
-              = profile.fullname
-              | (<span class="username">{{ username }}</span>)
-            if Filter.members.isSelected _id
-              i.fa.fa-check
+          .top
+            .selectBox
+              input.select-check.js-toggle-member-filter(type='checkbox', name='slectMember' checked="{{Filter.members.isSelected _id}}")
+            .description
+              a.name.js-toggle-member-filter
+                +userAvatar(userId=this._id)
+                span.sidebar-list-item-description
+                  = profile.fullname
+                  | (<span class="username">{{ username }}</span>)
 
 template(name="finnegAssigned")
+  .top
+    .selectAllBox
+      input.select-check.js-select-all-assignedTo(type='checkbox', name='slectAllAssigned' checked='{{Filter.assignedTo.isAllSelected}}')
+    .searchBox
+      input.js-search-assignedTo(placeholder="Buscar")
   ul.sidebar-list
-    li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
+    unless filterUnassigned.get
+      li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
+      .top
+        .selectBox
+          input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected undefined}}")
+        .description
           a.name.js-toggle-assignedTo-filter
             span.sidebar-list-item-description
               | {{_ 'filter-not-assigned'}}
-            if Filter.assignedTo.isSelected undefined
-              i.fa.fa-check
-    li(class="{{#if Filter.userId.isSelected undefined}}active{{/if}}")
-          a.name.js-toggle-assigned-filter
-            span.sidebar-list-item-description
+    unless filterAssignedByMe.get
+      li(class="{{#if Filter.userId.isSelected undefined}}active{{/if}}")
+      with currentUser
+        .top
+          .selectBox
+            input.select-check.js-toggle-assigned-filter(type='checkbox', name='slectMember' checked="{{Filter.userId.isSelected _id}}")
+          .description
+            a.name.js-toggle-assigned-filter
+              span.sidebar-list-item-description
               | {{_ 'filter-assigned-me'}}
-            if Filter.userId.isSelected currentUser._id
-              i.fa.fa-check
-    each currentBoard.activeMembers
+    each filterAssignedTo.get
       with getUser userId
         li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
-          a.name.js-toggle-assignedTo-filter
-            +userAvatar(userId=this._id)
-            span.sidebar-list-item-description
-              = profile.fullname
-              | (<span class="username">{{ username }}</span>)
-            if Filter.assignedTo.isSelected _id
-              i.fa.fa-check
+          .top
+            .selectBox
+              input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected _id}}")
+            .description
+              a.name.js-toggle-assignedTo-filter
+                +userAvatar(userId=this._id)
+                span.sidebar-list-item-description
+                  = profile.fullname
+                  | (<span class="username">{{ username }}</span>)
 
 template(name="finnegViewMenuPopup")
   ul.pop-over-list
