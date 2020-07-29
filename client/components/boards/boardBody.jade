@@ -2,7 +2,7 @@ template(name="board")
   if isBoardReady.get
     if currentBoard
       if onlyShowCurrentCard
-        +cardDetails(currentCard)
+        +finnegCardDetails(currentCard)
       else
         +boardBody
     else
@@ -31,5 +31,5 @@ template(name="boardBody")
 template(name="calendarView")
   .calendar-view.swimlane
     if currentCard
-      +cardDetails(currentCard)
+      +finnegCardDetails(currentCard)
     +fullcalendar(calendarOptions)

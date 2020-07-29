@@ -1,137 +1,137 @@
-@import 'nib'
+// @import 'nib'
 
-.card-details
-  padding: 0 20px
-  flex-shrink: 0
-  flex-basis: 470px
-  will-change: flex-basis
-  overflow-y: scroll
-  overflow-x: hidden
-  background: darken(white, 3%)
-  border-radius: bottom 3px
-  z-index: 20 !important
-  animation: flexGrowIn 0.1s
-  box-shadow: 0 0 7px 0 darken(white, 30%)
-  transition: flex-basis 0.1s
+// .card-details
+//   padding: 0 20px
+//   flex-shrink: 0
+//   flex-basis: 470px
+//   will-change: flex-basis
+//   overflow-y: scroll
+//   overflow-x: hidden
+//   background: darken(white, 3%)
+//   border-radius: bottom 3px
+//   z-index: 20 !important
+//   animation: flexGrowIn 0.1s
+//   box-shadow: 0 0 7px 0 darken(white, 30%)
+//   transition: flex-basis 0.1s
 
-  .card-details-canvas
-    width: 470px
+//   .card-details-canvas
+//     width: 470px
 
-  .card-details-header
-    margin: 0 -20px 5px
-    padding 7px 16px
-    background: darken(white, 7%)
-    border-bottom: 1px solid darken(white, 14%)
+//   .card-details-header
+//     margin: 0 -20px 5px
+//     padding 7px 16px
+//     background: darken(white, 7%)
+//     border-bottom: 1px solid darken(white, 14%)
 
-    .close-card-details,
-    .card-details-menu
-      float: right
+//     .close-card-details,
+//     .card-details-menu
+//       float: right
 
-    .close-card-details
-      font-size: 24px
-      padding: 5px
-      margin-right: -8px
+//     .close-card-details
+//       font-size: 24px
+//       padding: 5px
+//       margin-right: -8px
 
-    .card-details-menu
-      font-size: 17px
-      padding: 10px
+//     .card-details-menu
+//       font-size: 17px
+//       padding: 10px
 
-    .card-details-watch
-      font-size: 17px
-      padding-left: 7px
-      color: #a6a6a6
+//     .card-details-watch
+//       font-size: 17px
+//       padding-left: 7px
+//       color: #a6a6a6
 
-    .card-details-title
-      font-weight: bold
-      font-size: 1.33em
-      margin: 7px 0 0
-      padding: 0
+//     .card-details-title
+//       font-weight: bold
+//       font-size: 1.33em
+//       margin: 7px 0 0
+//       padding: 0
 
-    .linked-card-location
-      font-style: italic
-      font-size: 1em
-      margin-bottom: 0
-      & p
-        margin-bottom: 0
+//     .linked-card-location
+//       font-style: italic
+//       font-size: 1em
+//       margin-bottom: 0
+//       & p
+//         margin-bottom: 0
 
-    form.inlined-form
-      margin-top: 5px
-      margin-bottom: 10px
+//     form.inlined-form
+//       margin-top: 5px
+//       margin-bottom: 10px
 
-    .card-details-list
-      font-size: 0.85em
-      margin-bottom: 3px
+//     .card-details-list
+//       font-size: 0.85em
+//       margin-bottom: 3px
 
-      a.card-details-list-title
-        font-weight: bold
+//       a.card-details-list-title
+//         font-weight: bold
 
-        &.is-editable
-          display: inline-block
-          background: darken(white, 10%)
-          border-radius: 3px
-          padding: 0px 5px
+//         &.is-editable
+//           display: inline-block
+//           background: darken(white, 10%)
+//           border-radius: 3px
+//           padding: 0px 5px
 
-  .card-description textarea
-    min-height: 100px
+//   .card-description textarea
+//     min-height: 100px
 
-  .card-details-items
-    display: flex
-    flex-wrap: wrap
-    margin: 15px 0
+//   .card-details-items
+//     display: flex
+//     flex-wrap: wrap
+//     margin: 15px 0
 
-    .card-details-item
-      margin-right: 0.5em
-      &:last-child
-        margin-right: 0
-      &.card-details-item-labels,
-      &.card-details-item-members,
-      &.card-details-item-received,
-      &.card-details-item-start,
-      &.card-details-item-due,
-      &.card-details-item-end,
-      &.card-details-item-customfield,
-      &.card-details-item-name
-        max-width: 50%
-        flex-grow: 1
+//     .card-details-item
+//       margin-right: 0.5em
+//       &:last-child
+//         margin-right: 0
+//       &.card-details-item-labels,
+//       &.card-details-item-members,
+//       &.card-details-item-received,
+//       &.card-details-item-start,
+//       &.card-details-item-due,
+//       &.card-details-item-end,
+//       &.card-details-item-customfield,
+//       &.card-details-item-name
+//         max-width: 50%
+//         flex-grow: 1
 
-    .card-details-item.card-details-item-received
-        display: none;
+//     .card-details-item.card-details-item-received
+//         display: none;
 
-  .card-details-item-title
-    font-size: 16px
-    color: #000
+//   .card-details-item-title
+//     font-size: 16px
+//     color: #000
 
-  .card-label
-    padding-top: 5px
-    padding-bottom: 5px
+//   .card-label
+//     padding-top: 5px
+//     padding-bottom: 5px
 
-  .activities
-    padding-top: 10px
+//   .activities
+//     padding-top: 10px
 
-input[type="text"].attachment-add-link-input
-  float: left
-  margin: 0 0 8px
-  width: 80%
+// input[type="text"].attachment-add-link-input
+//   float: left
+//   margin: 0 0 8px
+//   width: 80%
 
-input[type="submit"].attachment-add-link-submit
-  float: left
-  margin: 0 0 8px 4px
-  padding: 6px 12px
-  width: 18%
+// input[type="submit"].attachment-add-link-submit
+//   float: left
+//   margin: 0 0 8px 4px
+//   padding: 6px 12px
+//   width: 18%
 
-@media screen and (max-width: 800px)
-  .card-details
-    width: calc(100% - 40px)
-    padding: 0px 20px 0px 20px
-    margin: 0px
-    transition: none
+// @media screen and (max-width: 800px)
+//   .card-details
+//     width: calc(100% - 40px)
+//     padding: 0px 20px 0px 20px
+//     margin: 0px
+//     transition: none
 
-    .card-details-canvas
-      width: 100%
+//     .card-details-canvas
+//       width: 100%
 
-    .card-details-header
-      .close-card-details
-        margin-right: 0px
+//     .card-details-header
+//       .close-card-details
+//         margin-right: 0px
 
-      .card-details-menu
-        margin-right: 10px
+//       .card-details-menu
+//         margin-right: 10px

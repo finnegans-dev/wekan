@@ -13,7 +13,7 @@ template(name="swimlane")
       each currentBoard.lists
         +list(this)
         if currentCardIsInThisList _id ../_id
-          +cardDetails(currentCard)
+          +finnegCardDetails(currentCard)
       if currentUser.isBoardMember
         +addListAndSwimlaneForm
 
@@ -31,7 +31,7 @@ template(name="listsGroup")
       each currentBoard.lists
         +list(this)
         if currentCardIsInThisList _id null
-          +cardDetails(currentCard)
+          +finnegCardDetails(currentCard)
       if currentUser.isBoardMember
         +addListForm
 
