@@ -9,7 +9,6 @@
   display: -moz-flex
   display: -ms-flexbox
   display: flex
-
 .option
   @extends .flex
   -webkit-border-radius: 3px;
@@ -21,9 +20,73 @@
   margin-top: 5px;
   padding: 5px;
 
-.js-open-filter-view
-  width: 76px !important
-
-
 .clearFilter
   width: 120px !important
+#header,
+#header-main-bar
+  background-color: #f8f8f9 !important
+  height: 36px !important
+  padding: 0px !important
+  margin-top: 0px !important
+  display: flex;
+  width: 100%
+  .board-header-btns
+    width: 100% !important
+    margin-top: 0px
+    :not(.is-active):not(.fa):hover
+      background: transparent !important;
+    span
+      color #8897A3
+      margin-right: 0 !important
+      font-size: 12px;
+    .js-open-board-menu
+      border-color: #eff0f1 !important
+      i
+        background-color: transparent !important
+        &:before
+          color: #8897A3
+    &:not(.js-open-board-menu) i.fa
+      background: #24cffd;
+      border-radius: 50%;
+      width: 22.5px;
+      height: 22.5px;
+      line-height: 24.5px !important;
+      text-align: center;
+      margin: 4px 8px 4px 10px !important;
+    .left
+      width 90%
+      .swimlane-name-input,
+      .list-name-input
+          min-height: 0 !important;
+          height: 100%;
+      .swimlane-name-input:focus
+          border: 2px solid #7fe5fe !important;
+          border-radius: 5px;
+      .swimlane-name-input::placeholder
+          color: #7fe5fe;
+      .list-name-input:focus
+          border: 2px solid #7fe5fe !important;
+          border-radius: 5px;
+      .list-name-input::placeholder
+          color: #7fe5fe;
+      .js-open-add-swimlane
+          width: 145px !important;
+      .js-open-add-list
+          width: 145px !important;
+      .js-open-filter-view-active
+        border: 1px solid #02ceff !important;
+        height: 31px !important;
+        background-color: white;
+      .js-open-filter-view
+        width: 80px !important
+      .js-filter-reset>.fa
+        height: 21px !important;
+        width: 21px !important;
+        background-color: transparent !important;
+        border: 1px solid #02ceff !important;
+      .js-filter-reset>i:before
+        color: #02ceff !important;
+        font-size: 15px !important;
+        line-height: 20px;
+    .right
+      width: 10%

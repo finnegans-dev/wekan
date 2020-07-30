@@ -373,7 +373,7 @@ Template.finnegCardDetailsActionsPopup.events({
         Popup.open('finnegEditCardStartDate')
     },
     'click .js-due-date' () {
-        Popup.open('finnegEditCardDueDate')
+        Modal.open('editCardDueDate')
     },
     'click .js-end-date' () {
         if (this.canModifyCard())
@@ -760,3 +760,18 @@ EscapeActions.register('detailsPane',
         noClickEscapeOn: '.js-card-details,.board-sidebar,#header',
     }
 );
+
+(class extends DatePicker {
+    onCreated() {
+        super.onCreated();
+        this.data().getReceived() && this.date.set(moment(this.data().getReceived()));
+    }
+
+    _storeDate(date) {
+        this.card.setReceived(date);
+    }
+
+    _deleteDate() {
+        this.card.setReceived(null);
+    }
+}).register('finnegEditCardReceivedDatePopup');

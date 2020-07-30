@@ -1,27 +1,73 @@
 @import 'nib'
 
+.containerFinnegCardDetails
+  display: flex;
+  position: fixed;
+  z-index: 9999;
+  width: 60%;
+  left: 20%;
+  height: 80%;
+  border: 1px solid #91959b;
+  border-top: 2px solid #91959b;
+  .left
+    width: 30%
+    background-color: #f8f8f9
+    padding: 4% 0 0 3%;
+    overflow-y: auto;
+    .left-item
+      min-height 20vh
+      .item-section
+        display: flex
+        i
+          background: #24cffd;
+          border-radius: 50%;
+          width: 22.5px;
+          height: 22.5px;
+          line-height: 22.5px;
+          text-align: center;
+          margin: 4px 8px 4px 10px;
+          color: white
+        h3
+          line-height: 30px;
+      .plus
+        margin-left: 35px
+        i
+          color: #24cffd;
+          font-size: 20px;
+    .due-date
+      background-color: transparent
+      color #787d85
+      margin-left: 35px
+      ::before
+        content: ''
+
+  .right
+    width: 70%
+    background-color: white
+    overflow-y: auto;
+
+
 .card-details
   padding: 0 20px
   flex-shrink: 0
   flex-basis: 470px
   will-change: flex-basis
-  overflow-y: scroll
+  overflow-y: auto
   overflow-x: hidden
-  background: darken(white, 3%)
   border-radius: bottom 3px
   z-index: 20 !important
   animation: flexGrowIn 0.1s
-  box-shadow: 0 0 7px 0 darken(white, 30%)
   transition: flex-basis 0.1s
-
+  .activities
+    padding-top: 0
+  .activity-title
+    margin: 0 0.5em -0.2em;
   .card-details-canvas
     width: 470px
 
   .card-details-header
     margin: 0 -20px 5px
     padding 7px 16px
-    background: darken(white, 7%)
-    border-bottom: 1px solid darken(white, 14%)
 
     .close-card-details,
     .card-details-menu
@@ -99,7 +145,7 @@
 
   .card-details-item-title
     font-size: 16px
-    color: #000
+    color: #c4c5ca
 
   .card-label
     padding-top: 5px
