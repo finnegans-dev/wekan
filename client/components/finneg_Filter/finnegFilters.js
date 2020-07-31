@@ -207,9 +207,7 @@ BlazeComponent.extendComponent({
             'keyup .js-search-members' (evt) {
                 let val = evt.currentTarget.value
                 if (val == '') {
-                    this.filterAssignedTo.set(this.currentBoard.activeMembers());
-                    this.filterUnassigned.set(false);
-                    this.filterAssignedByMe.set(false);
+                    this.filterMembers.set(this.currentBoard.activeMembers());
                     return
                 }
 

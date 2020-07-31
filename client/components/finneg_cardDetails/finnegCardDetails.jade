@@ -11,14 +11,14 @@ template(name="finnegCardDetails")
         .card-details-item.left-item
           .item-section
             i.fa.fa-user
-            h3.card-details-item-title {{_ 'assigned-to'}}
+            h4.title.card-details-item-title {{_ 'assigned-to'}}
           if getAssignedTo
             .viewer
               p {{ getAssignedTo }}
                 if canModifyCard
                   i.fa.fa-times.js-remove-assigned(style="padding-left: 10px;cursor:pointer;")
           else if canModifyCard
-            a.plus.card-details-item-add-button.js-due-date(title="{{_ 'card-assigned-title'}}")
+            a.plus.card-details-item-add-button.js-add-assigned(title="{{_ 'card-assigned-title'}}")
               i.fa.fa-plus
           //-each getMembers
               +userAvatar(userId=this cardId=../_id)
@@ -27,10 +27,10 @@ template(name="finnegCardDetails")
         .card-details-item.left-item
           .item-section
             i.fa.fa-tag
-            h3.card-details-item-title {{_ 'labels'}}
-            a(class="{{#if canModifyCardAssigned}}js-add-labels{{else}}is-disabled{{/if}}" title="{{_ 'card-labels-title'}}")
-              each labels
-                span.card-label(class="card-label-{{color}}" title=name)= name
+            h4.title.card-details-item-title {{_ 'labels'}}
+          a(class="{{#if canModifyCardAssigned}}js-add-labels{{else}}is-disabled{{/if}}" title="{{_ 'card-labels-title'}}")
+            each labels
+              span.card-label(class="card-label-{{color}}" title=name)= name
           if canModifyCardAssigned
             a.plus.js-add-labels(title="{{_ 'card-labels-title'}}")
               i.fa.fa-plus
@@ -38,7 +38,7 @@ template(name="finnegCardDetails")
         .card-details-item.left-item
           .item-section
             i.fa.fa-calendar-alt
-            h3.card-details-item-title {{_ 'card-due'}}
+            h4.title.card-details-item-title {{_ 'card-due'}}
           if getDue
             +cardDueDate
           else

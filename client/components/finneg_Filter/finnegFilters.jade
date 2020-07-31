@@ -123,13 +123,10 @@ template(name="finnegPrivacy")
     .searchBox
       input.js-search-members(placeholder="Buscar")
   ul.sidebar-list
-    span Privado para
-    //-li(class="{{#if Filter.members.isSelected undefined}}active{{/if}}")
-          a.name.js-toggle-member-filter
-            span.sidebar-list-item-description
-              | {{_ 'filter-no-member'}}
-            if Filter.members.isSelected undefined
-              i.fa.fa-check
+    .top
+      .selectAllBox
+      .searchBox
+        span Privado para
     each filterMembers.get
       with getUser userId
         li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
@@ -152,13 +149,13 @@ template(name="finnegAssigned")
   ul.sidebar-list
     unless filterUnassigned.get
       li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
-      .top
-        .selectBox
-          input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected undefined}}")
-        .description
-          a.name.js-toggle-assignedTo-filter
-            span.sidebar-list-item-description
-              | {{_ 'filter-not-assigned'}}
+        .top
+          .selectBox
+            input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected undefined}}")
+          .description
+            a.name.js-toggle-assignedTo-filter
+              span.sidebar-list-item-description
+                | {{_ 'filter-not-assigned'}}
     unless filterAssignedByMe.get
       li(class="{{#if Filter.userId.isSelected undefined}}active{{/if}}")
       with currentUser
@@ -185,14 +182,21 @@ template(name="finnegAssigned")
 template(name="finnegViewMenuPopup")
   ul.pop-over-list
     li
-      a.js-view-all Todo
-        if isSelected 'all'
-          i.fa.fa-check(style="float: right;padding-right: 15px;line-height: 30px;")
+      .top
+        .selectBox
+          input.select-view-radio.js-view-all(type='radio', name='slectMember' checked="{{isSelected 'all'}}")
+        .description
+          a.js-view-all Todo
     li
-      a.js-view-pending Pendiente
-        if isSelected 'pending'
-          i.fa.fa-check(style="float: right;padding-right: 15px;line-height: 30px;")
+      .top
+        .selectBox
+          input.select-view-radio.js-view-pending(type='radio', name='slectMember' checked="{{isSelected 'pending'}}")
+        .description
+          a.js-view-pending Pendiente
     li
-      a.js-view-finished Finalizado
-        if isSelected 'finished'
-          i.fa.fa-check(style="float: right;padding-right: 15px;line-height: 30px;")
+      .top
+        .selectBox
+          input.select-view-radio.js-view-finished(type='radio', name='slectMember' checked="{{isSelected 'finished'}}")
+        .description
+          a.js-view-finished Finalizado
+
