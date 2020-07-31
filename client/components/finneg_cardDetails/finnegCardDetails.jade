@@ -148,31 +148,32 @@ template(name="finnegCardDetails")
         //-       +cardSpentTime
 
         //- XXX We should use "editable" to avoid repetiting ourselves
-        if canModifyCard
-          h3.card-details-item-title {{_ 'description'}}
-          +finnegInlinedCardDescription(classNames="card-description js-card-description")
-            +editor(autofocus=true)
-              | {{getUnsavedValue 'cardDescription' _id getDescription}}
-            .edit-controls.clearfix
-              button.primary(type="submit") {{_ 'save'}}
-              a.fa.fa-times-thin.js-close-inlined-form
-          else
-            a.js-open-inlined-form
-              if getDescription
-                +viewer
-                  = getDescription
-              else
-                | {{_ 'edit'}}
-            if (hasUnsavedValue 'cardDescription' _id)
-              p.quiet
-                | {{_ 'unsaved-description'}}
-                a.js-open-inlined-form {{_ 'view-it'}}
-                = ' - '
-                a.js-close-inlined-form {{_ 'discard'}}
-        else if getDescription
-          h3.card-details-item-title {{_ 'description'}}
-          +viewer
-            = getDescription
+        //- if canModifyCard
+        h3.card-details-item-title {{_ 'description'}}
+        //- +finnegInlinedCardDescription(classNames="card-description js-card-description")
+        +editor(autofocus=true)
+          | {{#unless editDescription.get}}{{getUnsavedValue 'cardDescription' _id getDescription}}{{else}}{{getUnsavedValue 'cardDescription' _id newDescription.get}}{{/unless}}
+        if editDescription.get
+          .edit-controls.clearfix
+            button.primary(type="submit") {{_ 'save'}}
+            a.fa.fa-times-thin.js-close-inlined-form
+          //- else
+          //-   a.js-open-inlined-form
+          //-     if getDescription
+          //-       +viewer
+          //-         = getDescription
+          //-     else
+          //-       | {{_ 'edit'}}
+          //-   if (hasUnsavedValue 'cardDescription' _id)
+          //-     p.quiet
+          //-       | {{_ 'unsaved-description'}}
+          //-       a.js-open-inlined-form {{_ 'view-it'}}
+          //-       = ' - '
+          //-       a.js-close-inlined-form {{_ 'discard'}}
+        //- else if getDescription
+        //-   h3.card-details-item-title {{_ 'description'}}
+        //-   +viewer
+        //-     = getDescription
 
 
 

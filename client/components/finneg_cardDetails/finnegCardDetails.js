@@ -29,6 +29,8 @@ BlazeComponent.extendComponent({
             boardBody.mouseHasEnterCardDetails = false;
         }
         this.calculateNextPeak();
+        this.editDescription = new ReactiveVar(false);
+        this.newDescription = new ReactiveVar(Cards.findOne(Session.get('currentCard')).getDescription())
 
         Meteor.subscribe('unsaved-edits');
     },
@@ -305,6 +307,15 @@ BlazeComponent.extendComponent({
             'click #toggleButton' () {
                 Meteor.call('toggleSystemMessages');
             },
+            'focus .editor' () {
+                this.editDescription.set(true);
+            },
+            'keyup .editor' (evt) {
+                this.newDescription.set(evt.currentTarget.value);
+            },
+            'click .js-close-inlined-form' () {
+                this.editDescription.set(false);
+            },
         }];
     },
 }).register('finnegCardDetails');
@@ -341,7 +352,7 @@ BlazeComponent.extendComponent({
         const parentEvents = InlinedForm.prototype.events()[0];
         return [{
             ...parentEvents,
-            'click .js-close-inlined-form': this.reset,
+            // 'click .js-close-inlined-form': this.reset,
         }];
     }
 }).register('finnegInlinedCardDescription');
