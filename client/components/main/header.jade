@@ -1,4 +1,9 @@
 template(name="header")
+  head
+    if isLocalMode.get
+      link(rel="stylesheet" type="text/css" href="/wekan-finneg.css")
+    else
+      link(rel="stylesheet" type="text/css" href="/wekan/wekan-finneg.css")
   //-
     If the user is connected we display a small "quick-access" top bar that
     list all starred boards with a link to go there. This is inspired by the

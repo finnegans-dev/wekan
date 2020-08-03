@@ -54,9 +54,9 @@ template(name="finnegCardDetails")
             a.fa.fa-times-thin.close-card-details.js-close-card-details
             if canModifyCard
               if isPublic
-                a.fa.fa-globe.card-details-menu.card-permission(title="Pública" style="color:green;")
+                a.fa.fa-globe.card-details-menu.card-permission(title="Pública")
               else
-                a.fa.fa-lock.card-details-menu.card-permission(title="Privada" style="color:red;")
+                a.fa.fa-lock.card-details-menu.card-permission(title="Privada")
 
               //-a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
 
@@ -149,14 +149,16 @@ template(name="finnegCardDetails")
 
         //- XXX We should use "editable" to avoid repetiting ourselves
         //- if canModifyCard
-        h3.card-details-item-title {{_ 'description'}}
+        //- h3.card-details-item-title {{_ 'description'}}
         //- +finnegInlinedCardDescription(classNames="card-description js-card-description")
-        +editor(autofocus=true)
-          | {{#unless editDescription.get}}{{getUnsavedValue 'cardDescription' _id getDescription}}{{else}}{{getUnsavedValue 'cardDescription' _id newDescription.get}}{{/unless}}
-        if editDescription.get
-          .edit-controls.clearfix
-            button.primary(type="submit") {{_ 'save'}}
-            a.fa.fa-times-thin.js-close-inlined-form
+        .description
+          +editor(autofocus=true)
+            | {{#unless editDescription.get}}{{getUnsavedValue 'cardDescription' _id getDescription}}{{else}}{{getUnsavedValue 'cardDescription' _id newDescription.get}}{{/unless}}
+          if editDescription.get
+            .edit-controls.clearfix
+              button.base.js-close-inlined-form {{_ 'cancel'}}
+              button.primary.js-card-description {{_ 'save'}}
+
           //- else
           //-   a.js-open-inlined-form
           //-     if getDescription
@@ -181,17 +183,16 @@ template(name="finnegCardDetails")
         //- hr
         //- +checklists(cardId = _id)
 
-        //if currentBoard.allowsSubtasks
+        //-if currentBoard.allowsSubtasks
           hr
           +subtasks(cardId = _id)
 
         //- hr
-        h3
-          i.fa.fa-paperclip
-          | {{_ 'attachments'}}
+        //- h3
+        //-   i.fa.fa-paperclip
+        //-   | {{_ 'attachments'}}
 
         +attachmentsGalery
-
         hr
         //- unless currentUser.isNoComments
         //-   if currentUser.isBoardMember
@@ -205,7 +206,7 @@ template(name="finnegCardDetails")
 
         unless currentUser.isNoComments
           .activity-title
-            h3 {{ _ 'activity'}}
+            //- h3 {{ _ 'activity'}}
             //- if currentUser.isBoardMember
             //-   .material-toggle-switch
             //-     span.toggle-switch-title {{_ 'hide-system-messages'}}
@@ -214,6 +215,9 @@ template(name="finnegCardDetails")
             //-     else
             //-       input.toggle-switch(type="checkbox" id="toggleButton")
             //-     label.toggle-label(for="toggleButton")
+        if currentUser.isBoardMember
+          unless currentUser.isNoComments
+            +commentForm
         unless currentUser.isNoComments
           if isLoaded.get
             if isLinkedCard
@@ -222,17 +226,15 @@ template(name="finnegCardDetails")
               +activities(card=this mode="linkedboard")
             else
               +activities(card=this mode="card")
-        if currentUser.isBoardMember
-          unless currentUser.isNoComments
-            +commentForm
+
 
 
 template(name="finnegEditCardTitleForm")
   textarea.js-edit-card-title(rows='1' autofocus)
     = getTitle
   .edit-controls.clearfix
+    button.base.js-close-inlined-form {{_ 'cancel'}}
     button.primary.confirm.js-submit-edit-card-title-form(type="submit") {{_ 'save'}}
-    a.fa.fa-times-thin.js-close-inlined-form
 
 template(name="finnegEditCardRequesterForm")
   input.js-edit-card-requester(type='text' autofocus value=getRequestedBy)

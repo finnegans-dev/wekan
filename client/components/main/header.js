@@ -1,38 +1,44 @@
 Meteor.subscribe('user-admin');
 Meteor.subscribe('boards');
 
+BlazeComponent.extendComponent({
+    onCreated() {
+        this.isLocalMode = new ReactiveVar(process.env.ROOT_URL == '' || process.env.ROOT_URL == undefined ? true : false)
+    }
+}).register('header');
+
 Template.header.helpers({
-  wrappedHeader() {
-    return !Session.get('currentBoard');
-  },
+    wrappedHeader() {
+        return !Session.get('currentBoard');
+    },
 
-  hideLogo() {
-    return Utils.isMiniScreen() && Session.get('currentBoard');
-  },
+    hideLogo() {
+        return Utils.isMiniScreen() && Session.get('currentBoard');
+    },
 
-  appIsOffline() {
-    return !Meteor.status().connected;
-  },
+    appIsOffline() {
+        return !Meteor.status().connected;
+    },
 
-  hasAnnouncement() {
-    const announcements =  Announcements.findOne();
-    return announcements && announcements.enabled;
-  },
+    hasAnnouncement() {
+        const announcements = Announcements.findOne();
+        return announcements && announcements.enabled;
+    },
 
-  announcement() {
-    $('.announcement').show();
-    const announcements =  Announcements.findOne();
-    return announcements && announcements.body;
-  },
+    announcement() {
+        $('.announcement').show();
+        const announcements = Announcements.findOne();
+        return announcements && announcements.body;
+    },
 });
 
 Template.header.events({
-  'click .js-create-board': Popup.open('headerBarCreateBoard'),
-  'click .js-close-announcement'() {
-    $('.announcement').hide();
-  },
-  'click .js-select-list'() {
-    Session.set('currentList', this._id);
-    Session.set('currentCard', null);
-  },
+    'click .js-create-board': Popup.open('headerBarCreateBoard'),
+    'click .js-close-announcement' () {
+        $('.announcement').hide();
+    },
+    'click .js-select-list' () {
+        Session.set('currentList', this._id);
+        Session.set('currentCard', null);
+    },
 });

@@ -279,16 +279,20 @@ a.js-subtask-settings {
     margin-bottom: 8px !important;
 }
 
+.new-comment {
+    margin: 0 0 0 38px;
+}
+
 .add-controls {
-    margin: 0px;
+    margin: 4px 0px;
     height: 36px;
+    display: block;
 }
 
 .add-controls button.primary.confirm {
     margin: 0px;
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
+    float: right;
+    display: block;
 }
 
 .board-list-item:not(.js-open-board) .board-list-item-name {
@@ -308,17 +312,16 @@ a.js-subtask-settings {
     display: none;
 }
 
-.attachments-galery {
-    position: relative;
-    padding-top: 30px;
-    padding-left: 12px;
-}
-
 .attachments-galery .attachment-item {
     min-height: 100px;
 }
 
-.attachments-galery::before {
+.attachments-galery {
+    margin: 25px 0;
+}
+
+
+/* .attachments-galery::before {
     content: 'Adjuntos';
     display: block;
     position: absolute;
@@ -327,7 +330,9 @@ a.js-subtask-settings {
     font-family: 'Montserrat';
     color: black;
     /* board-header-btn font-size: 16px; */
-}
+
+
+/* }  */
 
 .attachment-details-actions a.js-download {
     float: right;
@@ -343,19 +348,36 @@ a.js-subtask-settings {
 }
 
 li.attachment-item.add-attachment {
-    height: 23px;
+    height: 42px;
     min-height: 20px;
     width: 135px;
+    background-color: transparent;
+}
+
+li.attachment-item.add-attachment:hover {
+    background-color: transparent;
 }
 
 a.js-add-attachment {
-    margin: 0px;
+    border: 1px solid black;
+    border-radius: 4px;
+    height: 30px;
+    background-color: white;
+    line-height: 30px;
+    color: black;
+    font-weight: bolder;
+    padding: 5px;
+    width: 73%;
 }
 
-a.js-add-attachment:before {
-    content: "\f0c6";
-    font-family: FontAwesome;
-    padding: 6px;
+a.js-add-attachment>.fa {
+    color: black;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.add-attachment>a:not(.disabled):hover .fa {
+    color: black;
 }
 
 #modal .modal-content {

@@ -256,10 +256,12 @@ BlazeComponent.extendComponent({
                 const card = this.currentData().dataContext;
                 card.archive();
             }),
-            'submit .js-card-description' (evt) {
+            'click .js-card-description' (evt) {
                 evt.preventDefault();
-                const description = this.currentComponent().getValue();
+                console.log($('.editor').val())
+                const description = $('.editor').val();
                 this.data().setDescription(description);
+                this.editDescription.set(false);
             },
             'submit .js-card-details-title' (evt) {
                 evt.preventDefault();

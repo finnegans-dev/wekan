@@ -50,4 +50,6 @@ template(name="attachmentsGalery")
 
     if canModifyCardAssigned
       li.attachment-item.add-attachment
-        a.js-add-attachment {{_ 'add-attachment' }}
+        a.js-add-attachment
+          i.fa.fa-paperclip
+          | {{_ 'add-attachment' }}
