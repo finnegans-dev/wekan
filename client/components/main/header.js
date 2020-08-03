@@ -3,7 +3,7 @@ Meteor.subscribe('boards');
 
 BlazeComponent.extendComponent({
     onCreated() {
-        this.isLocalMode = new ReactiveVar(process.env.ROOT_URL == '' || process.env.ROOT_URL == undefined ? true : false)
+        this.isLocalMode = new ReactiveVar(process.env.NODE_ENV == 'development' ? true : false)
     }
 }).register('header');
 
