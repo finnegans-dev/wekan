@@ -81,7 +81,6 @@ BlazeComponent.extendComponent({
         for (let i = 0; i < this.currentBoard.members.length; i++) {
             if (!Filter.assignedTo.isSelected(this.currentBoard.members[i].userId)) {
                 Filter.assignedTo.toggle(this.currentBoard.members[i].userId);
-                Filter.resetExceptions();
             }
         }
         this.getFiltersInfo()
@@ -173,10 +172,10 @@ BlazeComponent.extendComponent({
                 if (Filter.userId.isSelected(Meteor.userId()) != val) {
                     Filter.userId.toggle(Meteor.userId());
                 }
-                for (let i = 0; i < this.currentBoard.labels.length; i++) {
-                    if (Filter.assignedTo.isSelected(this.currentBoard.activeMembers()[i].userId) != val) {
-                        Filter.assignedTo.toggle(this.currentBoard.activeMembers()[i].userId);
-                        Filter.resetExceptions();
+                let activeMembers = this.currentBoard.activeMembers()
+                for (let i = 0; i < activeMembers.length; i++) {
+                    if (Filter.assignedTo.isSelected(activeMembers[i].userId) != val) {
+                        Filter.assignedTo.toggle(activeMembers[i].userId);
                     }
                 }
                 this.getFiltersInfo();

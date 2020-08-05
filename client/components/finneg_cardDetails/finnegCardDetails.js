@@ -318,6 +318,9 @@ BlazeComponent.extendComponent({
             'click .js-close-inlined-form' () {
                 this.editDescription.set(false);
             },
+            'click .left' (evt) {
+                evt.stopPropagation();
+            }
         }];
     },
 }).register('finnegCardDetails');

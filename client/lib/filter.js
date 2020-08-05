@@ -60,6 +60,7 @@ class SetFilter {
 
     reset() {
         this._selectedElements = [];
+        this.setAllSelected(true)
         this._dep.changed();
     }
 
@@ -69,7 +70,7 @@ class SetFilter {
 
     _isActive() {
         this._dep.depend();
-        return this._selectedElements.length !== 0;
+        return this._selectedElements.length >= 0 && !this.isAllSelected();
     }
 
     _getMongoSelector() {
@@ -497,9 +498,9 @@ Filter = {
 
     //  finneg code
     isActive() {
-        return _.any(['labelIds', 'members'], (fieldName) => {
+        return _.any(['labelIds', 'assignedTo'], (fieldName) => {
             return this[fieldName]._isActive();
-        }) && !this.isAllSelected || this.advanced._isActive();
+        }) || this.advanced._isActive();
     },
     // end finneg code
 

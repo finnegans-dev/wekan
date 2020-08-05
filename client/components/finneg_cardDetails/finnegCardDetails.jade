@@ -402,17 +402,17 @@ template(name="finnegCardMorePopup")
 
 
 
-template(name="finnegCardDeletePopup")
+template(name="cardDeletePopup")
   p {{_ "card-delete-pop"}}
   unless archived
    p {{_ "card-delete-suggest-archive"}}
   button.js-confirm.negate.full(type="submit") {{_ 'delete'}}
 
 
-template(name="finnegCardArchivedPopup")
+template(name="cardArchivedPopup")
   p ¿Estas seguro que deseas archivar la tarjeta?
   button.js-confirm.negate.full(type="submit") Archivar
 
-template(name="fginnegCardFinishedPopup")
+template(name="cardFinishedPopup")
   p ¿Estas seguro que deseas finalizar la tarjeta?
   button.js-confirm.negate.full(type="submit") Finalizar
