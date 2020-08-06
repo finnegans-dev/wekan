@@ -320,6 +320,20 @@ a.js-subtask-settings {
     margin: 25px 0;
 }
 
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #666d76;
+}
+
+
+/*
+::-webkit-scrollbar-thumb {
+    background: #49505B;
+} */
+
 
 /* .attachments-galery::before {
     content: 'Adjuntos';
