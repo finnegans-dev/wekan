@@ -223,6 +223,7 @@
     "deleteCustomFieldPopup-title": "¿Borrar el campo personalizado?",
     "deleteLabelPopup-title": "¿Eliminar la etiqueta?",
     "description": "Descripción",
+    "description-placeholder": "Escribe una descripción...",
     "disambiguateMultiLabelPopup-title": "Desambiguar la acción de etiqueta",
     "disambiguateMultiMemberPopup-title": "Desambiguar la acción de miembro",
     "discard": "Descartarla",

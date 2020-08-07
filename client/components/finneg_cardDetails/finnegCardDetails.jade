@@ -51,7 +51,7 @@ template(name="finnegCardDetails")
           +inlinedForm(classNames="js-card-details-title")
             +finnegEditCardTitleForm
           else
-            a.fa.fa-times-thin.close-card-details.js-close-card-details
+            a.fa.fa-times-thin.card-details-menu.js-close-card-details
             if canModifyCard
               if isPublic
                 a.fa.fa-globe.card-details-menu.card-permission(title="Pública")
@@ -152,7 +152,7 @@ template(name="finnegCardDetails")
         //- h3.card-details-item-title {{_ 'description'}}
         //- +finnegInlinedCardDescription(classNames="card-description js-card-description")
         .description
-          +editor(autofocus=true)
+          +editor(class="js-description-input" isDescription="true")
             | {{#unless editDescription.get}}{{getUnsavedValue 'cardDescription' _id getDescription}}{{else}}{{getUnsavedValue 'cardDescription' _id newDescription.get}}{{/unless}}
           if editDescription.get
             .edit-controls.clearfix
@@ -350,7 +350,7 @@ template(name="finnegCardAssignedPopup")
         +ifEsHasNoResults(index="users")
           .manage-member-section
             p.quiet {{_ 'no-results'}}
-  //ul.pop-over-list.js-card-member-list
+  //-ul.pop-over-list.js-card-member-list
     each board.activeMembers
       li.item(class="{{#if isAssigned}}active{{/if}}")
         a.name.js-select-member(href="#")

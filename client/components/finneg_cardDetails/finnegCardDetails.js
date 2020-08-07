@@ -22,6 +22,7 @@ BlazeComponent.extendComponent({
     onCreated() {
         this.currentBoard = Boards.findOne(Session.get('currentBoard'));
         this.isLoaded = new ReactiveVar(false);
+        this.descriptionPlaceHolder = TAPi18n.__('description-placeholder');
         const boardBody = this.parentComponent().parentComponent();
         //in Miniview parent is Board, not BoardBody.
         if (boardBody !== null) {
@@ -312,7 +313,7 @@ BlazeComponent.extendComponent({
             'focus .editor' () {
                 this.editDescription.set(true);
             },
-            'keyup .editor' (evt) {
+            'keyup .js-description-input' (evt) {
                 this.newDescription.set(evt.currentTarget.value);
             },
             'click .js-close-inlined-form' () {

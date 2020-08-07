@@ -16,7 +16,7 @@ class SetFilter {
         this._dep = new Tracker.Dependency();
         this._selectedElements = [];
         this.subField = subField;
-        this.allSelected = false;
+        this.allSelected = true;
     }
 
     isSelected(val) {
@@ -481,7 +481,6 @@ Filter = {
     assignedTo: new SetFilter(),
     customFields: new SetFilter('_id'),
     advanced: new AdvancedFilter(),
-    isAllSelected: false,
     _fields: ['labelIds', 'members', 'customFields', 'userId', 'assignedTo'],
 
     // We don't filter cards that have been added after the last filter change. To

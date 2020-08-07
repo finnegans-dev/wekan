@@ -1,9 +1,17 @@
 template(name="editor")
-  textarea.editor(
-    class="{{class}}"
-    id=id
-    autofocus=autofocus
-    placeholder="{{_ 'comment-placeholder'}}")
+  if isDescription
+    textarea.editor(
+        class="{{class}}"
+        id=id
+        autofocus=autofocus
+        placeholder="{{_ 'description-placeholder'}}")
+        +Template.contentBlock
+  else
+    textarea.editor(
+      class="{{class}}"
+      id=id
+      autofocus=autofocus
+      placeholder="{{_ 'comment-placeholder'}}")
     +Template.contentBlock
 
 template(name="viewer")
