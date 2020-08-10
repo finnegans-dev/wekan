@@ -68,30 +68,30 @@ BlazeComponent.extendComponent({
         return card.isFinished();
     },
 
-    scrollParentContainer() {
-        const cardPanelWidth = 510;
-        const bodyBoardComponent = this.parentComponent().parentComponent();
-        //On Mobile View Parent is Board, Not Board Body. I cant see how this funciton should work then.
-        if (bodyBoardComponent === null) return;
-        const $cardView = this.$(this.firstNode());
-        const $cardContainer = bodyBoardComponent.$('.js-swimlanes');
-        const cardContainerScroll = $cardContainer.scrollLeft();
-        const cardContainerWidth = $cardContainer.width();
+    // scrollParentContainer() {
+    //     const cardPanelWidth = 510;
+    //     const bodyBoardComponent = this.parentComponent().parentComponent();
+    //     //On Mobile View Parent is Board, Not Board Body. I cant see how this funciton should work then.
+    //     if (bodyBoardComponent === null) return;
+    //     const $cardView = this.$(this.firstNode());
+    //     const $cardContainer = bodyBoardComponent.$('.js-swimlanes');
+    //     // const cardContainerScroll = $cardContainer.scrollLeft();
+    //     const cardContainerWidth = $cardContainer.width();
 
-        const cardViewStart = $cardView.offset().left;
-        const cardViewEnd = cardViewStart + cardPanelWidth;
+    //     const cardViewStart = $cardView.offset().left;
+    //     const cardViewEnd = cardViewStart + cardPanelWidth;
 
-        let offset = false;
-        if (cardViewStart < 0) {
-            offset = cardViewStart;
-        } else if (cardViewEnd > cardContainerWidth) {
-            offset = cardViewEnd - cardContainerWidth;
-        }
+    //     let offset = false;
+    //     if (cardViewStart < 0) {
+    //         offset = cardViewStart;
+    //     } else if (cardViewEnd > cardContainerWidth) {
+    //         offset = cardViewEnd - cardContainerWidth;
+    //     }
 
-        if (offset) {
-            bodyBoardComponent.scrollLeft(cardContainerScroll + offset);
-        }
-    },
+    //     if (offset) {
+    //         bodyBoardComponent.scrollLeft(cardContainerScroll + offset);
+    //     }
+    // },
 
     presentParentTask() {
         let result = this.currentBoard.presentParentTask;
@@ -118,7 +118,7 @@ BlazeComponent.extendComponent({
     },
 
     onRendered() {
-        if (!Utils.isMiniScreen()) this.scrollParentContainer();
+        // if (!Utils.isMiniScreen()) this.scrollParentContainer();
         const $checklistsDom = this.$('.card-checklist-items');
 
         $checklistsDom.sortable({
@@ -310,7 +310,7 @@ BlazeComponent.extendComponent({
             'click #toggleButton' () {
                 Meteor.call('toggleSystemMessages');
             },
-            'focus .editor' () {
+            'focus .js-description-input' () {
                 this.editDescription.set(true);
             },
             'keyup .js-description-input' (evt) {

@@ -3,11 +3,11 @@
 }
 
 .swimlane {
-    background-color: #f8f8f9;
+    background-color: white;
 }
 
 #content {
-    background-color: #efeff1;
+    background-color: white;
 }
 
 .board-list li {
@@ -55,7 +55,7 @@
 }
 
 .board-wrapper .board-canvas .list {
-    background-color: #f8f8f9 !important;
+    background-color: white !important;
 }
 
 a.js-change-board-color,
@@ -67,9 +67,9 @@ a.js-subtask-settings {
 
 /* SIDEBAR */
 
-.board-sidebar,
-.board-sidebar .sidebar-content {
-    background-color: white;
+.board-sidebar, .board-sidebar .sidebar-content, .board-sidebar .activities * {
+    background-color: #f8f8f9 !important;
+    box-shadow: none !important;
 }
 
 .sidebar .sidebar-shadow {
@@ -456,4 +456,176 @@ a.js-add-attachment>.fa {
 .sidebar-list-item-description {
     text-align: center;
     line-height: 30px;
+}
+
+/** ESTILOS TARJETA  - Agregado ML **/
+.containerFinnegCardDetails .card-details-items .card-details-item:first-child .viewer p {
+    width: 2ch;
+    font-size: 16px;
+    font-family: monospace !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.containerFinnegCardDetails .card-details-items .card-details-item:hover .viewer p{
+    font-family: 'Montserrat' !important;
+    width:auto;
+    font-size:11px;
+    cursor:pointer;
+    text-transform:lowercase;
+}
+
+.containerFinnegCardDetails{
+border: 1px solid #283247;
+    top: 75px;
+    max-height: 85%;
+    overflow-y: hidden !important;
+    z-index: 99 !important;
+    margin: 0 auto;
+    width: 70%;
+    background: white;
+    box-shadow: none;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-left: 0px;
+    padding-right: 0px;    
+}
+
+.containerFinnegCardDetails .left {
+    width: 20%;
+    padding-left: 20px;
+    padding-top: 25px;
+}
+
+.containerFinnegCardDetails .right {
+    width: 80%;
+}
+
+.left-item i {
+    font-size: 1.2rem;
+}
+
+.containerFinnegCardDetails .right .card-details{
+    padding: 15px 30px 0px;
+}
+
+.card-details-title{
+    color: #273347;
+    font-weight: normal !important;
+    font-size: 1.2rem !important;
+}
+
+.card-details-header hr{
+    margin: 0px;
+    height: 2px;
+    background: #B9BCC0 !important;
+}
+
+.containerFinnegCardDetails .right .add-controls .primary,
+.containerFinnegCardDetails .right .add-controls .primary, .containerFinnegCardDetails .right .edit-controls .primary{
+    background-color:#24cffd;
+    box-shadow: none;
+    padding: 5px 12px;
+}
+
+.containerFinnegCardDetails .right .add-controls .base, .containerFinnegCardDetails .right .edit-controls .base{
+    background: white !important;
+    color: #24cffd;
+    border: 1px solid #24cffd;
+    box-shadow: none;
+    padding: 5px 12px;    
+}
+
+.containerFinnegCardDetails a.fa.fa-globe.card-details-menu.card-permission {
+    display: none !important;
+}
+
+.containerFinnegCardDetails .right .card-details .js-new-comment,
+.containerFinnegCardDetails .right .card-details .description{
+    padding: 0px 5px;
+}
+
+.containerFinnegCardDetails .activities .activity .member{
+    margin-right: 10px
+}
+
+.containerFinnegCardDetails .activities .activity .activity-desc .activity-checklist, 
+.containerFinnegCardDetails .activities .activity .activity-desc .activity-comment{
+    margin-top: 20px;
+    /* margin-bottom: 15px; */
+    box-shadow: none;
+    color: #676D76;
+    padding-left: 0px;
+}
+
+.containerFinnegCardDetails .activities .activity{
+    border-bottom: 1px solid #E1E2E4;
+    position: relative;
+}
+
+.containerFinnegCardDetails .activities .activity-desc{
+    margin-bottom: 19px;
+}
+
+.containerFinnegCardDetails .activities .activity .activity-desc .activity-meta {
+    position: absolute;
+    top: 18px;
+    left: 38px;
+}
+
+.containerFinnegCardDetails .activities .activity-desc img{
+    margin-top: 30px;
+}
+
+.containerFinnegCardDetails .right .card-details .activities{
+    margin-bottom: 20px;
+}
+
+.activities .member .avatar.avatar-initials{
+    width: 20px;
+    height: 20px;
+}
+
+.board-header-btns i{
+    font-size: 1rem !important;
+}
+
+#header-main-bar .board-header-btns:not(.js-open-board-menu) i.fa, #header .board-header-btns:not(.js-open-board-menu) i.fa {
+    width: 25px;
+    height: 25px;
+    line-height: 25px!important;
+    text-align: center;
+    margin: 2px 8px 4px 10px!important;
+}
+
+a.sidebar-tongue.js-toggle-sidebar {
+    background: #02CEFF;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    text-align: center;
+    padding: 9px 5px !important;
+    border-radius: 2rem 0px 0 2rem;
+    font-size: 18px;
+}
+
+a.sidebar-tongue.js-toggle-sidebar i.fa.fa-angle-left::before {
+    content: "\f7a5";
+    color: white;
+}
+
+a.sidebar-tongue.js-toggle-sidebar i.fa{
+    padding: 5px 5px;
+    font-size: 20px;
+    transition: none;    
+}
+
+.board-sidebar.is-open .sidebar-tongue:hover{
+    left: -28px;
+    cursor:pointer;
+}
+
+#header-main-bar{
+    background-color: white !important;
 }
