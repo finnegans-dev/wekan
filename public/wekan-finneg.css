@@ -67,7 +67,9 @@ a.js-subtask-settings {
 
 /* SIDEBAR */
 
-.board-sidebar, .board-sidebar .sidebar-content, .board-sidebar .activities * {
+.board-sidebar,
+.board-sidebar .sidebar-content,
+.board-sidebar .activities * {
     background-color: #f8f8f9 !important;
     box-shadow: none !important;
 }
@@ -363,7 +365,7 @@ a.js-subtask-settings {
 }
 
 li.attachment-item.add-attachment {
-    height: 42px;
+    height: 52px;
     min-height: 20px;
     width: 135px;
     background-color: transparent;
@@ -383,6 +385,7 @@ a.js-add-attachment {
     font-weight: bolder;
     padding: 5px;
     width: 73%;
+    margin-top: 0px;
 }
 
 a.js-add-attachment>.fa {
@@ -458,7 +461,9 @@ a.js-add-attachment>.fa {
     line-height: 30px;
 }
 
+
 /** ESTILOS TARJETA  - Agregado ML **/
+
 .containerFinnegCardDetails .card-details-items .card-details-item:first-child .viewer p {
     width: 2ch;
     font-size: 16px;
@@ -468,16 +473,16 @@ a.js-add-attachment>.fa {
     text-transform: uppercase;
 }
 
-.containerFinnegCardDetails .card-details-items .card-details-item:hover .viewer p{
+.containerFinnegCardDetails .card-details-items .card-details-item:hover .viewer p {
     font-family: 'Montserrat' !important;
-    width:auto;
-    font-size:11px;
-    cursor:pointer;
-    text-transform:lowercase;
+    width: auto;
+    font-size: 11px;
+    cursor: pointer;
+    text-transform: lowercase;
 }
 
-.containerFinnegCardDetails{
-border: 1px solid #283247;
+.containerFinnegCardDetails {
+    border: 1px solid #283247;
     top: 75px;
     max-height: 85%;
     overflow-y: hidden !important;
@@ -489,7 +494,7 @@ border: 1px solid #283247;
     left: 50%;
     transform: translateX(-50%);
     padding-left: 0px;
-    padding-right: 0px;    
+    padding-right: 0px;
 }
 
 .containerFinnegCardDetails .left {
@@ -506,35 +511,37 @@ border: 1px solid #283247;
     font-size: 1.2rem;
 }
 
-.containerFinnegCardDetails .right .card-details{
+.containerFinnegCardDetails .right .card-details {
     padding: 15px 30px 0px;
 }
 
-.card-details-title{
+.card-details-title {
     color: #273347;
     font-weight: normal !important;
     font-size: 1.2rem !important;
 }
 
-.card-details-header hr{
+.card-details-header hr {
     margin: 0px;
     height: 2px;
     background: #B9BCC0 !important;
 }
 
 .containerFinnegCardDetails .right .add-controls .primary,
-.containerFinnegCardDetails .right .add-controls .primary, .containerFinnegCardDetails .right .edit-controls .primary{
-    background-color:#24cffd;
+.containerFinnegCardDetails .right .add-controls .primary,
+.containerFinnegCardDetails .right .edit-controls .primary {
+    background-color: #24cffd;
     box-shadow: none;
     padding: 5px 12px;
 }
 
-.containerFinnegCardDetails .right .add-controls .base, .containerFinnegCardDetails .right .edit-controls .base{
+.containerFinnegCardDetails .right .add-controls .base,
+.containerFinnegCardDetails .right .edit-controls .base {
     background: white !important;
     color: #24cffd;
     border: 1px solid #24cffd;
     box-shadow: none;
-    padding: 5px 12px;    
+    padding: 5px 12px;
 }
 
 .containerFinnegCardDetails a.fa.fa-globe.card-details-menu.card-permission {
@@ -542,16 +549,16 @@ border: 1px solid #283247;
 }
 
 .containerFinnegCardDetails .right .card-details .js-new-comment,
-.containerFinnegCardDetails .right .card-details .description{
+.containerFinnegCardDetails .right .card-details .description {
     padding: 0px 5px;
 }
 
-.containerFinnegCardDetails .activities .activity .member{
+.containerFinnegCardDetails .activities .activity .member {
     margin-right: 10px
 }
 
-.containerFinnegCardDetails .activities .activity .activity-desc .activity-checklist, 
-.containerFinnegCardDetails .activities .activity .activity-desc .activity-comment{
+.containerFinnegCardDetails .activities .activity .activity-desc .activity-checklist,
+.containerFinnegCardDetails .activities .activity .activity-desc .activity-comment {
     margin-top: 20px;
     /* margin-bottom: 15px; */
     box-shadow: none;
@@ -559,12 +566,12 @@ border: 1px solid #283247;
     padding-left: 0px;
 }
 
-.containerFinnegCardDetails .activities .activity{
+.containerFinnegCardDetails .activities .activity {
     border-bottom: 1px solid #E1E2E4;
     position: relative;
 }
 
-.containerFinnegCardDetails .activities .activity-desc{
+.containerFinnegCardDetails .activities .activity-desc {
     margin-bottom: 19px;
 }
 
@@ -574,24 +581,25 @@ border: 1px solid #283247;
     left: 38px;
 }
 
-.containerFinnegCardDetails .activities .activity-desc img{
+.containerFinnegCardDetails .activities .activity-desc img {
     margin-top: 30px;
 }
 
-.containerFinnegCardDetails .right .card-details .activities{
+.containerFinnegCardDetails .right .card-details .activities {
     margin-bottom: 20px;
 }
 
-.activities .member .avatar.avatar-initials{
+.activities .member .avatar.avatar-initials {
     width: 20px;
     height: 20px;
 }
 
-.board-header-btns i{
+.board-header-btns i {
     font-size: 1rem !important;
 }
 
-#header-main-bar .board-header-btns:not(.js-open-board-menu) i.fa, #header .board-header-btns:not(.js-open-board-menu) i.fa {
+#header-main-bar .board-header-btns:not(.js-open-board-menu) i.fa,
+#header .board-header-btns:not(.js-open-board-menu) i.fa {
     width: 25px;
     height: 25px;
     line-height: 25px!important;
@@ -615,17 +623,17 @@ a.sidebar-tongue.js-toggle-sidebar i.fa.fa-angle-left::before {
     color: white;
 }
 
-a.sidebar-tongue.js-toggle-sidebar i.fa{
+a.sidebar-tongue.js-toggle-sidebar i.fa {
     padding: 5px 5px;
     font-size: 20px;
-    transition: none;    
+    transition: none;
 }
 
-.board-sidebar.is-open .sidebar-tongue:hover{
+.board-sidebar.is-open .sidebar-tongue:hover {
     left: -28px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-#header-main-bar{
+#header-main-bar {
     background-color: white !important;
 }
