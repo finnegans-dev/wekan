@@ -774,7 +774,7 @@ EscapeActions.register('detailsPane',
     () => {
         return !Session.equals('currentCard', null);
     }, {
-        noClickEscapeOn: '.js-card-details,.board-sidebar,#header',
+        noClickEscapeOn: '.js-card-details,.board-sidebar,#header, #content',
     }
 );
 

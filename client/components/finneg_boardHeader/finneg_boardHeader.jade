@@ -125,7 +125,7 @@ template(name="finnegBoardHeaderBar")
           //-   i.fa.fa-th-large
           //-   span {{_ currentUser.profile.boardView}}
 
-          if canModifyBoard
+          //- if canModifyBoard
             a.board-header-btn.js-multiselection-activate(
                 title="{{#if MultiSelection.isActive}}{{_ 'multi-selection-on'}}{{else}}{{_ 'multi-selection'}}{{/if}}"
                 class="{{#if MultiSelection.isActive}}emphasis{{/if}}")
