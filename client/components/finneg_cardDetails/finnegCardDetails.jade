@@ -233,8 +233,6 @@ template(name="finnegEditCardTitleForm")
   textarea.js-edit-card-title(rows='1' autofocus)
     = getTitle
   .edit-controls.clearfix
-    button.base.js-close-inlined-form {{_ 'cancel'}}
-    button.primary.confirm.js-submit-edit-card-title-form(type="submit") {{_ 'save'}}
 
 template(name="finnegEditCardRequesterForm")
   input.js-edit-card-requester(type='text' autofocus value=getRequestedBy)

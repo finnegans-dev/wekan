@@ -268,6 +268,7 @@ BlazeComponent.extendComponent({
                 evt.preventDefault();
                 const title = this.currentComponent().getValue().trim();
                 if (title) {
+                    console.log(this.data())
                     this.data().setTitle(title);
                 }
             },
@@ -434,7 +435,7 @@ Template.finnegEditCardTitleForm.events({
         // If enter key was pressed, submit the data
         // Unless the shift key is also being pressed
         if (evt.keyCode === 13 && !evt.shiftKey) {
-            $('.js-submit-edit-card-title-form').click();
+            $('.js-card-details-title').submit();
         }
     },
 });
