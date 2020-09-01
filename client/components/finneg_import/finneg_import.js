@@ -23,8 +23,6 @@ BlazeComponent.extendComponent({
     },
 
     onFileChange(files, isDrop) {
-        console.log(files, isDrop)
-
         if (files.length === 0 || files.length > 1) {
             return;
         }

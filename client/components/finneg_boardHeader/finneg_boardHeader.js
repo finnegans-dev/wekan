@@ -15,14 +15,14 @@ Template.finnegBoardMenuPopup.events({
     'click .js-change-board-color': Popup.open('finnegBoardChangeColor'),
     'click .js-change-language': Popup.open('finnegChangeLanguage'),
     'click .js-archive-board ': Popup.afterConfirm('finnegArchiveBoard', function() {
-        const currentBoard = Boards.findOne(Session.get('finnegCurrentBoard'));
+        const currentBoard = Boards.findOne(Session.get('currentBoard'));
         currentBoard.archive();
         // XXX We should have some kind of notification on top of the page to
         // confirm that the board was successfully archived.
         FlowRouter.go('home');
     }),
     'click .js-delete-board': Popup.afterConfirm('finnegDeleteBoard', function() {
-        const currentBoard = Boards.findOne(Session.get('finnegCurrentBoard'));
+        const currentBoard = Boards.findOne(Session.get('currentBoard'));
         Popup.close();
         Boards.remove(currentBoard._id);
         FlowRouter.go('home');
@@ -103,7 +103,7 @@ BlazeComponent.extendComponent({
         return [{
             'click .js-edit-board-title': Popup.open('finnegBoardChangeTitle'),
             'click .js-star-board' () {
-                Meteor.user().toggleBoardStar(Session.get('finnegCurrentBoard'));
+                Meteor.user().toggleBoardStar(Session.get('currentBoard'));
             },
             'click .js-open-board-menu': Popup.open('finnegBoardMenu'),
             'click .js-open-view-menu': Popup.open('finnegViewMenu'),
@@ -261,7 +261,6 @@ BlazeComponent.extendComponent({
     },
 
     boards() {
-        console.log('boards');
         return Boards.find({
             archived: false,
             'members.userId': Meteor.userId(),

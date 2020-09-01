@@ -245,7 +245,6 @@
 //     },
 
 //     boards() {
-//         console.log('boards');
 //         return Boards.find({
 //             archived: false,
 //             'members.userId': Meteor.userId(),

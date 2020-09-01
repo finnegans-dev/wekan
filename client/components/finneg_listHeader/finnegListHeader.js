@@ -49,7 +49,8 @@ BlazeComponent.extendComponent({
                 switch (evt.keyCode) {
                     case 13:
                         {
-                            this.submit
+                            this.submit;
+                            break;
                         }
                     case 27:
                         {

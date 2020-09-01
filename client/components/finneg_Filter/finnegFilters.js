@@ -56,8 +56,6 @@ BlazeComponent.extendComponent({
         else
             Filter.isAllSelected = false;
         Filter.resetExceptions();
-
-        console.log(Filter.members.isAllSelected())
     },
     setAllFiltersSelected() {
         Filter.labelIds.setAllSelected(true);

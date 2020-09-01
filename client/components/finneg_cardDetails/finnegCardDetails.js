@@ -259,7 +259,6 @@ BlazeComponent.extendComponent({
             }),
             'click .js-card-description' (evt) {
                 evt.preventDefault();
-                console.log($('.editor').val())
                 const description = $('.editor').val();
                 this.data().setDescription(description);
                 this.editDescription.set(false);
@@ -268,7 +267,6 @@ BlazeComponent.extendComponent({
                 evt.preventDefault();
                 const title = this.currentComponent().getValue().trim();
                 if (title) {
-                    console.log(this.data())
                     this.data().setTitle(title);
                 }
             },
@@ -486,7 +484,6 @@ BlazeComponent.extendComponent({
     },
 
     boards() {
-        console.log('boards');
         const boards = Boards.find({
             archived: false,
             'members.userId': Meteor.userId(),
@@ -663,7 +660,6 @@ BlazeComponent.extendComponent({
     },
 
     boards() {
-        console.log('boards');
         const boards = Boards.find({
             archived: false,
             'members.userId': Meteor.userId(),
