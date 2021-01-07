@@ -1,8 +1,8 @@
 template(name="userAvatar")
   a.member.js-member(title="{{userData.profile.fullname}} ({{userData.username}})")
-    if userData.profile.avatarUrl
-      img.avatar.avatar-image(src="{{userData.profile.avatarUrl}}")
-    else
+    if hasProfilePicture.get
+      img.avatar.avatar-image(src=profilePicture.get)
+    else if hasAvatar.get
       +userAvatarInitials(userId=userData._id)
 
     if showStatus

@@ -51,8 +51,57 @@ Template.userAvatarInitials.helpers({
 
 BlazeComponent.extendComponent({
     onCreated() {
-        this.error = new ReactiveVar('');
+        this.hasProfilePicture = new ReactiveVar(false);
+        this.hasAvatar = new ReactiveVar(false);
+        this.profilePicture = new ReactiveVar('');
+        this.url = new ReactiveVar('');
+        Meteor.subscribe('my-avatars');
 
+        this.profilePictureURL();
+    },
+
+    profilePictureURL() {
+        const user = Users.findOne(Meteor.userId());
+        const token = sessionStorage.getItem('token');
+        let prefix = Meteor.settings.public.ecoUrl;
+
+        // Esto es para probarlo en localhost
+        if (!prefix)
+            prefix = 'https://go-test.finneg.com';
+
+        this.url = `${prefix}/api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
+
+        const self = this;
+        const request = new XMLHttpRequest();
+        request.open('GET', this.url, true);
+        request.responseType = 'blob';
+        request.onload = function() {
+            if (request.status === 200) {
+                const reader = new FileReader();
+                reader.readAsDataURL(request.response);
+                reader.onload = function(event) {
+                    self.hasProfilePicture.set(true);
+                    self.profilePicture.set(event.target.result);
+                };
+            } else {
+                self.showAvatar();
+            }
+        };
+        request.error = function(error) {
+            self.showAvatar();
+        };
+        request.send();
+    },
+
+    showAvatar() {
+        this.hasProfilePicture.set(false);
+        this.hasAvatar.set(true);
+    },
+}).register('userAvatar');
+
+BlazeComponent.extendComponent({
+    onCreated() {
+        this.error = new ReactiveVar('');
         Meteor.subscribe('my-avatars');
     },
 
