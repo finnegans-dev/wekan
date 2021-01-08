@@ -81,7 +81,9 @@ BlazeComponent.extendComponent({
                 reader.readAsDataURL(request.response);
                 reader.onload = function(event) {
                     self.hasProfilePicture.set(true);
-                    self.profilePicture.set(event.target.result);
+                    self.hasAvatar.set(false);
+                    const base64 = event.target.result.split(';')[1];
+                    self.profilePicture.set('data:image/jpeg;' + base64);
                 };
             } else {
                 self.showAvatar();
