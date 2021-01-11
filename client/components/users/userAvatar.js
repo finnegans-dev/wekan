@@ -31,6 +31,18 @@ Template.userAvatar.helpers({
         else
             return 'idle';
     },
+
+    url() {
+        const user = Users.findOne(this.userId);
+        const token = sessionStorage.getItem('token');
+        let prefix = Meteor.settings.public.ecoUrl;
+
+        // Esto es para probarlo en localhost
+        if (!prefix)
+            prefix = 'https://go-test.finneg.com/';
+
+        return `${prefix}api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
+    },
 });
 
 Template.userAvatar.events({
@@ -54,14 +66,14 @@ BlazeComponent.extendComponent({
         this.hasProfilePicture = new ReactiveVar(false);
         this.hasAvatar = new ReactiveVar(false);
         this.profilePicture = new ReactiveVar('');
-        this.url = new ReactiveVar('');
         Meteor.subscribe('my-avatars');
 
-        this.profilePictureURL();
+        this.verifyProfilePicture();
     },
 
-    profilePictureURL() {
-        const user = Users.findOne(Meteor.userId());
+    verifyProfilePicture() {
+        const currentData = this.currentData();
+        const user = Users.findOne(currentData.userId);
         const token = sessionStorage.getItem('token');
         let prefix = Meteor.settings.public.ecoUrl;
 
@@ -69,11 +81,11 @@ BlazeComponent.extendComponent({
         if (!prefix)
             prefix = 'https://go-test.finneg.com/';
 
-        this.url = `${prefix}api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
+        const url = `${prefix}api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
 
         const self = this;
         const request = new XMLHttpRequest();
-        request.open('GET', this.url, true);
+        request.open('GET', url);
         request.responseType = 'blob';
         request.contentType = 'image/jpeg';
         request.onload = function() {
@@ -81,8 +93,7 @@ BlazeComponent.extendComponent({
                 const reader = new FileReader();
                 reader.readAsDataURL(request.response);
                 reader.onload = function(event) {
-                    self.hasProfilePicture.set(true);
-                    self.hasAvatar.set(false);
+                    self.showProfilePicture();
                     self.profilePicture.set(event.target.result);
                 };
             } else {
@@ -93,6 +104,11 @@ BlazeComponent.extendComponent({
             self.showAvatar();
         };
         request.send();
+    },
+
+    showProfilePicture() {
+        this.hasProfilePicture.set(true);
+        this.hasAvatar.set(false);
     },
 
     showAvatar() {
