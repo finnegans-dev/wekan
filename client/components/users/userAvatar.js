@@ -75,6 +75,7 @@ BlazeComponent.extendComponent({
         const request = new XMLHttpRequest();
         request.open('GET', this.url, true);
         request.responseType = 'blob';
+        request.contentType = 'image/jpeg';
         request.onload = function() {
             if (request.status === 200) {
                 const reader = new FileReader();
@@ -82,8 +83,9 @@ BlazeComponent.extendComponent({
                 reader.onload = function(event) {
                     self.hasProfilePicture.set(true);
                     self.hasAvatar.set(false);
-                    const base64 = event.target.result.split(';')[1];
-                    self.profilePicture.set('data:image/jpeg;' + base64);
+                    // const base64 = event.target.result.split(';')[1];
+                    // self.profilePicture.set('data:image/jpeg;' + base64);
+                    self.profilePicture.set(event.target.result);
                 };
             } else {
                 self.showAvatar();
