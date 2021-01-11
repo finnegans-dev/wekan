@@ -67,9 +67,9 @@ BlazeComponent.extendComponent({
 
         // Esto es para probarlo en localhost
         if (!prefix)
-            prefix = 'https://go-test.finneg.com';
+            prefix = 'https://go-test.finneg.com/';
 
-        this.url = `${prefix}/api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
+        this.url = `${prefix}api/1/users/go/profile/picture/${user.username}?access_token=${token}`;
 
         const self = this;
         const request = new XMLHttpRequest();
