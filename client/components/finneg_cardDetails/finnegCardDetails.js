@@ -22,6 +22,7 @@ BlazeComponent.extendComponent({
     onCreated() {
         this.currentBoard = Boards.findOne(Session.get('currentBoard'));
         this.isLoaded = new ReactiveVar(false);
+        this.isTaskList = new ReactiveVar(Session.get('isTaskList'));
         this.descriptionPlaceHolder = TAPi18n.__('description-placeholder');
         const boardBody = this.parentComponent().parentComponent();
         //in Miniview parent is Board, not BoardBody.
@@ -117,7 +118,18 @@ BlazeComponent.extendComponent({
         return result;
     },
 
+    resizeView() {
+        const element = document.querySelector('.containerFinnegCardDetails');
+        element.style.top = 0;
+        element.style.maxHeight = '100%';
+        element.style.width = '100%';
+        element.style.height = '100%';
+    },
+
     onRendered() {
+        if (this.isTaskList)
+            this.resizeView();
+
         // if (!Utils.isMiniScreen()) this.scrollParentContainer();
         const $checklistsDom = this.$('.card-checklist-items');
 
@@ -477,6 +489,7 @@ Template.finnegMoveCardPopup.events({
         Popup.close();
     },
 });
+
 BlazeComponent.extendComponent({
     onCreated() {
         subManager.subscribe('board', Session.get('currentBoard'));
@@ -513,7 +526,6 @@ BlazeComponent.extendComponent({
         }];
     },
 }).register('finnegBoardsAndLists');
-
 
 function cloneCheckList(_id, checklist) {
     'use strict';
@@ -761,7 +773,6 @@ BlazeComponent.extendComponent({
         }];
     },
 }).register('finnegCardMorePopup');
-
 
 // Close the card details pane by pressing escape
 EscapeActions.register('detailsPane',

@@ -1,0 +1,8 @@
+template(name="task")
+  if isBoardReady.get
+    if currentBoard
+      +finnegCardDetails(currentCard)
+    else
+      +message(label="board-not-found")
+  else
+    +spinner

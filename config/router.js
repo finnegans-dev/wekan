@@ -66,6 +66,23 @@ FlowRouter.route('/b/:boardId/:slug/:cardId', {
     },
 });
 
+FlowRouter.route('/task/:boardId/:slug/:cardId', {
+    name: 'task',
+    action(params) {
+        EscapeActions.executeUpTo('inlinedForm');
+
+        Session.set('currentBoard', params.boardId);
+        Session.set('currentCard', params.cardId);
+        Session.set('isTaskList', true);
+
+        Utils.manageMatomo();
+
+        BlazeLayout.render('defaultLayout', {
+            content: 'task',
+        });
+    },
+});
+
 FlowRouter.route('/shortcuts', {
     name: 'shortcuts',
     action() {
