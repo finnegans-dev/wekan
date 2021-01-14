@@ -127,7 +127,7 @@ BlazeComponent.extendComponent({
     },
 
     onRendered() {
-        if (this.isTaskList)
+        if (this.isTaskList.curValue)
             this.resizeView();
 
         // if (!Utils.isMiniScreen()) this.scrollParentContainer();
