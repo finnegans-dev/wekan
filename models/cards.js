@@ -1047,6 +1047,90 @@ function cardRemover(userId, doc) {
     });
 }
 
+function getDueAtHTML(dueAt) {
+    console.log(dueAt)
+    if (!dueAt || dueAt === 'Sin Fecha') {
+        return `<div class="tag tag-green">Sin fecha</div>`;
+    }
+
+    const differenceInTime = new Date(dueAt).getTime() - new Date().getTime();
+    const differenceInDays = differenceInTime / getOneDayInMilliseconds();
+
+    dueAt = changeDateFormat(dueAt);
+
+    if (differenceInDays > 2) {
+        return `<div class="tag tag-green">${ dueAt }</div>`;
+    }
+
+    if (differenceInDays > -1 ) {
+        return `<div class="tag tag-yellow">${ dueAt }</div>`;
+    }
+
+    return `<div class="tag tag-red">${ dueAt }</div>`;
+}
+
+function getOneDayInMilliseconds() {
+    return 1000 * 3600 * 24;
+}
+
+function changeDateFormat(dueAt) {
+    let date = new Date(dueAt);
+    let day = date.getDate() + 1;
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    if (day < 10) {
+        day = '0' + day;
+    }
+
+    if (month < 10) {
+        month = '0' + month;
+    }
+
+    return `${ day }-${ month }-${ year }`;
+}
+
+function getUserHTML(userId) {
+    let userHTML;
+
+    if (userId) {
+
+        const user = Users.findOne({ _id: userId });
+
+        let prefix = Meteor.settings.public.ecoUrl;
+
+        // Esto es para probarlo en localhost
+        if (!prefix)
+            prefix = 'https://go-test.finneg.com/';
+
+        const url = `${prefix}api/1/users/go/profile/picture/${user.username}`;
+
+        console.log(user);
+
+        if (user.profilePicture) {
+            userHTML = `<img class="noAvatar avatarStyles" src="${ url }" alt="${ user.username }">`;
+        } else {
+            const initials = getUserInitials(user.username);
+            userHTML = `<div id="profile" class="noAvatar avatarStyles color0">${ initials }</div>`;
+        }
+
+    } else {
+        userHTML = 'No asignado';
+    }
+
+    return userHTML;
+}
+
+function getUserInitials(username) {
+    let initials = 'NN';
+    const firstInitial = username.charAt(0);
+    const secondInitial = username.charAt(1);
+
+    if (firstInitial && secondInitial)
+        initials = firstInitial.toUpperCase() + secondInitial.toUpperCase();
+
+    return initials;
+}
 
 if (Meteor.isServer) {
     // Cards are often fetched within a board, so we create an index to make these
@@ -1088,9 +1172,75 @@ if (Meteor.isServer) {
         cardRemover(userId, doc);
     });
 }
+
 //LISTS REST API
 if (Meteor.isServer) {
 
+    JsonRoutes.add('GET', '/api/boards/:boardId/cards', function(req, res) {
+        try {
+            const paramBoardId = req.params.boardId;
+            Authentication.checkBoardAccess(req.userId, paramBoardId);
+
+            const tasks = [];
+
+            const lists = Lists.find({ boardId: paramBoardId, archived: false }).map(lists => {
+                return {
+                    lists
+                }
+            });
+
+            const cardsByList = [];
+
+            lists.forEach(list => {
+                const documentList = list.lists;
+                const cards = Cards.find({ boardId: paramBoardId,  listId: documentList._id, archived: false }).map(cards => {
+                    return {
+                        cards
+                    }
+                });
+
+                cards.forEach(card => {
+                    card.cards.listTitle = documentList.title;
+                    cardsByList.push(card);
+                });
+            });
+
+            cardsByList.forEach(card => {
+                const documentCard = card.cards;
+                const swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false });
+
+                documentCard.swimlaneTitle = swimlane.title;
+
+                documentCard.dueAt = getDueAtHTML(documentCard.dueAt);
+
+                documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
+
+                tasks.push({
+                    boardId: documentCard.boardId,
+                    cardId: documentCard._id,
+                    cardTitle: documentCard.title,
+                    topicId: documentCard.swimlaneId,
+                    topicTitle: documentCard.swimlaneTitle,
+                    phaseId: documentCard.listId,
+                    phaseTitle: documentCard.listTitle,
+                    assignedTo: documentCard.assignedTo,
+                    status: documentCard.status,
+                    dueAt: documentCard.dueAt
+                });
+            });
+
+            JsonRoutes.sendResult(res, {
+                code: 200,
+                data: tasks
+            });
+        }
+        catch (error) {
+            JsonRoutes.sendResult(res, {
+                code: 500,
+                data: error,
+            });
+        }
+    });
 
     JsonRoutes.add('GET', '/api/report/cards/week', function(req, res) {
 
