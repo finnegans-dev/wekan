@@ -138,7 +138,11 @@ Users.attachSchema(new SimpleSchema({
     currentDomain: {
         type: String,
         optional: true
-    }
+    },
+    profilePicture: {
+        type: Boolean,
+        optional: true,
+    },
 }));
 
 Users.allow({
@@ -776,6 +780,27 @@ if (Meteor.isServer) {
             JsonRoutes.sendResult(res, {
                 code: 200,
                 data: Meteor.users.findOne({ _id: id }),
+            });
+        } catch (error) {
+            JsonRoutes.sendResult(res, {
+                code: 200,
+                data: error,
+            });
+        }
+    });
+
+    JsonRoutes.add('PUT', '/api/users/:email/registerProfilePicture', function(req, res) {
+        try {
+            const email = req.params.email;
+            const hasProfilePicture = req.body.hasProfilePicture;
+
+            const user = Users.findOne({ username: email });
+
+            Users.update({ _id: user._id }, { $set: { profilePicture: hasProfilePicture } });
+
+            JsonRoutes.sendResult(res, {
+                code: 200,
+                data: user,
             });
         } catch (error) {
             JsonRoutes.sendResult(res, {

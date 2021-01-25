@@ -66,7 +66,7 @@ FlowRouter.route('/b/:boardId/:slug/:cardId', {
     },
 });
 
-FlowRouter.route('/task/:boardId/:slug/:cardId', {
+FlowRouter.route('/task/:boardId/:cardId', {
     name: 'task',
     action(params) {
         EscapeActions.executeUpTo('inlinedForm');
