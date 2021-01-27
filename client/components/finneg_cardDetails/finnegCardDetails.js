@@ -21,6 +21,9 @@ BlazeComponent.extendComponent({
 
     onCreated() {
         this.currentBoard = Boards.findOne(Session.get('currentBoard'));
+        this.currentCard = Cards.findOne(Session.get('currentCard'));
+        this.cardSwimlaneId = new ReactiveVar(this.currentCard.swimlaneId);
+        this.cardListId = new ReactiveVar(this.currentCard.listId);
         this.isLoaded = new ReactiveVar(false);
         this.isTaskList = new ReactiveVar(Session.get('isTaskList'));
         this.descriptionPlaceHolder = TAPi18n.__('description-placeholder');
@@ -32,7 +35,41 @@ BlazeComponent.extendComponent({
         }
         this.calculateNextPeak();
         this.editDescription = new ReactiveVar(false);
-        this.newDescription = new ReactiveVar(Cards.findOne(Session.get('currentCard')).getDescription())
+        this.newDescription = new ReactiveVar(this.currentCard.getDescription())
+
+        this.swimlanes = new ReactiveVar(Swimlanes.find({}).map(swimlane => {
+            return {
+                ...swimlane
+            }
+        }));
+
+        console.log('swimlanes', this.swimlanes.get());
+
+        this.lists = new ReactiveVar(Lists.find({}).map(list => {
+            itemList = {
+                ...list
+            };
+            itemList.isSelected = list._id === this.cardListId.get();
+            // ? 'selected' : ''
+            return itemList;
+        }));
+
+        /***** Ver si puedo evitar esto *****/
+
+        // const indexList = this.lists.get().findIndex(list => list.isSelected);
+
+        // const item = this.lists.get()[indexList];
+
+        // this.lists.get().splice(indexList, 1);
+
+        // this.lists.get().push(item);
+
+        /***** *****/
+
+        console.log(this.currentCard);
+        console.log(this.cardSwimlaneId);
+        console.log(this.cardListId);
+        console.log('LISTS', this.lists.get());
 
         Meteor.subscribe('unsaved-edits');
     },
@@ -68,6 +105,17 @@ BlazeComponent.extendComponent({
         const card = this.currentData();
         return card.isFinished();
     },
+
+    // matchList() {
+    //     return 'selected';
+    //     const currentList = this.currentData();
+    //     return currentList.isSelected;
+        // if (currentList._id !== this.cardListId.get()) {
+        //     return false;
+        // }
+
+        // return true;
+    // },
 
     // scrollParentContainer() {
     //     const cardPanelWidth = 510;
@@ -373,6 +421,24 @@ BlazeComponent.extendComponent({
         }];
     }
 }).register('finnegInlinedCardDescription');
+
+Template.finnegCardDetails.helpers({
+
+    matchTopic() {
+        const casa = this.cardTopicId === this.topicId;
+        return this.cardTopicId === this.topicId;
+    },
+
+    matchList() {
+        const cardListId = Cards.findOne(Session.get('currentCard')).listId;
+        if (this._id === cardListId) {
+            return true;
+        }
+
+        return false;
+    }
+
+});
 
 Template.finnegCardDetailsActionsPopup.helpers({
     isWatching() {
