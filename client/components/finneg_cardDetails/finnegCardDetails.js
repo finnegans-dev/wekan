@@ -38,20 +38,21 @@ BlazeComponent.extendComponent({
         this.newDescription = new ReactiveVar(this.currentCard.getDescription())
 
         this.swimlanes = new ReactiveVar(Swimlanes.find({}).map(swimlane => {
-            return {
-                ...swimlane
-            }
+            // itemSwimlane = {
+            //     ...swimlane
+            // };
+            swimlane.isSelected = swimlane._id === this.cardSwimlaneId.get();
+            // ? 'selected' : ''
+            return swimlane;
         }));
 
-        console.log('swimlanes', this.swimlanes.get());
-
         this.lists = new ReactiveVar(Lists.find({}).map(list => {
-            itemList = {
-                ...list
-            };
-            itemList.isSelected = list._id === this.cardListId.get();
+            // itemList = {
+            //     ...list
+            // };
+            list.isSelected = list._id === this.cardListId.get();
             // ? 'selected' : ''
-            return itemList;
+            return list;
         }));
 
         /***** Ver si puedo evitar esto *****/
@@ -69,6 +70,7 @@ BlazeComponent.extendComponent({
         console.log(this.currentCard);
         console.log(this.cardSwimlaneId);
         console.log(this.cardListId);
+        console.log('SWIMLANES', this.swimlanes.get());
         console.log('LISTS', this.lists.get());
 
         Meteor.subscribe('unsaved-edits');
@@ -301,6 +303,18 @@ BlazeComponent.extendComponent({
                     }
                 });
             },
+            'click #select-swimlane' () {
+                const htmlElement = document.getElementById('select-swimlane');
+                const swimlaneId = htmlElement.value;
+                const currentCard = this.currentData();
+                Cards.update({ _id: currentCard._id }, { $set: { swimlaneId: swimlaneId } });
+            },
+            'click #select-list' () {
+                const htmlElement = document.getElementById('select-list');
+                const listId = htmlElement.value;
+                const currentCard = this.currentData();
+                Cards.update({ _id: currentCard._id }, { $set: { listId: listId } });
+            },
             'click .js-card-finished': Popup.afterConfirm('cardFinished', (action) => {
                 Popup.close();
                 const card = this.currentData().dataContext;
@@ -424,9 +438,13 @@ BlazeComponent.extendComponent({
 
 Template.finnegCardDetails.helpers({
 
-    matchTopic() {
-        const casa = this.cardTopicId === this.topicId;
-        return this.cardTopicId === this.topicId;
+    matchSwimlane() {
+        const cardSwimlaneId = Cards.findOne(Session.get('currentCard')).swimlaneId;
+        if (this._id === cardSwimlaneId) {
+            return true;
+        }
+
+        return false;
     },
 
     matchList() {

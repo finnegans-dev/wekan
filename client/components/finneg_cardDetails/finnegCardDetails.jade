@@ -47,37 +47,29 @@ template(name="finnegCardDetails")
                 i.fa.fa-pencil-alt
 
         //- +selectors(cardListId=cardListId.get)
-        //- .card-details-item.left-item
-        //-   .item-section
-        //-     i.fa.fa-bug
-        //-     h4.title.card-details-item-title Tema
-        //-       div.at-form-lang
-        //-         select.select-lang.js-userform-set-language
-        //-           each swimlanes.get
-        //-             option(value="{{ _id }}" selected="{{_ isSelected }}") {{ title }}
+        .card-details-item.left-item
+          .item-section
+            i.fa.fa-bug
+            h4.title.card-details-item-title Tema
+              div.at-form-lang
+                select#select-swimlane.select-lang.js-userform-set-language
+                  each swimlanes.get
+                    if matchSwimlane
+                      option(value="{{ _id }}" selected) {{ title }}
+                    else
+                      option(value="{{ _id }}") {{ title }}
 
         .card-details-item.left-item
           .item-section
             i.fa.fa-bug
             h4.title.card-details-item-title Fase
               div.at-form-lang
-                select.select-lang.js-userform-set-language
+                select#select-list.select-lang.js-userform-set-language
                   each lists.get
                     if matchList
-                      option(value="{{ _id }}" selected="selected") {{ title }}
+                      option(value="{{ _id }}" selected) {{ title }}
                     else
                       option(value="{{ _id }}") {{ title }}
-                    //- if match.get
-                      //- div Hola
-                    //- else
-                      //- div {{ title }}
-                      //- option(value="{{ _id }}") {{ title }}
-
-                      //- each cards
-                      //-   if isParentCard
-                      //-     option(value="{{_id}}" selected) {{title}}
-                      //-   else
-                      //-     option(value="{{_id}}") {{title}}
     .right
       section.card-details.js-card-details.js-perfect-scrollbar: .card-details-canvas
         .card-details-header
