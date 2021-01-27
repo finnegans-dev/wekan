@@ -38,34 +38,14 @@ BlazeComponent.extendComponent({
         this.newDescription = new ReactiveVar(this.currentCard.getDescription())
 
         this.swimlanes = new ReactiveVar(Swimlanes.find({}).map(swimlane => {
-            // itemSwimlane = {
-            //     ...swimlane
-            // };
             swimlane.isSelected = swimlane._id === this.cardSwimlaneId.get();
-            // ? 'selected' : ''
             return swimlane;
         }));
 
         this.lists = new ReactiveVar(Lists.find({}).map(list => {
-            // itemList = {
-            //     ...list
-            // };
             list.isSelected = list._id === this.cardListId.get();
-            // ? 'selected' : ''
             return list;
         }));
-
-        /***** Ver si puedo evitar esto *****/
-
-        // const indexList = this.lists.get().findIndex(list => list.isSelected);
-
-        // const item = this.lists.get()[indexList];
-
-        // this.lists.get().splice(indexList, 1);
-
-        // this.lists.get().push(item);
-
-        /***** *****/
 
         console.log(this.currentCard);
         console.log(this.cardSwimlaneId);
@@ -109,14 +89,11 @@ BlazeComponent.extendComponent({
     },
 
     // matchList() {
-    //     return 'selected';
-    //     const currentList = this.currentData();
-    //     return currentList.isSelected;
-        // if (currentList._id !== this.cardListId.get()) {
-        //     return false;
+        // if (currentList._id === this.cardListId.get()) {
+        //     return true;
         // }
 
-        // return true;
+        // return false;
     // },
 
     // scrollParentContainer() {
@@ -315,6 +292,24 @@ BlazeComponent.extendComponent({
                 const currentCard = this.currentData();
                 Cards.update({ _id: currentCard._id }, { $set: { listId: listId } });
             },
+            'click #button-save-card' () {
+                const swimlaneHtmlElement = document.getElementById('select-swimlane');
+                const swimlaneId = swimlaneHtmlElement.value;
+                const listHtmlElement = document.getElementById('select-list');
+                const listId = listHtmlElement.value;
+
+                console.log(swimlaneId);
+                console.log(listId);
+
+                // const cardId = Cards.insert({
+                //     title: 'Sin título',
+                //     listId: listId,
+                //     boardId: boardId._id,
+                //     sort: sortIndex,
+                //     swimlaneId: swimlaneId,
+                //     type: 'cardType-card',
+                //   });
+            },
             'click .js-card-finished': Popup.afterConfirm('cardFinished', (action) => {
                 Popup.close();
                 const card = this.currentData().dataContext;
@@ -450,6 +445,14 @@ Template.finnegCardDetails.helpers({
     matchList() {
         const cardListId = Cards.findOne(Session.get('currentCard')).listId;
         if (this._id === cardListId) {
+            return true;
+        }
+
+        return false;
+    },
+
+    isNotTaskList() {
+        if (!Session.get('isTaskList')) {
             return true;
         }
 

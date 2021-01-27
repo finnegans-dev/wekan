@@ -76,7 +76,9 @@ template(name="finnegCardDetails")
           +inlinedForm(classNames="js-card-details-title")
             +finnegEditCardTitleForm
           else
-            a.fa.fa-times-thin.card-details-menu.js-close-card-details
+            if isNotTaskList
+              a.fa.fa-times-thin.card-details-menu.js-close-card-details
+
             if canModifyCard
               if isPublic
                 a.fa.fa-globe.card-details-menu.card-permission(title="Pública")
@@ -240,17 +242,21 @@ template(name="finnegCardDetails")
             //-     else
             //-       input.toggle-switch(type="checkbox" id="toggleButton")
             //-     label.toggle-label(for="toggleButton")
-        if currentUser.isBoardMember
+        if isTaskList.get
+          .add-controls
+            button#button-save-card.primary.confirm.clear.js-add-comment {{_ 'Guardar' }}
+        else
+          if currentUser.isBoardMember
+            unless currentUser.isNoComments
+              +commentForm
           unless currentUser.isNoComments
-            +commentForm
-        unless currentUser.isNoComments
-          if isLoaded.get
-            if isLinkedCard
-              +activities(card=this mode="linkedcard")
-            else if isLinkedBoard
-              +activities(card=this mode="linkedboard")
-            else
-              +activities(card=this mode="card")
+            if isLoaded.get
+              if isLinkedCard
+                +activities(card=this mode="linkedcard")
+              else if isLinkedBoard
+                +activities(card=this mode="linkedboard")
+              else
+                +activities(card=this mode="card")
 
 
 
