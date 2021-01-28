@@ -1048,15 +1048,16 @@ function cardRemover(userId, doc) {
 }
 
 function getDueAtHTML(dueAt) {
-    console.log(dueAt)
     if (!dueAt || dueAt === 'Sin Fecha') {
         return `<div class="tag tag-green">Sin fecha</div>`;
     }
 
-    const differenceInTime = new Date(dueAt).getTime() - new Date().getTime();
-    const differenceInDays = differenceInTime / getOneDayInMilliseconds();
+    const dueDate = changeDateFormat(dueAt, 'yyyy-mm-dd');
 
-    dueAt = changeDateFormat(dueAt);
+    const differenceInTime = new Date(dueDate).getTime() - new Date().getTime();
+    const differenceInDays = Math.ceil(differenceInTime / getOneDayInMilliseconds());
+
+    dueAt = changeDateFormat(dueAt, 'dd-mm-yyyy');
 
     if (differenceInDays > 2) {
         return `<div class="tag tag-green">${ dueAt }</div>`;
@@ -1070,12 +1071,12 @@ function getDueAtHTML(dueAt) {
 }
 
 function getOneDayInMilliseconds() {
-    return 1000 * 3600 * 24;
+    return 1000 * 60 * 60 * 24;
 }
 
-function changeDateFormat(dueAt) {
-    let date = new Date(dueAt);
-    let day = date.getDate() + 1;
+function changeDateFormat(date, format) {
+    let day = date.getDate();
+    // Los meses arrancan desde 0
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
@@ -1087,7 +1088,14 @@ function changeDateFormat(dueAt) {
         month = '0' + month;
     }
 
-    return `${ day }-${ month }-${ year }`;
+    switch (format) {
+        case 'dd-mm-yyyy':
+            return `${ day }-${ month }-${ year }`;
+        case 'yyyy-mm-dd':
+            return `${ year }-${ month }-${ day }`;;
+    }
+
+    return null;
 }
 
 function getUserHTML(userId) {
@@ -1104,8 +1112,6 @@ function getUserHTML(userId) {
             prefix = 'https://go-test.finneg.com/';
 
         const url = `${prefix}api/1/users/go/profile/picture/${user.username}`;
-
-        console.log(user);
 
         if (user.profilePicture) {
             userHTML = `<img class="noAvatar avatarStyles" src="${ url }" alt="${ user.username }">`;
@@ -1183,6 +1189,8 @@ if (Meteor.isServer) {
 
             const tasks = [];
 
+            const board = Boards.findOne({ _id: paramBoardId, archived: false });
+
             const lists = Lists.find({ boardId: paramBoardId, archived: false }).map(lists => {
                 return {
                     lists
@@ -1217,6 +1225,7 @@ if (Meteor.isServer) {
 
                 tasks.push({
                     boardId: documentCard.boardId,
+                    boardTitle: board.title,
                     cardId: documentCard._id,
                     cardTitle: documentCard.title,
                     topicId: documentCard.swimlaneId,
