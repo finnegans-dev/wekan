@@ -87,10 +87,12 @@ template(name="finnegCardDetails")
 
               //-a.fa.fa-navicon.card-details-menu.js-open-card-details-menu
 
-              a.fa.fa-archive.card-details-menu.js-archive-card(title="Archivar")
+              if isNotCreateTask
+                a.fa.fa-archive.card-details-menu.js-archive-card(title="Archivar")
 
-            if canModifyCardAssigned
-              a.fa.fa-check.card-details-menu.js-card-finished(title="{{#if isFinished}}Finalizada{{else}}Finalizar{{/if}}" style="{{#if isFinished}}color:green;{{/if}}")
+            if isNotCreateTask
+              if canModifyCardAssigned
+                a.fa.fa-check.card-details-menu.js-card-finished(title="{{#if isFinished}}Finalizada{{else}}Finalizar{{/if}}" style="{{#if isFinished}}color:green;{{/if}}")
 
             h2.card-details-title.js-card-title(
               class="{{#if canModifyCard}}js-open-inlined-form is-editable{{/if}}")
@@ -244,7 +246,7 @@ template(name="finnegCardDetails")
             //-     label.toggle-label(for="toggleButton")
         if isTaskList.get
           .add-controls
-            button#button-save-card.primary.confirm.clear.js-add-comment {{_ 'Guardar' }}
+            button#button-save-card.primary.confirm.clear.js-save-card {{_ 'Guardar' }}
         else
           if currentUser.isBoardMember
             unless currentUser.isNoComments

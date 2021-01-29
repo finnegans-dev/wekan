@@ -1,3 +1,4 @@
+// const EcoHelp;
 const subManager = new SubsManager();
 const { calculateIndexData, enableClickOnTouch } = Utils;
 
@@ -29,7 +30,7 @@ BlazeComponent.extendComponent({
         this.descriptionPlaceHolder = TAPi18n.__('description-placeholder');
         const boardBody = this.parentComponent().parentComponent();
         //in Miniview parent is Board, not BoardBody.
-        if (boardBody !== null) {
+        if (boardBody && !this.isTaskList.get()) {
             boardBody.showOverlay.set(true);
             boardBody.mouseHasEnterCardDetails = false;
         }
@@ -252,7 +253,7 @@ BlazeComponent.extendComponent({
     onDestroyed() {
         const parentComponent = this.parentComponent().parentComponent();
         //on mobile view parent is Board, not board body.
-        if (parentComponent === null) return;
+        if (parentComponent === null || this.isTaskList.get()) return;
         parentComponent.showOverlay.set(false);
     },
 
@@ -293,22 +294,8 @@ BlazeComponent.extendComponent({
                 Cards.update({ _id: currentCard._id }, { $set: { listId: listId } });
             },
             'click #button-save-card' () {
-                const swimlaneHtmlElement = document.getElementById('select-swimlane');
-                const swimlaneId = swimlaneHtmlElement.value;
-                const listHtmlElement = document.getElementById('select-list');
-                const listId = listHtmlElement.value;
-
-                console.log(swimlaneId);
-                console.log(listId);
-
-                // const cardId = Cards.insert({
-                //     title: 'Sin título',
-                //     listId: listId,
-                //     boardId: boardId._id,
-                //     sort: sortIndex,
-                //     swimlaneId: swimlaneId,
-                //     type: 'cardType-card',
-                //   });
+                // EcoHelp.emitAction(this.currentCard._id);
+                // EcoHelp.closeModal();
             },
             'click .js-card-finished': Popup.afterConfirm('cardFinished', (action) => {
                 Popup.close();
@@ -371,7 +358,7 @@ BlazeComponent.extendComponent({
             'mouseenter .js-card-details' () {
                 const parentComponent = this.parentComponent().parentComponent();
                 //on mobile view parent is Board, not BoardBody.
-                if (parentComponent === null) return;
+                if (parentComponent === null || this.isTaskList.get()) return;
                 parentComponent.showOverlay.set(true);
                 parentComponent.mouseHasEnterCardDetails = true;
             },
@@ -457,6 +444,10 @@ Template.finnegCardDetails.helpers({
         }
 
         return false;
+    },
+
+    isNotCreateTask() {
+        return !Session.get('isCreateTask');
     }
 
 });

@@ -1,0 +1,8 @@
+template(name="createTaskBody")
+  if isBoardReady.get
+    if currentBoard
+      +createTask
+    else
+      +message(label="board-not-found")
+  else
+    +spinner

@@ -224,7 +224,6 @@ Users.helpers({
 
     starredBoards() {
         const { starredBoards = [] } = this.profile;
-        console.log(starredBoards);
         return Boards.find({ archived: false, _id: { $in: starredBoards }, domains: { '$in': [Meteor.user().currentDomain] } });
     },
 

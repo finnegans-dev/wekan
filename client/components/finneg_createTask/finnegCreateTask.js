@@ -1,19 +1,29 @@
 const subManager = new SubsManager();
 
 BlazeComponent.extendComponent({
-  onCreated() {
-      this.isBoardReady = new ReactiveVar(false);
+    onCreated() {
+        const currentBoardId = Session.get('currentBoard');
 
-      this.autorun(() => {
-          const currentBoardId = Session.get('currentBoard');
-          if (!currentBoardId)
-              return;
-          const handle = subManager.subscribe('board', currentBoardId);
-          Tracker.nonreactive(() => {
-              Tracker.autorun(() => {
-                  this.isBoardReady.set(handle.ready());
-              });
-          });
-      });
-  }
+        swimlanes = Swimlanes.find({}).map(swimlane => {
+            return swimlane;
+        });
+
+        lists = Lists.find({}).map(list => {
+            return list;
+        });
+
+        // Si ambos tienen longitud cero la condicion es false
+        if (swimlanes.length && lists.length) {
+            const cardId = Cards.insert({
+                title: 'Sin título',
+                listId: lists[0]._id,
+                boardId: currentBoardId,
+                sort: 0,
+                swimlaneId: swimlanes[0]._id,
+                type: 'cardType-card',
+            });
+
+            Session.set('currentCard', cardId);
+        }
+    }
 }).register('createTask');
