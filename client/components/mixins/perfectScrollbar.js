@@ -2,7 +2,9 @@ const { isTouchDevice } = Utils;
 
 Mixins.PerfectScrollbar = BlazeComponent.extendComponent({
   onRendered() {
-    if (!isTouchDevice()) {
+    const isTaskList = Session.get('isTaskList');
+
+    if (!isTouchDevice() && !isTaskList) {
       const component = this.mixinParent();
       const domElement = component.find('.js-perfect-scrollbar');
       Ps.initialize(domElement);

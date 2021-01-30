@@ -1835,6 +1835,27 @@ if (Meteor.isServer) {
         });
     });
 
+    JsonRoutes.add('DELETE', '/api/boards/:boardId/cards/deleteUntitledCards', function(req, res) {
+        const cards = Cards.find({}).map(cards => {
+            return cards;
+        });
+
+        for (let card of cards) {
+            if (card.title === 'Sin título') {
+                Activities.remove({ cardId: card._id });
+                Checklists.remove({ cardId: card._id });
+                Attachments.remove({ cardId: card._id });
+                Cards.direct.remove({ _id: card._id });
+            }
+        }
+
+        JsonRoutes.sendResult(res, {
+            code: 200,
+            data: {
+                message: 'OK'
+            }
+        });
+    });
 
     JsonRoutes.add('DELETE', '/api/boards/:boardId/lists/:listId/cards/:cardId', function(req, res) {
         Authentication.checkUserId(req.userId);

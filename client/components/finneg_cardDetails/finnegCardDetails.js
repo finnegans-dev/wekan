@@ -147,15 +147,36 @@ BlazeComponent.extendComponent({
     },
 
     resizeView() {
-        const element = document.querySelector('.containerFinnegCardDetails');
-        element.style.top = 0;
-        element.style.maxHeight = '100%';
-        element.style.width = '100%';
-        element.style.height = '100%';
+        const containerElement = document.querySelector('.containerFinnegCardDetails');
+        const scrollbarElement = document.querySelector('.js-perfect-scrollbar');
+        // const anotherScrollbarElement = document.querySelector('.ps-scrollbar-y-rail');
+        const leftSectionElement = document.querySelector('.left');
+        const rightSectionElement = document.querySelector('.right');
+        const leftItemsElement = document.querySelectorAll('.left-item');
+        // const datePopupClose = document.querySelectorAll('.js-close-pop-over');
+
+        // arrayItems = Array.prototype.slice.call(leftItemsElement);
+
+        // console.log('datePopupClose', datePopupClose);
+
+        // for (let item of arrayItems) {
+        //     item.style.minHeight = '11vh';
+        // }
+
+        containerElement.style.top = 0;
+        containerElement.style.maxHeight = '100%';
+        containerElement.style.width = '100%';
+        containerElement.style.height = '100%';
+        containerElement.style.border = 0;
+        leftSectionElement.style.width = '40%';
+        rightSectionElement.style.overflowX = 'hidden';
+
+        scrollbarElement.style.overflow = 'hidden';
+        // anotherScrollbarElement.style.display = 'none';
     },
 
     onRendered() {
-        if (this.isTaskList.curValue)
+        if (this.isTaskList.get())
             this.resizeView();
 
         // if (!Utils.isMiniScreen()) this.scrollParentContainer();
@@ -292,10 +313,6 @@ BlazeComponent.extendComponent({
                 const listId = htmlElement.value;
                 const currentCard = this.currentData();
                 Cards.update({ _id: currentCard._id }, { $set: { listId: listId } });
-            },
-            'click #button-save-card' () {
-                // EcoHelp.emitAction(this.currentCard._id);
-                // EcoHelp.closeModal();
             },
             'click .js-card-finished': Popup.afterConfirm('cardFinished', (action) => {
                 Popup.close();
