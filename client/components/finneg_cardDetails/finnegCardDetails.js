@@ -154,13 +154,14 @@ BlazeComponent.extendComponent({
         const rightSectionElement = document.querySelector('.right');
         const leftItemsElement = document.querySelectorAll('.left-item');
         // const datePopupClose = document.querySelectorAll('.js-close-pop-over');
+        const editorElement = document.querySelector('.editor');
 
         // arrayItems = Array.prototype.slice.call(leftItemsElement);
 
         // console.log('datePopupClose', datePopupClose);
 
         // for (let item of arrayItems) {
-        //     item.style.minHeight = '11vh';
+        //     item.style.minHeight = '15vh';
         // }
 
         containerElement.style.top = 0;
@@ -172,6 +173,7 @@ BlazeComponent.extendComponent({
         rightSectionElement.style.overflowX = 'hidden';
 
         scrollbarElement.style.overflow = 'hidden';
+        editorElement.style.height = '11rem';
         // anotherScrollbarElement.style.display = 'none';
     },
 

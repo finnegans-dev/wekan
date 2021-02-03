@@ -46,30 +46,31 @@ template(name="finnegCardDetails")
               a.plus.js-due-date
                 i.fa.fa-pencil-alt
 
-        //- +selectors(cardListId=cardListId.get)
-        .card-details-item.left-item
-          .item-section
-            i.fa.fa-bug
-            h4.title.card-details-item-title Tema
-              div.at-form-lang
-                select#select-swimlane.select-lang.js-userform-set-language
-                  each swimlanes.get
-                    if matchSwimlane
-                      option(value="{{ _id }}" selected) {{ title }}
-                    else
-                      option(value="{{ _id }}") {{ title }}
+        if isTaskList.get
+          //- +selectors(cardListId=cardListId.get)
+          .card-details-item.left-item
+            .item-section
+              i.fa.fa-bug
+              h4.title.card-details-item-title Tema
+                div.at-form-lang
+                  select#select-swimlane.select-lang.js-userform-set-language
+                    each swimlanes.get
+                      if matchSwimlane
+                        option(value="{{ _id }}" selected) {{ title }}
+                      else
+                        option(value="{{ _id }}") {{ title }}
 
-        .card-details-item.left-item
-          .item-section
-            i.fa.fa-bug
-            h4.title.card-details-item-title Fase
-              div.at-form-lang
-                select#select-list.select-lang.js-userform-set-language
-                  each lists.get
-                    if matchList
-                      option(value="{{ _id }}" selected) {{ title }}
-                    else
-                      option(value="{{ _id }}") {{ title }}
+          .card-details-item.left-item
+            .item-section
+              i.fa.fa-bug
+              h4.title.card-details-item-title Fase
+                div.at-form-lang
+                  select#select-list.select-lang.js-userform-set-language
+                    each lists.get
+                      if matchList
+                        option(value="{{ _id }}" selected) {{ title }}
+                      else
+                        option(value="{{ _id }}") {{ title }}
     .right
       section.card-details.js-card-details.js-perfect-scrollbar: .card-details-canvas
         .card-details-header
