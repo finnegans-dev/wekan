@@ -39,6 +39,14 @@ BlazeComponent.extendComponent({
           });
         }
       }),
+      'drop .js-minicard'(evt) {
+        const htmlElement = evt.handleObj.handler.arguments[1].draggable.context;
+        const titleHtmlElement = htmlElement.getAttribute("title");
+        const username = titleHtmlElement.replace(/[()]/g, '').trim();
+        const user = Users.findOne({ username });
+        const currentCard = this.currentData();
+        Cards.update({ _id: currentCard._id }, { $set: { assignedTo: user._id } });
+      },
     }];
   },
 
