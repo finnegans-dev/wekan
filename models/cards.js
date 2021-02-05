@@ -1185,7 +1185,15 @@ if (Meteor.isServer) {
     JsonRoutes.add('GET', '/api/boards/:boardId/cards', function(req, res) {
         try {
             const paramBoardId = req.params.boardId;
-            Authentication.checkBoardAccess(req.userId, paramBoardId);
+
+            if (!req.query.userId) {
+                return JsonRoutes.sendResult(res, {
+                    code: 403,
+                    data: {
+                        status: 'Forbidden'
+                    }
+                });
+            }
 
             const tasks = [];
 
@@ -1223,18 +1231,34 @@ if (Meteor.isServer) {
 
                 documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
 
+                const currentCardBoard = Boards.findOne({ _id: documentCard.boardId });
+
+                let labels = '<div class="container-tags">';
+
+                if (currentCardBoard.labels && documentCard.labelIds) {
+                    currentCardBoard.labels.forEach(label => {
+                        if (documentCard.labelIds.indexOf(label._id) != -1) {
+                            labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
+                        }
+                    });
+                }
+
+                labels += '</div>';
+
                 tasks.push({
                     boardId: documentCard.boardId,
                     boardTitle: board.title,
                     cardId: documentCard._id,
                     cardTitle: documentCard.title,
+                    cardDescription: documentCard.description,
                     topicId: documentCard.swimlaneId,
                     topicTitle: documentCard.swimlaneTitle,
                     phaseId: documentCard.listId,
                     phaseTitle: documentCard.listTitle,
                     assignedTo: documentCard.assignedTo,
                     status: documentCard.status,
-                    dueAt: documentCard.dueAt
+                    dueAt: documentCard.dueAt,
+                    labels: labels
                 });
             });
 
