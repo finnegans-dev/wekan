@@ -1103,11 +1103,7 @@ function getUserHTML(userId) {
 
     if (userId) {
 
-        let users = Users.find({ _id: userId });
-        let user = null;
-        users.forEach(userData => {
-            user = userData;
-        })
+        let user = Users.findOne({ _id: userId }, {});
 
         let prefix = Meteor.settings.public.ecoUrl;
 
@@ -1201,60 +1197,55 @@ if (Meteor.isServer) {
 
             let tasks = [];
 
-            const board = Boards.find({ _id: paramBoardId, archived: false });
-            let title = null;
-            board.forEach(boardData=>{
-                title = boardData.title;
-            })
+            const board = Boards.findOne({ _id: paramBoardId, archived: false }, {});
+
             let lists = Lists.find({ boardId: paramBoardId, archived: false });
             let cardsByList = [];
 
             lists.forEach(list => {
 
                 let cards = Cards.find({ boardId: paramBoardId, listId: list._id, archived: false });
-                let cardsToArray = cards.toArray();
 
                 cards.forEach(card => {
                     card.listTitle = list.title;
-                    cardsByList.push(card);
+
+                    const lastActivityDate = changeDateFormat(card.dateLastActivity, 'yyyy-mm-dd');
+
+                    const differenceInTime = new Date(lastActivityDate).getTime() - new Date().getTime();
+                    const moreThanAMonth = Math.ceil(differenceInTime / (getOneDayInMilliseconds()*30));
+
+                    if(moreThanAMonth > -1) cardsByList.push(card);
                 });
             });
 
-            cardsByList.forEach(card => {
+            for (const card of cardsByList) {
                 let documentCard = card;
-                let swimlane = Swimlanes.find({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false });
-                let swimTitle = null;
-                swimlane.forEach(swim => {
-                    swimTitle = swim.title;
-                })
+                let swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false }, {});
 
-                documentCard.swimlaneTitle = swimTitle;
+                if(swimlane) documentCard.swimlaneTitle = swimlane.title;
+                else return;
 
                 documentCard.dueAt = getDueAtHTML(documentCard.dueAt);
 
                 documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
 
-                let currentCardBoards = Boards.find({ _id: documentCard.boardId });
-                let currentCardBoard = null;
-                currentCardBoards.forEach(board => {
-                    currentCardBoard = board;
-                })
+                let currentCardBoard = Boards.findOne({ _id: documentCard.boardId }, {});
 
                 let labels = '<div class="container-tags">';
 
-                if (currentCardBoard.labels && documentCard.labelIds) {
-                    currentCardBoard.labels.forEach(label => {
+                if (currentCardBoard && currentCardBoard.labels && documentCard.labelIds) {
+                    for (const label of currentCardBoard.labels) {
                         if (documentCard.labelIds.indexOf(label._id) != -1) {
                             labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
                         }
-                    });
+                    }
                 }
 
                 labels += '</div>';
 
                 tasks.push({
                     boardId: documentCard.boardId,
-                    boardTitle: title,
+                    boardTitle: board.title,
                     cardId: documentCard._id,
                     cardTitle: documentCard.title,
                     cardDescription: documentCard.description,
@@ -1267,8 +1258,8 @@ if (Meteor.isServer) {
                     dueAt: documentCard.dueAt,
                     labels: labels
                 });
-                return;
-            });
+
+            }
 
             JsonRoutes.sendResult(res, {
                 code: 200,
