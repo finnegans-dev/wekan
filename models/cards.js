@@ -1207,7 +1207,7 @@ if (Meteor.isServer) {
 
             const cardsByList = [];
 
-            lists.forEach(list => {
+            for (const list of lists) {
                 const documentList = list.lists;
                 const cards = Cards.find({ boardId: paramBoardId,  listId: documentList._id, archived: false }).map(cards => {
                     return {
@@ -1215,13 +1215,14 @@ if (Meteor.isServer) {
                     }
                 });
 
-                cards.forEach(card => {
+                for (const card of cards) {
                     card.cards.listTitle = documentList.title;
                     cardsByList.push(card);
-                });
-            });
+                }
 
-            cardsByList.forEach(card => {
+            }
+
+            for (const card of cardsByList) {
                 const documentCard = card.cards;
                 const swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false });
 
@@ -1236,11 +1237,11 @@ if (Meteor.isServer) {
                 let labels = '<div class="container-tags">';
 
                 if (currentCardBoard.labels && documentCard.labelIds) {
-                    currentCardBoard.labels.forEach(label => {
+                    for (const label of currentCardBoard.labels) {
                         if (documentCard.labelIds.indexOf(label._id) != -1) {
                             labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
                         }
-                    });
+                    }
                 }
 
                 labels += '</div>';
@@ -1260,7 +1261,7 @@ if (Meteor.isServer) {
                     dueAt: documentCard.dueAt,
                     labels: labels
                 });
-            });
+            }
 
             JsonRoutes.sendResult(res, {
                 code: 200,
