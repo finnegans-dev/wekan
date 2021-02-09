@@ -447,7 +447,7 @@ Cards.helpers({
     },
 
     parentString(sep) {
-        return this.parentList().map(function(elem) {
+        return this.parentList().map(function (elem) {
             return elem.title;
         }).join(sep);
     },
@@ -585,7 +585,7 @@ Cards.helpers({
                     notificationData.destination = userAssigned.username;
                     notificationData.message = response.data.firstName + ' ' + response.data.lastName + ' te asignó una nueva tarea'
 
-                    HTTP.post(notifyUrl, { data: notificationData }, function(err, data) {
+                    HTTP.post(notifyUrl, { data: notificationData }, function (err, data) {
                         if (err) {
                             console.log(err);
                         }
@@ -795,7 +795,7 @@ Cards.helpers({
                         notificationData.destination = userAssigned.username;
                         notificationData.message = response.data.firstName + ' ' + response.data.lastName + ' modificó una tarea que tenés asignada'
 
-                        HTTP.post(notifyUrl, { data: notificationData }, function(err, data) {
+                        HTTP.post(notifyUrl, { data: notificationData }, function (err, data) {
                             if (err) {
                                 console.log(err);
                             }
@@ -1060,14 +1060,14 @@ function getDueAtHTML(dueAt) {
     dueAt = changeDateFormat(dueAt, 'dd-mm-yyyy');
 
     if (differenceInDays > 2) {
-        return `<div class="tag tag-green">${ dueAt }</div>`;
+        return `<div class="tag tag-green">${dueAt}</div>`;
     }
 
-    if (differenceInDays > -1 ) {
-        return `<div class="tag tag-yellow">${ dueAt }</div>`;
+    if (differenceInDays > -1) {
+        return `<div class="tag tag-yellow">${dueAt}</div>`;
     }
 
-    return `<div class="tag tag-red">${ dueAt }</div>`;
+    return `<div class="tag tag-red">${dueAt}</div>`;
 }
 
 function getOneDayInMilliseconds() {
@@ -1090,9 +1090,9 @@ function changeDateFormat(date, format) {
 
     switch (format) {
         case 'dd-mm-yyyy':
-            return `${ day }-${ month }-${ year }`;
+            return `${day}-${month}-${year}`;
         case 'yyyy-mm-dd':
-            return `${ year }-${ month }-${ day }`;;
+            return `${year}-${month}-${day}`;;
     }
 
     return null;
@@ -1103,7 +1103,11 @@ function getUserHTML(userId) {
 
     if (userId) {
 
-        const user = Users.findOne({ _id: userId });
+        let users = Users.find({ _id: userId });
+        let user = null;
+        users.forEach(userData => {
+            user = userData;
+        })
 
         let prefix = Meteor.settings.public.ecoUrl;
 
@@ -1114,10 +1118,10 @@ function getUserHTML(userId) {
         const url = `${prefix}api/1/users/go/profile/picture/${user.username}`;
 
         if (user.profilePicture) {
-            userHTML = `<img class="noAvatar avatarStyles" src="${ url }" alt="${ user.username }">`;
+            userHTML = `<img class="noAvatar avatarStyles" src="${url}" alt="${user.username}">`;
         } else {
             const initials = getUserInitials(user.username);
-            userHTML = `<div id="profile" class="noAvatar avatarStyles color0">${ initials }</div>`;
+            userHTML = `<div id="profile" class="noAvatar avatarStyles color0">${initials}</div>`;
         }
 
     } else {
@@ -1161,7 +1165,7 @@ if (Meteor.isServer) {
     });
 
     //New activity for card moves
-    Cards.after.update(function(userId, doc, fieldNames) {
+    Cards.after.update(function (userId, doc, fieldNames) {
         const oldListId = this.previous.listId;
         const oldSwimlaneId = this.previous.swimlaneId;
         cardMove(userId, doc, fieldNames, oldListId, oldSwimlaneId);
@@ -1182,7 +1186,7 @@ if (Meteor.isServer) {
 //LISTS REST API
 if (Meteor.isServer) {
 
-    JsonRoutes.add('GET', '/api/boards/:boardId/cards', function(req, res) {
+    JsonRoutes.add('GET', '/api/boards/:boardId/cards', function (req, res) {
         try {
             const paramBoardId = req.params.boardId;
 
@@ -1195,43 +1199,46 @@ if (Meteor.isServer) {
                 });
             }
 
-            const tasks = [];
+            let tasks = [];
 
-            const board = Boards.findOne({ _id: paramBoardId, archived: false });
-
-            const lists = Lists.find({ boardId: paramBoardId, archived: false }).map(lists => {
-                return {
-                    lists
-                }
-            });
-
-            const cardsByList = [];
+            const board = Boards.find({ _id: paramBoardId, archived: false });
+            let title = null;
+            board.forEach(boardData=>{
+                title = boardData.title;
+            })
+            let lists = Lists.find({ boardId: paramBoardId, archived: false });
+            let cardsByList = [];
 
             lists.forEach(list => {
-                const documentList = list.lists;
-                const cards = Cards.find({ boardId: paramBoardId,  listId: documentList._id, archived: false }).map(cards => {
-                    return {
-                        cards
-                    }
-                });
+
+                let cards = Cards.find({ boardId: paramBoardId, listId: list._id, archived: false });
+                let cardsToArray = cards.toArray();
 
                 cards.forEach(card => {
-                    card.cards.listTitle = documentList.title;
+                    card.listTitle = list.title;
                     cardsByList.push(card);
                 });
             });
 
             cardsByList.forEach(card => {
-                const documentCard = card.cards;
-                const swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false });
+                let documentCard = card;
+                let swimlane = Swimlanes.find({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false });
+                let swimTitle = null;
+                swimlane.forEach(swim => {
+                    swimTitle = swim.title;
+                })
 
-                documentCard.swimlaneTitle = swimlane.title;
+                documentCard.swimlaneTitle = swimTitle;
 
                 documentCard.dueAt = getDueAtHTML(documentCard.dueAt);
 
                 documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
 
-                const currentCardBoard = Boards.findOne({ _id: documentCard.boardId });
+                let currentCardBoards = Boards.find({ _id: documentCard.boardId });
+                let currentCardBoard = null;
+                currentCardBoards.forEach(board => {
+                    currentCardBoard = board;
+                })
 
                 let labels = '<div class="container-tags">';
 
@@ -1247,7 +1254,7 @@ if (Meteor.isServer) {
 
                 tasks.push({
                     boardId: documentCard.boardId,
-                    boardTitle: board.title,
+                    boardTitle: title,
                     cardId: documentCard._id,
                     cardTitle: documentCard.title,
                     cardDescription: documentCard.description,
@@ -1260,6 +1267,7 @@ if (Meteor.isServer) {
                     dueAt: documentCard.dueAt,
                     labels: labels
                 });
+                return;
             });
 
             JsonRoutes.sendResult(res, {
@@ -1275,7 +1283,7 @@ if (Meteor.isServer) {
         }
     });
 
-    JsonRoutes.add('GET', '/api/report/cards/week', function(req, res) {
+    JsonRoutes.add('GET', '/api/report/cards/week', function (req, res) {
 
         if (!req.userId) {
             return JsonRoutes.sendResult(res, {
@@ -1286,7 +1294,7 @@ if (Meteor.isServer) {
             });
         }
 
-        const boards = Boards.find({
+        let boards = Boards.find({
             archived: false,
             domains: { '$in': [Users.findOne(req.userId).currentDomain] },
             $or: [
@@ -1324,7 +1332,7 @@ if (Meteor.isServer) {
                 query.userId = user._id;
             }
         }
-        let parseDate = function(date) {
+        let parseDate = function (date) {
             let object = {};
             try {
                 let currStart = new Date();
@@ -1500,7 +1508,7 @@ if (Meteor.isServer) {
 
     //Boards de Admins
 
-    JsonRoutes.add('GET', '/api/report/cards/weekAdmin', function(req, res) {
+    JsonRoutes.add('GET', '/api/report/cards/weekAdmin', function (req, res) {
         if (!req.userId) {
             return JsonRoutes.sendResult(res, {
                 code: 403,
@@ -1527,9 +1535,9 @@ if (Meteor.isServer) {
 
         let boardIds = [];
         boards.forEach(b => {
-                boardIds.push(b._id);
-            })
-            //console.log(boards)
+            boardIds.push(b._id);
+        })
+        //console.log(boards)
         let query = {
             boardId: {
                 $in: boardIds
@@ -1542,7 +1550,7 @@ if (Meteor.isServer) {
         };
 
 
-        let parseDate = function(date) {
+        let parseDate = function (date) {
             let object = {};
             try {
                 let currStart = new Date();
@@ -1728,13 +1736,13 @@ if (Meteor.isServer) {
 
 
 
-    JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards', function(req, res) {
+    JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards', function (req, res) {
         const paramBoardId = req.params.boardId;
         const paramListId = req.params.listId;
         Authentication.checkBoardAccess(req.userId, paramBoardId);
         JsonRoutes.sendResult(res, {
             code: 200,
-            data: Cards.find({ boardId: paramBoardId, listId: paramListId, archived: false }).map(function(doc) {
+            data: Cards.find({ boardId: paramBoardId, listId: paramListId, archived: false }).map(function (doc) {
                 return {
                     _id: doc._id,
                     title: doc.title,
@@ -1744,7 +1752,7 @@ if (Meteor.isServer) {
         });
     });
 
-    JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards/:cardId', function(req, res) {
+    JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards/:cardId', function (req, res) {
         const paramBoardId = req.params.boardId;
         const paramListId = req.params.listId;
         const paramCardId = req.params.cardId;
@@ -1755,7 +1763,7 @@ if (Meteor.isServer) {
         });
     });
 
-    JsonRoutes.add('POST', '/api/boards/:boardId/lists/:listId/cards', function(req, res) {
+    JsonRoutes.add('POST', '/api/boards/:boardId/lists/:listId/cards', function (req, res) {
         Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramListId = req.params.listId;
@@ -1789,7 +1797,7 @@ if (Meteor.isServer) {
         }
     });
 
-    JsonRoutes.add('PUT', '/api/boards/:boardId/lists/:listId/cards/:cardId', function(req, res) {
+    JsonRoutes.add('PUT', '/api/boards/:boardId/lists/:listId/cards/:cardId', function (req, res) {
         Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramCardId = req.params.cardId;
@@ -1859,7 +1867,7 @@ if (Meteor.isServer) {
         });
     });
 
-    JsonRoutes.add('DELETE', '/api/boards/:boardId/cards/deleteUntitledCards', function(req, res) {
+    JsonRoutes.add('DELETE', '/api/boards/:boardId/cards/deleteUntitledCards', function (req, res) {
         const cards = Cards.find({}).map(cards => {
             return cards;
         });
@@ -1881,7 +1889,7 @@ if (Meteor.isServer) {
         });
     });
 
-    JsonRoutes.add('DELETE', '/api/boards/:boardId/lists/:listId/cards/:cardId', function(req, res) {
+    JsonRoutes.add('DELETE', '/api/boards/:boardId/lists/:listId/cards/:cardId', function (req, res) {
         Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramListId = req.params.listId;
