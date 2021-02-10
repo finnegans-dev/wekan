@@ -1214,52 +1214,50 @@ if (Meteor.isServer) {
                     const differenceInTime = new Date(lastActivityDate).getTime() - new Date().getTime();
                     const moreThanAMonth = Math.ceil(differenceInTime / (getOneDayInMilliseconds()*30));
 
-                    if(moreThanAMonth > -1) cardsByList.push(card);
+                    if(moreThanAMonth > -1){
+                        let documentCard = card;
+                        // let swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false }, {});
+
+                        // if(swimlane) documentCard.swimlaneTitle = swimlane.title;
+                        // else return;
+
+                        documentCard.dueAt = getDueAtHTML(documentCard.dueAt);
+
+                        documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
+
+                        let currentCardBoard = Boards.findOne({ _id: documentCard.boardId }, {});
+
+                        let labels = '<div class="container-tags">';
+
+                        if (currentCardBoard && currentCardBoard.labels && documentCard.labelIds) {
+                            for (const label of currentCardBoard.labels) {
+                                if (documentCard.labelIds.indexOf(label._id) != -1) {
+                                    labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
+                                }
+                            }
+                        }
+
+                        labels += '</div>';
+
+                        tasks.push({
+                            boardId: documentCard.boardId,
+                            boardTitle: board.title,
+                            cardId: documentCard._id,
+                            cardTitle: documentCard.title,
+                            cardDescription: documentCard.description,
+                            topicId: documentCard.swimlaneId,
+                            topicTitle: documentCard.swimlaneTitle,
+                            phaseId: documentCard.listId,
+                            phaseTitle: documentCard.listTitle,
+                            assignedTo: documentCard.assignedTo,
+                            status: documentCard.status,
+                            dueAt: documentCard.dueAt,
+                            labels: labels
+                        });
+                    }
                 });
             });
 
-            for (const card of cardsByList) {
-                let documentCard = card;
-                let swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false }, {});
-
-                if(swimlane) documentCard.swimlaneTitle = swimlane.title;
-                else return;
-
-                documentCard.dueAt = getDueAtHTML(documentCard.dueAt);
-
-                documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
-
-                let currentCardBoard = Boards.findOne({ _id: documentCard.boardId }, {});
-
-                let labels = '<div class="container-tags">';
-
-                if (currentCardBoard && currentCardBoard.labels && documentCard.labelIds) {
-                    for (const label of currentCardBoard.labels) {
-                        if (documentCard.labelIds.indexOf(label._id) != -1) {
-                            labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
-                        }
-                    }
-                }
-
-                labels += '</div>';
-
-                tasks.push({
-                    boardId: documentCard.boardId,
-                    boardTitle: board.title,
-                    cardId: documentCard._id,
-                    cardTitle: documentCard.title,
-                    cardDescription: documentCard.description,
-                    topicId: documentCard.swimlaneId,
-                    topicTitle: documentCard.swimlaneTitle,
-                    phaseId: documentCard.listId,
-                    phaseTitle: documentCard.listTitle,
-                    assignedTo: documentCard.assignedTo,
-                    status: documentCard.status,
-                    dueAt: documentCard.dueAt,
-                    labels: labels
-                });
-
-            }
 
             JsonRoutes.sendResult(res, {
                 code: 200,

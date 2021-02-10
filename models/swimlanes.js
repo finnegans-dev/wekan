@@ -134,7 +134,7 @@ if (Meteor.isServer) {
   JsonRoutes.add('GET', '/api/boards/:boardId/swimlanes', function (req, res) {
     try {
       const paramBoardId = req.params.boardId;
-      Authentication.checkBoardAccess( req.userId, paramBoardId);
+      Authentication.checkBoardAccess( req.query.userId, paramBoardId);
 
       JsonRoutes.sendResult(res, {
         code: 200,
