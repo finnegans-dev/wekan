@@ -1209,12 +1209,12 @@ if (Meteor.isServer) {
                 cards.forEach(card => {
                     card.listTitle = list.title;
 
-                    const lastActivityDate = changeDateFormat(card.dateLastActivity, 'yyyy-mm-dd');
+                    // const lastActivityDate = changeDateFormat(card.dateLastActivity, 'yyyy-mm-dd');
 
-                    const differenceInTime = new Date(lastActivityDate).getTime() - new Date().getTime();
-                    const moreThanAMonth = Math.ceil(differenceInTime / (getOneDayInMilliseconds()*30));
+                    // const differenceInTime = new Date(lastActivityDate).getTime() - new Date().getTime();
+                    // const moreThanAMonth = Math.ceil(differenceInTime / (getOneDayInMilliseconds()*30));
 
-                    if(moreThanAMonth > -1){
+                    // if(moreThanAMonth > -1){
                         let documentCard = card;
                         // let swimlane = Swimlanes.findOne({ _id: documentCard.swimlaneId, boardId: paramBoardId, archived: false }, {});
 
@@ -1225,12 +1225,12 @@ if (Meteor.isServer) {
 
                         documentCard.assignedTo = getUserHTML(documentCard.assignedTo);
 
-                        let currentCardBoard = Boards.findOne({ _id: documentCard.boardId }, {});
+                        // let currentCardBoard = Boards.findOne({ _id: documentCard.boardId }, {});
 
                         let labels = '<div class="container-tags">';
 
-                        if (currentCardBoard && currentCardBoard.labels && documentCard.labelIds) {
-                            for (const label of currentCardBoard.labels) {
+                        if (board && board.labels && documentCard.labelIds) {
+                            for (const label of board.labels) {
                                 if (documentCard.labelIds.indexOf(label._id) != -1) {
                                     labels += '<div class="tags tags-' + label.color + '">' + label.name + '</div>';
                                 }
@@ -1254,7 +1254,7 @@ if (Meteor.isServer) {
                             dueAt: documentCard.dueAt,
                             labels: labels
                         });
-                    }
+                    // }
                 });
             });
 
