@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --ignore-pattern 'packages/*' .",
     "test": "npm run --silent lint",
-    "debug": "meteor run --inspect --port 8080"
+    "debug": "MONGO_URL=mongodb://52.91.18.147:27017/wekan meteor run --inspect-brk=9229"
   },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"
