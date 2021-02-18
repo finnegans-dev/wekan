@@ -4,7 +4,7 @@
   and #each x in y constructors to fix this.
 
 template(name="finnegFilter")
-  .container
+  .containerFinnegFilters
     .title
       h3 Filtros
     .main
@@ -32,7 +32,7 @@ template(name="finnegFilter")
         if getMenuSelected "view"
           +finnegViewMenuPopup
     .bottom
-      button.js-close-modal cerrar
+      button.primary.js-close-modal.js-filters Cerrar
 
 
 template(name="finnegMultiselectionPopupFilter")
@@ -88,7 +88,9 @@ template(name="finnegMoveSelectionPopup")
 template(name="finnegTags")
   .top
     .selectAllBox
-      input.select-check.js-select-all-tags(type='checkbox', name='slectAllTags' checked='{{Filter.labelIds.isAllSelected}}')
+      label.container
+        input.select-check.js-select-all-tags(type='checkbox', name='slectAllTags' checked='{{Filter.labelIds.isAllSelected}}')
+        span.checkmark
     .searchBox
       input.js-search-tags(placeholder="Buscar")
   ul.sidebar-list
@@ -96,7 +98,9 @@ template(name="finnegTags")
       li(class="{{#if Filter.labelIds.isSelected undefined}}active{{/if}}")
         .top
           .selectBox
-            input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected undefined}}")
+            label.container
+              input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected undefined}}")
+              span.checkmark
           .tag
             a.name.js-toggle-label-filter
               span.sidebar-list-item-description
@@ -105,7 +109,9 @@ template(name="finnegTags")
       li
         .top
           .selectBox
-            input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected _id}}")
+            label.container
+              input.select-check.js-toggle-label-filter(type='checkbox', name='slectTag' checked="{{Filter.labelIds.isSelected _id}}")
+              span.checkmark
           .description
             a.name.js-toggle-label-filter
               span.card-label.square(class="card-label-{{color}}")
@@ -119,7 +125,9 @@ template(name="finnegTags")
 template(name="finnegPrivacy")
   .top
     .selectAllBox
-      input.select-check.js-select-all-members(type='checkbox', name='slectAllMembers' checked='{{Filter.members.isAllSelected}}')
+      label.container
+        input.select-check.js-select-all-members(type='checkbox', name='slectAllMembers' checked='{{Filter.members.isAllSelected}}')
+        span.checkmark
     .searchBox
       input.js-search-members(placeholder="Buscar")
   ul.sidebar-list
@@ -132,7 +140,9 @@ template(name="finnegPrivacy")
         li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
           .top
             .selectBox
-              input.select-check.js-toggle-member-filter(type='checkbox', name='slectMember' checked="{{Filter.members.isSelected _id}}")
+              label.container
+                input.select-check.js-toggle-member-filter(type='checkbox', name='slectMember' checked="{{Filter.members.isSelected _id}}")
+                span.checkmark
             .description
               a.name.js-toggle-member-filter
                 +userAvatar(userId=this._id)
@@ -143,7 +153,9 @@ template(name="finnegPrivacy")
 template(name="finnegAssigned")
   .top
     .selectAllBox
-      input.select-check.js-select-all-assignedTo(type='checkbox', name='slectAllAssigned' checked='{{Filter.assignedTo.isAllSelected}}')
+      label.container
+        input.select-check.js-select-all-assignedTo(type='checkbox', name='slectAllAssigned' checked='{{Filter.assignedTo.isAllSelected}}')
+        span.checkmark
     .searchBox
       input.js-search-assignedTo(placeholder="Buscar")
   ul.sidebar-list
@@ -151,7 +163,9 @@ template(name="finnegAssigned")
       li(class="{{#if Filter.assignedTo.isSelected undefined}}active{{/if}}")
         .top
           .selectBox
-            input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected undefined}}")
+            label.container
+              input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected undefined}}")
+              span.checkmark
           .description
             a.name.js-toggle-assignedTo-filter
               span.sidebar-list-item-description
@@ -161,7 +175,9 @@ template(name="finnegAssigned")
       with currentUser
         .top
           .selectBox
-            input.select-check.js-toggle-assigned-filter(type='checkbox', name='slectMember' checked="{{Filter.userId.isSelected _id}}")
+            label.container
+              input.select-check.js-toggle-assigned-filter(type='checkbox', name='slectMember' checked="{{Filter.userId.isSelected _id}}")
+              span.checkmark
           .description
             a.name.js-toggle-assigned-filter
               span.sidebar-list-item-description
@@ -171,7 +187,9 @@ template(name="finnegAssigned")
         li(class="{{#if Filter.members.isSelected _id}}active{{/if}}")
           .top
             .selectBox
-              input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected _id}}")
+              label.container
+                input.select-check.js-toggle-assignedTo-filter(type='checkbox', name='slectMember' checked="{{Filter.assignedTo.isSelected _id}}")
+                span.checkmark
             .description
               a.name.js-toggle-assignedTo-filter
                 +userAvatar(userId=this._id)
