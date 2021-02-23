@@ -1195,16 +1195,16 @@ if (Meteor.isServer) {
                 });
             }
 
-            let tasks = [];
+            const tasks = [];
 
             const board = Boards.findOne({ _id: paramBoardId, archived: false }, {});
 
-            let lists = Lists.find({ boardId: paramBoardId, archived: false });
-            let cardsByList = [];
+            const lists = Lists.find({ boardId: paramBoardId, archived: false });
+            const cardsByList = [];
 
             lists.forEach(list => {
 
-                let cards = Cards.find({ boardId: paramBoardId, listId: list._id, archived: false });
+                const cards = Cards.find({ boardId: paramBoardId, listId: list._id, archived: false });
 
                 cards.forEach(card => {
                     card.listTitle = list.title;
@@ -1257,7 +1257,6 @@ if (Meteor.isServer) {
                     // }
                 });
             });
-
 
             JsonRoutes.sendResult(res, {
                 code: 200,
@@ -1722,9 +1721,6 @@ if (Meteor.isServer) {
         })
     });
 
-
-
-
     JsonRoutes.add('GET', '/api/boards/:boardId/lists/:listId/cards', function (req, res) {
         const paramBoardId = req.params.boardId;
         const paramListId = req.params.listId;
@@ -1784,6 +1780,64 @@ if (Meteor.isServer) {
                 code: 401,
             });
         }
+    });
+
+    JsonRoutes.add('PUT', '/api/boards/:boardId/cards/:cardId/finished', function (req, res) {
+        const paramCardId = req.params.cardId;
+
+        Cards.update(paramCardId, {
+            $set: {
+                status: 'finished',
+                endAt: new Date()
+            }
+        });
+
+        JsonRoutes.sendResult(res, {
+            code: 200,
+            data: 'OK'
+        });
+    });
+
+    JsonRoutes.add('PUT', '/api/boards/:boardId/cards/:cardId/archived', function (req, res) {
+        const paramCardId = req.params.cardId;
+
+        Cards.update(paramCardId, { $set: { archived: true } });
+
+        JsonRoutes.sendResult(res, {
+            code: 200,
+            data: 'OK'
+        });
+    });
+
+    JsonRoutes.add('PUT', '/api/boards/:boardId/cards/finishMassive', function (req, res) {
+        const cards = req.body;
+
+        cards.forEach(card => {
+            Cards.update(card.cardId, {
+                $set: {
+                    status: 'finished',
+                    endAt: new Date()
+                }
+            });
+        });
+
+        JsonRoutes.sendResult(res, {
+            code: 200,
+            data: 'OK'
+        });
+    });
+
+    JsonRoutes.add('PUT', '/api/boards/:boardId/cards/archiveMassive', function (req, res) {
+        const cards = req.body;
+
+        cards.forEach(card => {
+            Cards.update(card.cardId, { $set: { archived: true } });
+        });
+
+        JsonRoutes.sendResult(res, {
+            code: 200,
+            data: 'OK'
+        });
     });
 
     JsonRoutes.add('PUT', '/api/boards/:boardId/lists/:listId/cards/:cardId', function (req, res) {
